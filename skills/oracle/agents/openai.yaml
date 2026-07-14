@@ -1,0 +1,4 @@
+interface:
+  display_name: "Oracle"
+  short_description: "Initialize, plan, or implement with real parallel thread loops and evidence"
+  default_prompt: "Use $oracle with one command: init, plan, or implement. For substantial implementation, make this thread the orchestrator, split independent features into isolated worktree lanes, and run each lane through fresh implementation, test.md testing, and independent review/scoring threads. Run independent lanes concurrently, never overlap role phases or writers inside one lane, repeat failed lanes with fresh threads, then integrate accepted checkpoints and run final regression plus review. Keep project-local artifacts, human.md, test.md, and dated HTML plan/conclusion evidence accurate."
