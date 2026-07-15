@@ -1,6 +1,6 @@
 # Oracle
 
-[![skills.sh](https://skills.sh/b/kausthubh-coder/oracle-skill)](https://skills.sh/kausthubh-coder/oracle-skill)
+[![skills.sh](https://skills.sh/b/kausthubh-coder/skills)](https://skills.sh/kausthubh-coder/skills)
 
 Oracle is a Codex-first agent skill for planning and implementing software through
 project-local artifacts, isolated Git worktrees, independent implementation,
@@ -11,7 +11,7 @@ testing, and review tasks, and evidence-backed refinement loops.
 Install Oracle globally for Codex:
 
 ```bash
-npx skills add kausthubh-coder/oracle-skill \
+npx skills add kausthubh-coder/skills \
   --skill oracle \
   --global \
   --agent codex \
@@ -21,7 +21,7 @@ npx skills add kausthubh-coder/oracle-skill \
 Install it into the current project for any agent supported by the `skills` CLI:
 
 ```bash
-npx skills add kausthubh-coder/oracle-skill --skill oracle
+npx skills add kausthubh-coder/skills --skill oracle
 ```
 
 The repository will appear on skills.sh automatically after the public GitHub
