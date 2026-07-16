@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<!-- oracle-html-template-version: 2 -->
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <title>{{ARTIFACT_TITLE}}</title>
+  <style>
+    :root {
+      --bg: #f7f8fa;
+      --surface: #ffffff;
+      --text: #182026;
+      --muted: #59656f;
+      --line: #d6dce1;
+      --strong-line: #9aa6af;
+      --accent: #006b75;
+      --accent-soft: #dff3f5;
+      --success: #227a4b;
+      --success-soft: #e2f3e9;
+      --warning: #9a5b00;
+      --warning-soft: #fff0cf;
+      --danger: #b03535;
+      --danger-soft: #fde7e7;
+      --code: #eef1f3;
+      --radius: 6px;
+      --max: 1120px;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #111619;
+        --surface: #192126;
+        --text: #edf2f4;
+        --muted: #b1bdc5;
+        --line: #344149;
+        --strong-line: #63737d;
+        --accent: #65c8d0;
+        --accent-soft: #17383c;
+        --success: #75d39b;
+        --success-soft: #173827;
+        --warning: #f3bd68;
+        --warning-soft: #3d2d15;
+        --danger: #f28a8a;
+        --danger-soft: #402020;
+        --code: #232d33;
+      }
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      letter-spacing: 0;
+    }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+    code, pre { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+    code { padding: 0.1rem 0.3rem; background: var(--code); border-radius: 4px; }
+    pre {
+      overflow: auto;
+      padding: 1rem;
+      background: var(--code);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    h1, h2, h3 { line-height: 1.2; letter-spacing: 0; }
+    h1 { margin: 0.25rem 0 0.75rem; font-size: 3.75rem; overflow-wrap: anywhere; }
+    h2 { margin: 0; font-size: 1.55rem; }
+    h3 { font-size: 1rem; }
+    p, li, td, th, dd { overflow-wrap: anywhere; }
+    .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+    .shell { width: min(100% - 2rem, var(--max)); margin: 0 auto; }
+    header { padding: 3.5rem 0 2rem; border-bottom: 1px solid var(--line); }
+    .eyebrow { color: var(--accent); font-weight: 700; text-transform: uppercase; overflow-wrap: anywhere; }
+    .lede { max-width: 760px; color: var(--muted); font-size: 1.1rem; }
+    .meta { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-top: 1.5rem; color: var(--muted); }
+    .status { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 700; color: var(--muted); }
+    .status::before { width: 0.65rem; height: 0.65rem; border-radius: 50%; background: currentColor; content: ""; }
+    .status[data-state="pass"] { color: var(--success); }
+    .status[data-state="warning"] { color: var(--warning); }
+    .status[data-state="fail"] { color: var(--danger); }
+
+    nav { border-bottom: 1px solid var(--line); background: var(--surface); }
+    nav ul { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin: 0; padding: 0.85rem 0; list-style: none; }
+    nav a { color: var(--text); font-weight: 650; text-decoration: none; }
+    nav a:hover { color: var(--accent); }
+
+    main section { padding: 2.5rem 0; border-bottom: 1px solid var(--line); }
+    .section-head { display: grid; grid-template-columns: minmax(180px, 0.32fr) minmax(0, 1fr); gap: 2rem; }
+    .section-head > p { margin-top: 0; color: var(--muted); }
+    .summary-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.75rem; margin-top: 1.5rem; }
+    .summary {
+      padding: 1rem;
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+    }
+    .summary strong { display: block; margin-bottom: 0.3rem; }
+    .summary p { margin: 0; color: var(--muted); }
+    .callout { padding: 1rem 1.1rem; border-left: 4px solid var(--warning); background: var(--warning-soft); }
+    .callout strong { color: var(--warning); }
+
+    .flow { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); align-items: stretch; gap: 1.25rem; margin: 1.75rem 0; padding: 0; list-style: none; }
+    .flow-step { position: relative; padding: 1rem; border-top: 3px solid var(--accent); background: var(--surface); }
+    .flow-step:not(:last-child)::after { position: absolute; top: 50%; right: -1rem; color: var(--muted); content: "->"; }
+    .flow-step span { display: block; color: var(--muted); }
+
+    .timeline { position: relative; margin: 1.5rem 0; padding-left: 1.5rem; border-left: 2px solid var(--line); }
+    .event { position: relative; padding: 0 0 1.5rem 1rem; }
+    .event::before { position: absolute; top: 0.35rem; left: -1.95rem; width: 0.75rem; height: 0.75rem; border-radius: 50%; background: var(--accent); content: ""; }
+    .event time { color: var(--muted); font-size: 0.9rem; }
+    .event p { margin: 0.2rem 0 0; }
+
+    .score { display: grid; grid-template-columns: minmax(120px, 0.3fr) minmax(0, 1fr) 3rem; gap: 0.75rem; align-items: center; margin: 0.75rem 0; }
+    .track { height: 0.65rem; overflow: hidden; background: var(--line); border-radius: 99px; }
+    .bar { width: calc(var(--value) * 1%); height: 100%; background: var(--accent); }
+
+    .table-wrap { overflow-x: auto; margin-top: 1.5rem; }
+    table { width: 100%; min-width: 620px; border-collapse: collapse; background: var(--surface); }
+    th, td { padding: 0.75rem; border: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { background: var(--code); }
+    .pass { color: var(--success); font-weight: 700; }
+    .warn { color: var(--warning); font-weight: 700; }
+    .fail { color: var(--danger); font-weight: 700; }
+
+    footer { padding: 2rem 0 3rem; color: var(--muted); }
+
+    @media (max-width: 760px) {
+      header { padding-top: 2rem; }
+      h1 { font-size: 2.25rem; }
+      .section-head { grid-template-columns: 1fr; gap: 0.5rem; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .flow { grid-template-columns: 1fr; }
+      .flow-step:not(:last-child)::after { top: auto; right: 50%; bottom: -1.15rem; content: "down"; font-size: 0.75rem; }
+      .score { grid-template-columns: 1fr 2.5rem; }
+      .score .track { grid-column: 1 / -1; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+    }
+
+    @media print {
+      :root { --bg: #fff; --surface: #fff; --text: #111; --muted: #444; --line: #aaa; --code: #f2f2f2; }
+      nav { display: none; }
+      body { font-size: 11pt; }
+      a::after { content: " (" attr(href) ")"; font-size: 0.85em; }
+      section, table, .summary, .flow-step { break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="shell">
+      <div class="eyebrow">{{ARTIFACT_TYPE}}</div>
+      <h1>{{ARTIFACT_TITLE}}</h1>
+      <p class="lede">{{ONE_SENTENCE_PURPOSE}}</p>
+      <div class="meta">
+        <span class="status" data-state="{{STATUS_STATE}}">{{STATUS}}</span>
+        <span>Run <code>{{RUN_ID}}</code></span>
+        <span>Revision <code>{{REVISION}}</code></span>
+        <time datetime="{{ISO_DATE}}">{{DISPLAY_DATE}}</time>
+      </div>
+    </div>
+  </header>
+
+  <nav aria-label="Artifact sections">
+    <div class="shell">
+      <ul>
+        <li><a href="#summary">Summary</a></li>
+        <li><a href="#system">System</a></li>
+        <li><a href="#evidence">Evidence</a></li>
+        <li><a href="#decisions">Decisions</a></li>
+        <li><a href="#next">Next</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="shell">
+    <section id="summary">
+      <div class="section-head">
+        <h2>Executive summary</h2>
+        <p>State the outcome, strongest evidence, main risk, and next action. Replace these examples with verified facts.</p>
+      </div>
+      <div class="summary-grid">
+        <article class="summary"><strong>Outcome</strong><p>{{OUTCOME}}</p></article>
+        <article class="summary"><strong>Evidence</strong><p>{{STRONGEST_EVIDENCE}}</p></article>
+        <article class="summary"><strong>Boundary</strong><p>{{RELEASE_BOUNDARY}}</p></article>
+      </div>
+    </section>
+
+    <section id="system">
+      <div class="section-head">
+        <h2>System flow</h2>
+        <p>Use a flow only when sequence or dependency is central to understanding the work.</p>
+      </div>
+      <ol class="flow" aria-label="Example four-step system flow">
+        <li class="flow-step"><strong>Input</strong><span>User intent and source state</span></li>
+        <li class="flow-step"><strong>Plan</strong><span>Facts, options, and boundaries</span></li>
+        <li class="flow-step"><strong>Verify</strong><span>Tests and independent review</span></li>
+        <li class="flow-step"><strong>Decision</strong><span>Accept, iterate, or block</span></li>
+      </ol>
+      <div class="callout"><strong>Main risk:</strong> {{MAIN_RISK_AND_MITIGATION}}</div>
+    </section>
+
+    <section id="evidence">
+      <div class="section-head">
+        <h2>Verification</h2>
+        <p>Put comparable checks on one shared scale. Keep failed and skipped evidence visible.</p>
+      </div>
+      <div class="score"><span>Implementation<span class="sr-only"> score {{IMPLEMENTATION_SCORE}} out of 5</span></span><div class="track" aria-hidden="true"><div class="bar" style="--value: {{IMPLEMENTATION_PERCENT}}"></div></div><strong>{{IMPLEMENTATION_SCORE}}</strong></div>
+      <div class="score"><span>Tests<span class="sr-only"> score {{TEST_SCORE}} out of 5</span></span><div class="track" aria-hidden="true"><div class="bar" style="--value: {{TEST_PERCENT}}"></div></div><strong>{{TEST_SCORE}}</strong></div>
+      <div class="score"><span>Security<span class="sr-only"> score {{SECURITY_SCORE}} out of 5</span></span><div class="track" aria-hidden="true"><div class="bar" style="--value: {{SECURITY_PERCENT}}"></div></div><strong>{{SECURITY_SCORE}}</strong></div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Gate</th><th>Evidence</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>{{GATE}}</td><td><code>{{COMMAND_OR_PATH}}</code></td><td>{{VERDICT}}</td></tr>
+            <tr><td>{{GATE}}</td><td>{{EVIDENCE_OR_BLOCKER}}</td><td>{{VERDICT}}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="decisions">
+      <div class="section-head">
+        <h2>Decision history</h2>
+        <p>A timeline is useful when the order of discoveries and decisions changes how the result should be interpreted.</p>
+      </div>
+      <div class="timeline">
+        <div class="event"><time datetime="{{ISO_DATE}}">{{DISPLAY_DATE}}</time><p><strong>{{DECISION}}</strong> - {{RATIONALE_AND_EVIDENCE}}</p></div>
+        <div class="event"><time datetime="{{ISO_DATE}}">{{DISPLAY_DATE}}</time><p><strong>{{DECISION}}</strong> - {{RATIONALE_AND_EVIDENCE}}</p></div>
+      </div>
+    </section>
+
+    <section id="next">
+      <div class="section-head">
+        <h2>Next action</h2>
+        <p>{{NEXT_RESPONSIBLE_ACTION}}</p>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <strong>Provenance:</strong> {{PROVENANCE}}. Related artifacts:
+      <a href="{{PLAN_LINK}}">plan</a>,
+      <a href="{{DESIGN_LINK}}">design</a>,
+      <a href="{{CONCLUSION_LINK}}">conclusion</a>.
+    </div>
+  </footer>
+</body>
+</html>

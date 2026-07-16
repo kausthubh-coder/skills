@@ -54,7 +54,7 @@ Each lane brief records:
 - Lane ID, user outcome, scope, non-goals, and acceptance criteria.
 - Allowed and forbidden paths; shared/generated paths and integration owner.
 - Baseline ref, branch, worktree, and checkpoint convention.
-- Required `human.md`, `test.md`, plan/design artifacts, and prior decisions.
+- Required `.artifacts/human.html`, `.artifacts/test.md`, plan/design artifacts, and prior decisions.
 - Mutable-resource locks and cleanup obligations.
 - Expected implementation, test, and review evidence.
 - Dependencies, dependents, integration contract, and release boundary.
@@ -66,7 +66,7 @@ Each lane runs this sequence. Different lanes may run the sequence concurrently;
 ### 1. Implementation Thread
 
 - Start in the lane's isolated worktree/branch.
-- Read the lane packet, relevant source, project instructions, `human.md`, and `test.md`.
+- Read the lane packet, relevant source, project instructions, `.artifacts/human.html`, and `.artifacts/test.md`.
 - Own only the assigned source behavior. Do not edit shared files owned by another lane.
 - Use private subagents or an explicitly requested specialist such as Claude for bounded help, but allow only one active editor for the same code.
 - Run focused developer checks while writing.
@@ -76,11 +76,11 @@ Each lane runs this sequence. Different lanes may run the sequence concurrently;
 ### 2. Testing Thread
 
 - Start fresh from the exact frozen checkpoint `N`, never from a moving branch.
-- Read `test.md` immediately before testing.
+- Read `.artifacts/test.md` immediately before testing.
 - Run required code tests and the actual user flow with Browser Use, Computer Use, ADB/emulator, or project-native commands.
 - Exercise every affected control and relevant happy, loading, empty, invalid, auth, permission, network, error, retry, responsive, persistence, and recovery state.
 - Do not repair production source. Record reproducible failures, screenshots/logs, environment, auth/data setup, and untested scope.
-- Propose `test.md` corrections without editing shared documentation unless this thread owns it.
+- Propose `.artifacts/test.md` corrections without editing shared documentation unless this thread owns it.
 
 ### 3. Review And Scoring Thread
 
@@ -127,7 +127,7 @@ If commits are not authorized:
 Use a distinct worktree for every concurrent writing lane.
 
 - When `create_thread` supplies a Codex-managed worktree, record its real path and branch in `.artifacts/runs/<run-id>/threads.md`.
-- When the runtime can launch a thread against an exact local checkout, project-local worktrees may live under `.sandbox/worktrees/<run-id>-<lane-id>/`.
+- When the runtime can launch a thread against an exact local checkout, project-local worktrees may live under `.artifacts/sandbox/worktrees/<run-id>-<lane-id>/`.
 - The location is less important than verified isolation and a shared checkpoint identity. Never copy source directories by hand as a substitute for Git lineage.
 - Test and review threads may each use fresh read-only worktrees from the lane checkpoint. They must not share a mutable checkout with an active writer.
 
@@ -149,7 +149,7 @@ Accepted lanes are not the final product. After all prerequisite lanes pass:
 2. Integrate accepted lane checkpoints in dependency order.
 3. Resolve conflicts against the plan; do not silently choose behavior.
 4. Run code-level integration checks and update shared generated files.
-5. Use a docs owner in this phase to update root `human.md` and `test.md` from accepted lane findings.
+5. Use a docs owner in this phase to update `.artifacts/human.html` and `.artifacts/test.md` from accepted lane findings.
 6. Freeze the integrated checkpoint.
 7. Start a fresh regression-testing thread for cross-lane flows.
 8. Start a fresh final-review thread with the integrated diff and regression evidence.
@@ -189,7 +189,7 @@ allowed paths:
 forbidden/shared paths:
 must preserve:
 acceptance criteria:
-human.md/test.md/plan/design links:
+.artifacts/human.html, .artifacts/test.md, plan, and design links:
 mutable resources and prohibited resources:
 authority for commits/push/deploy/external changes:
 required evidence and return schema:
@@ -244,6 +244,6 @@ If the user explicitly invokes a specialist skill such as Claude for UI/UX or Co
 
 - No Codex writer edits the same lane concurrently.
 - The lane still freezes a checkpoint.
-- A separate Oracle testing thread independently follows `test.md`.
+- A separate Oracle testing thread independently follows `.artifacts/test.md`.
 - A separate Oracle review thread independently scores the code and evidence.
 - The orchestrator decides acceptance and integration.

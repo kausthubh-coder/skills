@@ -12,14 +12,37 @@ expect_failure() {
   fi
 }
 
+file_mode() {
+  stat -f '%Lp' "$1" 2>/dev/null || stat -c '%a' "$1"
+}
+
 plain="$tmp/plain project"
 mkdir -p "$plain"
 bash "$skill_dir/scripts/oracle_init.sh" "$plain" >/dev/null
-test -f "$plain/human.md"
-test -f "$plain/test.md"
-test -f "$plain/.sandbox/README.md"
-grep -q '^## Surfaces And Ownership$' "$plain/human.md"
-grep -q '^## CLI Testing$' "$plain/test.md"
+test -f "$plain/.artifacts/human.html"
+test -f "$plain/.artifacts/test.md"
+test -f "$plain/.artifacts/sandbox/README.md"
+test -d "$plain/.artifacts/sandbox/prototypes"
+test -d "$plain/.artifacts/sandbox/worktrees"
+test -d "$plain/.artifacts/designs/workbench"
+test -f "$plain/.artifacts/examples/current-template.txt"
+template_name="$(cat "$plain/.artifacts/examples/current-template.txt")"
+test -f "$plain/.artifacts/examples/$template_name"
+test ! -e "$plain/human.md"
+test ! -e "$plain/test.md"
+test ! -e "$plain/.design"
+test ! -e "$plain/.sandbox"
+grep -qi '^<!doctype html>' "$plain/.artifacts/human.html"
+grep -q 'name="viewport"' "$plain/.artifacts/human.html"
+grep -q 'id="ownership"' "$plain/.artifacts/human.html"
+grep -q 'id="architecture"' "$plain/.artifacts/human.html"
+if grep -Fq "$plain" "$plain/.artifacts/human.html"; then
+  echo "human.html leaked an absolute project path" >&2
+  exit 1
+fi
+grep -q '^## CLI Testing$' "$plain/.artifacts/test.md"
+grep -q '{{ARTIFACT_TITLE}}' "$plain/.artifacts/examples/$template_name"
+grep -q 'prefers-color-scheme' "$plain/.artifacts/examples/$template_name"
 
 outside="$tmp/outside"
 symlink_root="$tmp/symlink-root"
@@ -29,10 +52,52 @@ expect_failure bash "$skill_dir/scripts/oracle_init.sh" "$symlink_root"
 test ! -e "$outside/runs"
 
 child_symlink_root="$tmp/child-symlink-root"
-mkdir -p "$child_symlink_root"
-ln -s "$outside/human-target" "$child_symlink_root/human.md"
+mkdir -p "$child_symlink_root/.artifacts"
+ln -s "$outside/human-target" "$child_symlink_root/.artifacts/human.html"
 expect_failure bash "$skill_dir/scripts/oracle_init.sh" "$child_symlink_root"
 test ! -e "$outside/human-target"
+
+legacy_root="$tmp/legacy-root"
+mkdir -p "$legacy_root/.design" "$legacy_root/.sandbox"
+printf '%s\n' 'legacy human' > "$legacy_root/human.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test -f "$legacy_root/human.md"
+test ! -e "$legacy_root/test.md"
+test -d "$legacy_root/.design"
+test -d "$legacy_root/.sandbox"
+test -f "$legacy_root/.artifacts/human.html"
+test -f "$legacy_root/.artifacts/test.md"
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+test -f "$legacy_root/.artifacts/legacy-migration.md"
+test -f "$legacy_root/.artifacts/legacy-manifest.tsv"
+test "$(grep -c '^- `human.md`$' "$legacy_root/.artifacts/legacy-migration.md")" = "1"
+test "$(grep -c '^- `test.md`$' "$legacy_root/.artifacts/legacy-migration.md" || true)" = "0"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "must reconcile"
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+
+printf '%s\n' 'legacy tests: safe-special-command' > "$legacy_root/test.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+test "$(grep -c '^- `test.md`$' "$legacy_root/.artifacts/legacy-migration.md")" = "1"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "new legacy path must reopen migration"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+printf '%s\n' 'legacy tests changed: safe-special-command --strict' > "$legacy_root/test.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "changed legacy file must reopen migration"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+printf '%s\n' 'legacy design variant' > "$legacy_root/.design/variant.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+printf '%s\n' 'legacy design variant changed' > "$legacy_root/.design/variant.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "reconciled plan" >/dev/null
 
 run_id=20260712-1200-thread-lanes
 bash "$skill_dir/scripts/oracle_start_run.sh" "$plain" "$run_id" plan "plan cli and web" >/dev/null
@@ -120,25 +185,38 @@ git -C "$repo" add -f .env.tracked
 git -C "$repo" commit -qm baseline
 bash "$skill_dir/scripts/oracle_init.sh" "$repo" >/dev/null
 
+helper_symlink_repo="$tmp/helper-symlink-repo"
+helper_symlink_outside="$tmp/helper-symlink-outside"
+git init -q "$helper_symlink_repo"
+git -C "$helper_symlink_repo" config user.name Oracle-Test
+git -C "$helper_symlink_repo" config user.email oracle@test.invalid
+printf 'base\n' > "$helper_symlink_repo/app.txt"
+git -C "$helper_symlink_repo" add app.txt
+git -C "$helper_symlink_repo" commit -qm baseline
+mkdir -p "$helper_symlink_outside"
+ln -s "$helper_symlink_outside" "$helper_symlink_repo/.artifacts"
+expect_failure bash "$skill_dir/scripts/oracle_sandbox_worktree.sh" "$helper_symlink_repo" 20260712-1158-symlink-ancestor HEAD
+test ! -e "$helper_symlink_outside/sandbox"
+
 noenv_id=20260712-1201-cli-noenv
 bash "$skill_dir/scripts/oracle_sandbox_worktree.sh" "$repo" "$noenv_id" HEAD >/dev/null
-test ! -e "$repo/.sandbox/worktrees/$noenv_id/.env.local"
-test "$(git -C "$repo/.sandbox/worktrees/$noenv_id" rev-parse HEAD)" = "$(git -C "$repo" rev-parse HEAD)"
+test ! -e "$repo/.artifacts/sandbox/worktrees/$noenv_id/.env.local"
+test "$(git -C "$repo/.artifacts/sandbox/worktrees/$noenv_id" rev-parse HEAD)" = "$(git -C "$repo" rev-parse HEAD)"
 
 env_id=20260712-1202-web-env
 bash "$skill_dir/scripts/oracle_sandbox_worktree.sh" "$repo" "$env_id" HEAD "" ".env.local" >/dev/null
-test -f "$repo/.sandbox/worktrees/$env_id/.env.local"
-test "$(stat -f '%Lp' "$repo/.sandbox/worktrees/$env_id/.env.local")" = "600"
+test -f "$repo/.artifacts/sandbox/worktrees/$env_id/.env.local"
+test "$(file_mode "$repo/.artifacts/sandbox/worktrees/$env_id/.env.local")" = "600"
 
-gitignore_before="$(shasum "$repo/.sandbox/.gitignore")"
+gitignore_before="$(shasum "$repo/.artifacts/sandbox/.gitignore")"
 tracked_id=20260712-1203-tracked-env
 expect_failure bash "$skill_dir/scripts/oracle_sandbox_worktree.sh" "$repo" "$tracked_id" HEAD "" ".env.tracked"
-test ! -e "$repo/.sandbox/worktrees/$tracked_id"
+test ! -e "$repo/.artifacts/sandbox/worktrees/$tracked_id"
 if git -C "$repo" show-ref --verify --quiet "refs/heads/oracle/$tracked_id"; then
   echo "Tracked-env failure left a branch" >&2
   exit 1
 fi
-test "$gitignore_before" = "$(shasum "$repo/.sandbox/.gitignore")"
+test "$gitignore_before" = "$(shasum "$repo/.artifacts/sandbox/.gitignore")"
 
 cross_repo="$tmp/cross-ref-repo"
 git init -q "$cross_repo"
@@ -155,7 +233,7 @@ git -C "$cross_repo" commit -qm newer
 bash "$skill_dir/scripts/oracle_init.sh" "$cross_repo" >/dev/null
 cross_id=20260712-1206-cross-ref-env
 expect_failure bash "$skill_dir/scripts/oracle_sandbox_worktree.sh" "$cross_repo" "$cross_id" "$older_sha" "" ".env.cross"
-test ! -e "$cross_repo/.sandbox/worktrees/$cross_id"
+test ! -e "$cross_repo/.artifacts/sandbox/worktrees/$cross_id"
 
 symlink_repo="$tmp/symlink-repo"
 git init -q "$symlink_repo"
@@ -170,7 +248,7 @@ ln -s "$tmp/outside-env" "$symlink_repo/.env.local"
 bash "$skill_dir/scripts/oracle_init.sh" "$symlink_repo" >/dev/null
 bad_id=20260712-1204-reject-symlink
 expect_failure bash "$skill_dir/scripts/oracle_sandbox_worktree.sh" "$symlink_repo" "$bad_id" HEAD "" ".env.local"
-test ! -e "$symlink_repo/.sandbox/worktrees/$bad_id"
+test ! -e "$symlink_repo/.artifacts/sandbox/worktrees/$bad_id"
 if git -C "$symlink_repo" show-ref --verify --quiet "refs/heads/oracle/$bad_id"; then
   echo "Symlink-env failure left a branch" >&2
   exit 1
@@ -180,7 +258,11 @@ bash -n "$skill_dir"/scripts/*.sh "$skill_dir"/tests/*.sh
 
 printf '%s\n' \
   "oracle init and templates: pass" \
+  "consolidated artifact paths and legacy preservation: pass" \
+  "human HTML and reusable visual template: pass" \
   "managed symlink rejection: pass" \
+  "legacy migration manifest, fingerprints, gate, and deduplicated notice: pass" \
+  "worktree ancestor symlink rejection before mutation: pass" \
   "plan acceptance and phase integrity: pass" \
   "direct-implement plan gate: pass" \
   "lane state ordering, latest-round binding, and scorecards: pass" \

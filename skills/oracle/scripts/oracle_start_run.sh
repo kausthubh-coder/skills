@@ -31,17 +31,41 @@ request_text="${request_text//$'\n'/ }"
 request_text="${request_text//$'\t'/ }"
 artifacts_dir="$root/.artifacts"
 runs_dir="$artifacts_dir/runs"
+legacy_migration_status="$artifacts_dir/legacy-migration.status"
 run_dir="$runs_dir/$run_id"
 lock_dir="$runs_dir/.$run_id.init.lock"
 tmp_run_dir=""
 now="$(date +"%Y-%m-%d %H:%M:%S %Z")"
 
-for managed_path in "$artifacts_dir" "$runs_dir"; do
+for managed_path in "$artifacts_dir" "$runs_dir" "$legacy_migration_status"; do
   if [ -L "$managed_path" ]; then
     echo "Oracle run error: managed path must not be a symlink: $managed_path" >&2
     exit 1
   fi
 done
+
+legacy_source_found="no"
+for legacy_candidate in \
+  "$root/.design" \
+  "$root/.sandbox" \
+  "$root/human.md" \
+  "$root/HUMAN.md" \
+  "$root/test.md" \
+  "$root/TEST.md"; do
+  if [ -e "$legacy_candidate" ] || [ -L "$legacy_candidate" ]; then
+    legacy_source_found="yes"
+    break
+  fi
+done
+
+if [ "$legacy_source_found" = "yes" ]; then
+  if [ ! -f "$legacy_migration_status" ] \
+    || [ "$(sed -n '1p' "$legacy_migration_status")" != "reconciled" ]; then
+    echo "Oracle run error: legacy Oracle content must be reconciled before planning or implementation" >&2
+    echo "Review $artifacts_dir/legacy-migration.md and set legacy-migration.status to 'reconciled' only after merging required content." >&2
+    exit 1
+  fi
+fi
 
 mkdir -p "$runs_dir"
 
@@ -370,9 +394,12 @@ cat > "$tmp_run_dir/ledger.md" <<EOF
 
 ## Artifact Map
 
+- Human guide: ../../human.html
+- Testing guide: ../../test.md
 - Plan: pending
 - Design: pending or not applicable
-- Sandbox/worktrees: pending or not applicable
+- Design workbench: ../../designs/workbench/ or not applicable
+- Sandbox/worktrees: ../../sandbox/worktrees/ or not applicable
 - Real threads: threads.md
 - Private subagents: subagents.md
 - Resource locks: resource-locks.md
@@ -423,13 +450,13 @@ cat > "$tmp_run_dir/ledger.md" <<EOF
 | --- | --- | --- | --- | --- |
 | Decision-grade plan plus independent plan review | yes | pending | pending | pending |
 | Isolated implementation checkpoint per lane | for implement | pending | pending | pending |
-| Fresh test.md testing thread per lane | for implement | pending | pending | pending |
+| Fresh .artifacts/test.md testing thread per lane | for implement | pending | pending | pending |
 | Fresh independent review/scoring thread per lane | for implement | pending | pending | pending |
 | Integrated checkpoint | for multi-lane implement | pending | pending | pending |
 | Cross-lane regression testing thread | for multi-lane implement | pending | pending | pending |
 | Final independent review thread | for implement | pending | pending | pending |
 | UI/design audit | when UI changes | pending | pending | pending |
-| human.md/test.md reconciliation | for implement | pending | pending | pending |
+| .artifacts/human.html and .artifacts/test.md reconciliation | for implement | pending | pending | pending |
 | Demo capture | when visible behavior changes | pending | pending | pending |
 
 ## Baseline

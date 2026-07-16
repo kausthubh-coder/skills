@@ -5,7 +5,7 @@ Use this reference for plan acceptance, lane loops, project-specific testing, in
 ## `oracle plan` Flow
 
 1. Restate the literal request and intended user outcome.
-2. Read `human.md`, `test.md`, repository instructions, product/design docs, source, routes/commands, data model, tests, and prior artifacts.
+2. Read `.artifacts/human.html`, `.artifacts/test.md`, repository instructions, product/design docs, source, routes/commands, data model, tests, and prior artifacts.
 3. Separate observed facts, user statements, assumptions, inferences, and open questions.
 4. Research unstable external facts through primary official sources.
 5. Create parallel real research threads for independent repo mapping, service/architecture options, UX, risks, and test strategy when useful. Those threads may use private subagents.
@@ -16,14 +16,18 @@ Use this reference for plan acceptance, lane loops, project-specific testing, in
 
 Create `.artifacts/plans/<run-id>-plan.html` with:
 
-- Date/time, run ID, project root, goal, scope/non-goals, source of truth, and authority.
+- Date/time, run ID, repository identity and relative root, goal, scope/non-goals, source of truth, and authority. Do not embed a machine-specific absolute path in commit-worthy HTML.
 - Current-state findings and source paths.
 - Facts, assumptions, questions, sources, options, and selected/rejected rationale.
 - Technical design, data/API/UI/CLI behavior, migration/rollback, security, and edge cases.
 - Lane graph with ownership, dependencies, worktree/checkpoint strategy, resources, and integration contract.
-- `test.md` strategy, interactive tools, fixtures/auth/data setup, acceptance criteria, score targets, and release boundary.
-- Related `.design`, `.sandbox`, run ledger, and expected conclusion paths.
+- `.artifacts/test.md` strategy, interactive tools, fixtures/auth/data setup, acceptance criteria, score targets, and release boundary.
+- Related design workbench, sandbox, run ledger, and expected conclusion paths under `.artifacts/`.
 - Plan-review findings and disposition.
+
+Follow `references/html-artifacts.md`. Use a dependency graph, sequence,
+comparison table, timeline, test matrix, or other visual only when it
+communicates the plan more clearly than prose.
 
 Plan acceptance requires sourced facts, executable lane boundaries, testable acceptance criteria, explicit unresolved decisions, and no blocking plan-review finding. Planning is production-source read-only.
 When those conditions pass, the orchestrator writes `accepted` to the run's `plan-acceptance.status`; this is the executable promotion gate for implementation.
@@ -33,9 +37,9 @@ When those conditions pass, the orchestrator writes `accepted` to the run's `pla
 The orchestrator manages multiple lane loops:
 
 ```text
-lane A: implement thread -> test.md testing thread -> review/score thread -> fix/repeat
-lane B: implement thread -> test.md testing thread -> review/score thread -> fix/repeat
-lane C: implement thread -> test.md testing thread -> review/score thread -> fix/repeat
+lane A: implement thread -> .artifacts/test.md testing thread -> review/score thread -> fix/repeat
+lane B: implement thread -> .artifacts/test.md testing thread -> review/score thread -> fix/repeat
+lane C: implement thread -> .artifacts/test.md testing thread -> review/score thread -> fix/repeat
                                      |
                                      v
 accepted lane checkpoints -> integration thread -> regression test thread -> final review thread
@@ -43,7 +47,7 @@ accepted lane checkpoints -> integration thread -> regression test thread -> fin
 
 ### 1. Baseline And Lane Graph
 
-- Load the matching plan, `human.md`, `test.md`, source/tests, and repo instructions.
+- Load the matching plan, `.artifacts/human.html`, `.artifacts/test.md`, source/tests, and repo instructions.
 - Record branch/SHA, dirty state, user changes, local-commit authority, mutable resources, and release authority.
 - Choose one reproducible baseline: clean `HEAD`/named branch, an explicitly authorized checkpoint containing relevant dirty changes, or an immutable patch plus base SHA. Do not let worktrees silently omit source-of-truth changes.
 - Confirm lane boundaries and shared/generated files. Extract prerequisite lanes when ownership overlaps.
@@ -62,7 +66,7 @@ accepted lane checkpoints -> integration thread -> regression test thread -> fin
 
 After a lane writer exits, start a fresh testing thread from the exact checkpoint.
 
-- Read `test.md` immediately before operating the app.
+- Read `.artifacts/test.md` immediately before operating the app.
 - Run focused unit/component tests first, then relevant typecheck, lint, codegen, schema/contract, integration, build, and regression commands.
 - Use Browser Use for web; ADB plus Computer Use for native/mobile; Computer Use for desktop; real commands and fixtures for CLI/backend/library work.
 - Verify every affected route/screen/command, control, state, side effect, and cleanup path.
@@ -110,7 +114,7 @@ After required lanes pass:
 
 - Start an integration thread and combine accepted checkpoints in dependency order.
 - Resolve conflicts against user intent and the plan.
-- Update shared/generated files plus `human.md` and `test.md` through the designated integration/docs owner.
+- Update shared/generated files plus `.artifacts/human.html` and `.artifacts/test.md` through the designated integration/docs owner.
 - Freeze the integrated revision.
 - Start a fresh regression-testing thread for cross-lane workflows and shared contracts.
 - Start a fresh final-review thread with the complete diff and regression evidence.
@@ -157,14 +161,14 @@ If auth, quota, schema drift, credentials, browser attachment, device setup, or 
 Review threads return 0-5 evidence-backed scores for applicable categories:
 
 - Implementation correctness.
-- Tests and `test.md` coverage.
+- Tests and `.artifacts/test.md` coverage.
 - Security, privacy, auth, and secrets.
 - UI/UX and product-intent fit.
 - Accessibility and responsive behavior.
 - CLI/API contract quality.
 - Performance and reliability.
 - Project-pattern fit and maintainability.
-- Docs, artifacts, and `human.md` accuracy.
+- Docs, artifacts, and `.artifacts/human.html` accuracy.
 - Integration/deployment readiness.
 
 Also return P0-P3 findings, untested scope, accepted risks, and readiness for the authorized release boundary as `yes`, `no`, or `blocked`.
@@ -181,7 +185,7 @@ A score without concrete evidence is not a pass.
 
 ## UI And Design Quality
 
-For UI work, use `.design/` and the available UI design/audit skill when variants or deeper critique help. Verify the actual target workflow, expected controls, existing design system, hierarchy, density, responsive constraints, text fit, complete states, keyboard/focus, semantic labels, contrast, reduced motion, and desktop/mobile layouts.
+For UI work, use `.artifacts/designs/workbench/` and the available UI design/audit skill when variants or deeper critique help. Verify the actual target workflow, expected controls, existing design system, hierarchy, density, responsive constraints, text fit, complete states, keyboard/focus, semantic labels, contrast, reduced motion, and desktop/mobile layouts.
 
 The UI implementation thread may use a specialist such as Claude when explicitly requested. The independent testing and review threads still verify the result; specialist self-testing is useful developer evidence, not the final Oracle gate.
 
@@ -212,8 +216,12 @@ Reference: `https://peekaboo.sh/commands/capture.html`
 - Design/sandbox paths and selected/rejected choices.
 - Code tests, exact outcomes, interactive coverage, screenshots/errors, devices/viewports/auth/data state, and edge cases.
 - Review findings, scorecards, fixes, blockers, risks, and untested scope.
-- `human.md` and `test.md` updates.
+- `.artifacts/human.html` and `.artifacts/test.md` updates.
 - Embedded Peekaboo demo when available.
 - Git/PR/deploy status and honest final status.
+
+Follow `references/html-artifacts.md`. Use a lane timeline, verification matrix,
+and compact score plot when they improve understanding, and remove any example
+visual that is not backed by this run's evidence.
 
 Use `locally verified` only for an integrated revision that passed local gates. Use `shipped` only after the requested release action occurred and was verified.

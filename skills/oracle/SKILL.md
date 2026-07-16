@@ -2,8 +2,8 @@
 name: oracle
 description: >-
   Run the user's agentic engineering workflow with `oracle init`, `oracle plan`,
-  and `oracle implement`: project-local artifacts, design and sandbox areas,
-  human.md and test.md; real Codex thread orchestration; parallel feature lanes
+  and `oracle implement`: one structured project-local `.artifacts` workspace,
+  human.html and test.md; real Codex thread orchestration; parallel feature lanes
   in isolated Git worktrees; fresh implementation, testing, and review threads;
   internal subagent fan-out; evidence-backed refinement loops; and dated HTML
   plans and conclusions. Use when the user invokes Oracle for project setup,
@@ -24,10 +24,10 @@ oracle implement <goal or plan>
 
 Oracle combines five behaviors:
 
-1. Create durable, human-readable project context and HTML artifacts.
+1. Create a durable `.artifacts/` workspace with human-readable project context and polished HTML artifacts.
 2. Split separable work into parallel feature lanes with isolated Git state.
 3. Give each lane fresh implementation, testing, and review threads.
-4. Close every lane with project-specific `test.md` evidence and scored review.
+4. Close every lane with project-specific `.artifacts/test.md` evidence and scored review.
 5. Repeat failed lanes, integrate accepted lanes, then run final regression and release review.
 
 ## Commands
@@ -40,20 +40,23 @@ Initialize or repair the Oracle workspace without changing production behavior:
 bash <oracle-skill-dir>/scripts/oracle_init.sh <resolved-root>
 ```
 
-Create missing `.artifacts/`, `.design/`, `.sandbox/`, root-level `human.md`, and root-level `test.md`. Preserve existing content. Inspect the project and replace starter placeholders with verified commands and architecture when practical.
+Create or repair the single `.artifacts/` workspace, including `human.html`, `test.md`, `runs/`, `plans/`, `designs/workbench/`, `demos/`, `conclusions/`, `examples/`, and `sandbox/`. Preserve existing content. Inspect the project and replace starter placeholders with verified commands and architecture when practical.
 
-`human.md` is the internal human-readable codebase map. `test.md` is the project-specific operating manual used by testing threads. Test evidence belongs under `.artifacts/runs/<run-id>/`; `test.md` itself stays at the project root.
+`.artifacts/human.html` is the polished internal codebase map for people and agents. `.artifacts/test.md` is the project-specific operating manual used by testing threads. Test evidence belongs under `.artifacts/runs/<run-id>/`.
+
+If legacy root `.design`, `.sandbox`, `human.md`, or `test.md` content exists, initialization preserves it and creates `.artifacts/legacy-migration.md`, a fingerprinted manifest, and a pending status. Read and reconcile the legacy content before planning or implementation. Runs remain blocked until `.artifacts/legacy-migration.status` is explicitly set to `reconciled`; never mark it reconciled without merging operational testing instructions and durable project knowledge. New or changed legacy content resets the status to `pending`.
 
 ### `oracle plan`
 
 Research and create a decision-grade plan without editing production source.
 
 - Run initialization first when needed.
-- Read `human.md`, `test.md`, repository instructions, product/design docs, source, tests, and relevant prior artifacts.
+- Read `.artifacts/human.html`, `.artifacts/test.md`, repository instructions, product/design docs, source, tests, and relevant prior artifacts.
 - Create real research threads for independent repo mapping, external research, architecture, UX, risk, and test strategy when parallel work improves the answer.
 - Research threads may use private subagents for narrower fan-out.
 - The orchestrator synthesizes facts, assumptions, alternatives, lane boundaries, dependencies, acceptance criteria, and verification into `.artifacts/plans/<run-id>-plan.html`.
-- For UI work, use `.design/<run-id>/` for runnable variants and `.artifacts/designs/` for the exported decision record.
+- For UI work, use `.artifacts/designs/workbench/<run-id>/` for runnable variants and `.artifacts/designs/` for the exported decision record.
+- Build every HTML plan from the HTML artifact standard. Use diagrams, timelines, comparison tables, matrices, or score plots only when they make relationships or evidence easier to understand.
 - Plan mode is production-source read-only and artifact-write. Do not commit, push, or deploy.
 
 ### `oracle implement`
@@ -68,7 +71,7 @@ Implement the goal or matching plan through parallel closed-loop lanes.
 - Run different lanes concurrently when their code and mutable resources do not overlap.
 - When a lane fails, start a fresh implementation thread with the failed evidence, produce a new checkpoint, then start fresh testing and review threads. Do not ask the original writer to be its only reviewer.
 - After lanes pass, use an integration thread to combine accepted checkpoints, then fresh regression-testing and final-review threads against the integrated revision.
-- Update shared `human.md` and `test.md` only through the integration/docs owner after lane findings are reconciled.
+- Update shared `.artifacts/human.html` and `.artifacts/test.md` only through the integration/docs owner after lane findings are reconciled.
 - For visible work, capture a Peekaboo demo when practical.
 - Create `.artifacts/conclusions/<run-id>-conclusion.html` with lane history, final diff, evidence, scores, limitations, and release status.
 
@@ -87,7 +90,7 @@ Invoking `$oracle plan` or `$oracle implement` explicitly opts into the real rol
 ```text
 queued
   -> implementation thread writes and freezes checkpoint N
-  -> testing thread follows test.md against checkpoint N
+  -> testing thread follows .artifacts/test.md against checkpoint N
   -> review thread audits checkpoint N plus test evidence and scores it
   -> accepted
      OR findings -> fresh implementation thread -> checkpoint N+1 -> fresh test -> fresh review
@@ -136,17 +139,18 @@ Independent testing/review worktrees need an immutable revision.
 - Record whether local checkpoint commits are authorized. A local checkpoint commit is never permission to push.
 - Prefer one scoped local checkpoint commit per lane round, named with run/lane/round, so fresh test and review threads can start from the exact ref.
 - If local commits are not authorized, use an immutable patch/bundle plus tree identity and only use fresh threads when the runtime can target that exact checkout. Otherwise ask before claiming independent worktree verification.
-- Never commit secrets, copied env files, auth state, `.sandbox/worktrees/`, or machine-private evidence.
+- Never commit secrets, copied env files, auth state, `.artifacts/sandbox/worktrees/`, or machine-private evidence.
 - Integration happens only after the lane review accepts the checkpoint.
 
 ## Load References
 
-- `references/project-workspace.md`: root discovery, `oracle init`, artifacts, `human.md`, `test.md`, `.design`, `.sandbox`, worktrees, env safety, and Git/PR handling.
+- `references/project-workspace.md`: root discovery, the consolidated `.artifacts` tree, `human.html`, `test.md`, design workbench, sandbox/worktrees, env safety, and Git/PR handling.
 - `references/orchestration.md`: real threads, lane decomposition, context packets, checkpoints, resource locks, subagents, and integration.
 - `references/quality-delivery.md`: plan acceptance, implementation/testing/review loops, interactive verification, scorecards, demos, conclusions, and stopping rules.
+- `references/html-artifacts.md`: required structure, visual design, visualization selection, accessibility, provenance, and browser QA for HTML pages.
 - `oracle init`: read project workspace.
-- `oracle plan`: read all three, emphasizing plan acceptance and lane design.
-- `oracle implement`: read all three.
+- `oracle plan`: read all four, emphasizing plan acceptance, lane design, and the HTML artifact standard.
+- `oracle implement`: read all four; use the HTML standard for design records and conclusions.
 
 ## Run Contract
 
@@ -180,11 +184,11 @@ A plan is accepted only when its facts are sourced, lane boundaries and dependen
 
 An implementation is accepted only when:
 
-- Every required lane passed code tests, `test.md` interactive verification, and independent scored review on the same frozen checkpoint.
+- Every required lane passed code tests, `.artifacts/test.md` interactive verification, and independent scored review on the same frozen checkpoint.
 - The integrated revision passed cross-lane regression testing and final independent review.
 - No unresolved P0/P1 issue remains and applicable score categories meet the target.
 - Relevant loading, empty, error, auth, permission, network, responsive, recovery, and rollback states were checked.
-- `human.md`, `test.md`, plan, lane evidence, and conclusion match reality.
+- `.artifacts/human.html`, `.artifacts/test.md`, plan, lane evidence, and conclusion match reality.
 - The final status uses honest language: prototype, locally verified, ready for integration, released, shipped, partial, or blocked.
 
 Keep the chat response concise. Link the detailed HTML artifacts and report exact checkpoints, commands, interactive coverage, blockers, and release boundary.

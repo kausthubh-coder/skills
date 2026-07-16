@@ -41,18 +41,30 @@ if ! git check-ref-format --branch "$branch_name" >/dev/null 2>&1; then
   exit 1
 fi
 
-sandbox_dir="$root/.sandbox"
+artifacts_dir="$root/.artifacts"
+sandbox_dir="$artifacts_dir/sandbox"
 worktrees_dir="$sandbox_dir/worktrees"
 
+if [ -L "$artifacts_dir" ] || [ ! -d "$artifacts_dir" ]; then
+  echo "Oracle sandbox worktree error: run oracle init and use a real .artifacts directory" >&2
+  exit 1
+fi
+
+physical_artifacts_dir="$(cd "$artifacts_dir" && pwd -P)"
+if [ "$physical_artifacts_dir" != "$artifacts_dir" ]; then
+  echo "Oracle sandbox worktree error: physical .artifacts path escaped the project: $physical_artifacts_dir" >&2
+  exit 1
+fi
+
 if [ -L "$sandbox_dir" ] || [ -L "$worktrees_dir" ]; then
-  echo "Oracle sandbox worktree error: .sandbox and .sandbox/worktrees must not be symlinks" >&2
+  echo "Oracle sandbox worktree error: .artifacts/sandbox and its worktrees directory must not be symlinks" >&2
   exit 1
 fi
 
 mkdir -p "$worktrees_dir"
 
 if [ -L "$sandbox_dir" ] || [ -L "$worktrees_dir" ]; then
-  echo "Oracle sandbox worktree error: .sandbox path changed to a symlink during setup" >&2
+  echo "Oracle sandbox worktree error: .artifacts/sandbox path changed to a symlink during setup" >&2
   exit 1
 fi
 
@@ -88,13 +100,13 @@ if [ -e "$worktree_path" ]; then
   exit 1
 fi
 
-sandbox_gitignore="$root/.sandbox/.gitignore"
+sandbox_gitignore="$sandbox_dir/.gitignore"
 if [ -L "$sandbox_gitignore" ] || [ ! -f "$sandbox_gitignore" ]; then
-  echo "Oracle sandbox worktree error: run oracle init and use a real .sandbox/.gitignore file" >&2
+  echo "Oracle sandbox worktree error: run oracle init and use a real .artifacts/sandbox/.gitignore file" >&2
   exit 1
 fi
 if ! grep -qxF "worktrees/" "$sandbox_gitignore"; then
-  echo "Oracle sandbox worktree error: .sandbox/.gitignore must contain worktrees/" >&2
+  echo "Oracle sandbox worktree error: .artifacts/sandbox/.gitignore must contain worktrees/" >&2
   exit 1
 fi
 

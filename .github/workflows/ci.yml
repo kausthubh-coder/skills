@@ -17,5 +17,7 @@ jobs:
           node-version: 22
       - name: Run Oracle regression tests
         run: bash skills/oracle/tests/oracle_scripts_test.sh
+      - name: Validate generated HTML artifacts
+        run: bash tests/html_artifacts_test.sh
       - name: Test skills CLI package
         run: bash tests/skills_cli_smoke.sh

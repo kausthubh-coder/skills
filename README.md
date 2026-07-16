@@ -3,8 +3,9 @@
 [![skills.sh](https://skills.sh/b/kausthubh-coder/skills)](https://skills.sh/kausthubh-coder/skills)
 
 Oracle is a Codex-first agent skill for planning and implementing software through
-project-local artifacts, isolated Git worktrees, independent implementation,
-testing, and review tasks, and evidence-backed refinement loops.
+one structured project-local `.artifacts/` workspace, isolated Git worktrees,
+independent implementation, testing, and review tasks, polished HTML decision
+pages, and evidence-backed refinement loops.
 
 ## Install
 
@@ -36,14 +37,20 @@ oracle plan <goal>
 oracle implement <goal or plan>
 ```
 
-- `oracle init` creates or repairs `.artifacts/`, `.design/`, `.sandbox/`,
-  `human.md`, and `test.md` without changing product behavior.
+- `oracle init` creates or repairs `.artifacts/human.html`, `.artifacts/test.md`,
+  plans, designs and runnable variants, examples, demos, conclusions, run
+  evidence, prototypes, and sandbox worktrees without changing product behavior.
 - `oracle plan` researches the project and writes a dated, decision-grade HTML
   plan under `.artifacts/plans/`.
 - `oracle implement` splits separable work into isolated lanes, gives each lane
   fresh implementation, testing, and review tasks, loops on evidence, integrates
   accepted checkpoints, and writes a dated conclusion under
   `.artifacts/conclusions/`.
+
+HTML artifacts follow a shared offline-friendly visual standard. They use
+structured summaries, architecture or dependency diagrams, timelines,
+comparison tables, test matrices, and score plots when those representations
+make the evidence easier to understand.
 
 In Codex, invoke the skill directly:
 
@@ -70,6 +77,7 @@ expose secrets. Those actions still require explicit user authority.
 skills/oracle/
   SKILL.md
   agents/openai.yaml
+  assets/templates/
   references/
   scripts/
   tests/
@@ -84,6 +92,7 @@ Run the deterministic regression suite:
 
 ```bash
 bash skills/oracle/tests/oracle_scripts_test.sh
+bash tests/html_artifacts_test.sh
 ```
 
 Check local discovery with the official CLI:
