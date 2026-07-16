@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 set -euo pipefail
+trap 'status=$?; printf "Oracle regression failure at line %s: %s\n" "$LINENO" "$BASH_COMMAND" >&2; exit "$status"' ERR
 
 skill_dir="$(cd "$(dirname "$0")/.." && pwd -P)"
 tmp="$(mktemp -d)"
