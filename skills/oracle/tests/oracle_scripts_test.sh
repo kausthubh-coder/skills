@@ -19,6 +19,11 @@ file_mode() {
 plain="$tmp/plain project"
 mkdir -p "$plain"
 bash "$skill_dir/scripts/oracle_init.sh" "$plain" >/dev/null
+test -f "$plain/.artifacts/.oracle-workspace"
+grep -qx 'oracle-workspace-version=2' "$plain/.artifacts/.oracle-workspace"
+grep -qx 'legacy-migration-seen=no' "$plain/.artifacts/.oracle-workspace"
+test -f "$plain/.artifacts/legacy-manifest.tsv"
+test ! -s "$plain/.artifacts/legacy-manifest.tsv"
 test -f "$plain/.artifacts/human.html"
 test -f "$plain/.artifacts/test.md"
 test -f "$plain/.artifacts/sandbox/README.md"
@@ -126,6 +131,13 @@ bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
 test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
 
 printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+mkdir -p "$legacy_root/.design/worktrees/hidden"
+printf '%s\n' 'legitimate design worktree notes' > "$legacy_root/.design/worktrees/hidden/plan.md"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "design worktrees path must not be pruned"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
 newline_legacy_file="$legacy_root/.design/"$'line\nbreak'
 printf '%s\n' 'newline legacy design' > "$newline_legacy_file"
 bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
@@ -162,6 +174,33 @@ test ! -s "$deletion_root/.artifacts/legacy-manifest.tsv"
 grep -q 'prior inventory changed to empty' "$deletion_root/.artifacts/legacy-migration.md"
 printf '%s\n' 'reconciled' > "$deletion_root/.artifacts/legacy-migration.status"
 bash "$skill_dir/scripts/oracle_start_run.sh" "$deletion_root" 20260712-1157-deleted-legacy plan "intentional deletion reconciled" >/dev/null
+
+control_deletion_root="$tmp/control-deletion-root"
+mkdir -p "$control_deletion_root"
+printf '%s\n' 'legacy human only' > "$control_deletion_root/human.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$control_deletion_root" >/dev/null 2>&1
+printf '%s\n' 'reconciled' > "$control_deletion_root/.artifacts/legacy-migration.status"
+rm \
+  "$control_deletion_root/human.md" \
+  "$control_deletion_root/.artifacts/legacy-migration.status" \
+  "$control_deletion_root/.artifacts/legacy-migration.md" \
+  "$control_deletion_root/.artifacts/legacy-manifest.tsv"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$control_deletion_root" 20260712-1156-controls-deleted plan "deleted controls must fail closed"
+bash "$skill_dir/scripts/oracle_init.sh" "$control_deletion_root" >/dev/null 2>&1
+grep -qx 'legacy-migration-seen=yes' "$control_deletion_root/.artifacts/.oracle-workspace"
+test "$(cat "$control_deletion_root/.artifacts/legacy-migration.status")" = "pending"
+test ! -s "$control_deletion_root/.artifacts/legacy-manifest.tsv"
+printf '%s\n' 'reconciled' > "$control_deletion_root/.artifacts/legacy-migration.status"
+: > "$control_deletion_root/.artifacts/legacy-migration.md"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$control_deletion_root" 20260712-1156-controls-deleted plan "empty report must fail closed"
+bash "$skill_dir/scripts/oracle_init.sh" "$control_deletion_root" >/dev/null 2>&1
+grep -qx '# Oracle Legacy Migration' "$control_deletion_root/.artifacts/legacy-migration.md"
+test "$(cat "$control_deletion_root/.artifacts/legacy-migration.status")" = "reconciled"
+bash "$skill_dir/scripts/oracle_start_run.sh" "$control_deletion_root" 20260712-1156-controls-deleted plan "repaired controls" >/dev/null
+
+uninitialized_root="$tmp/uninitialized-root"
+mkdir -p "$uninitialized_root"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$uninitialized_root" 20260712-1155-no-init plan "init is required"
 
 run_id=20260712-1200-thread-lanes
 bash "$skill_dir/scripts/oracle_start_run.sh" "$plain" "$run_id" plan "plan cli and web" >/dev/null
@@ -325,7 +364,7 @@ printf '%s\n' \
   "consolidated artifact paths and legacy preservation: pass" \
   "human HTML and reusable visual template: pass" \
   "managed symlink and path-type rejection: pass" \
-  "NUL-safe legacy manifest, fail-closed start gate, report repair, and deduplicated notice: pass" \
+  "durable workspace sentinel, NUL-safe manifest, fail-closed controls, and report repair: pass" \
   "immutable template integrity: pass" \
   "worktree ancestor symlink rejection before mutation: pass" \
   "plan acceptance and phase integrity: pass" \

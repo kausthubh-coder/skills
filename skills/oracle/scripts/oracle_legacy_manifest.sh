@@ -65,6 +65,19 @@ for legacy_path in "${legacy_paths[@]:-}"; do
     kind="directory"
     fingerprint="$(
       cd "$legacy_path"
+      prune_expression=(
+        -name .git
+        -o -name node_modules
+        -o -name .next
+        -o -name .expo
+        -o -name dist
+        -o -name build
+        -o -name coverage
+        -o -name .cache
+      )
+      if [ "$relative_path" = ".sandbox" ]; then
+        prune_expression+=( -o -path ./worktrees )
+      fi
       while IFS= read -r -d '' entry; do
         if [ -L "$entry" ]; then
           record_hash="$({
@@ -84,7 +97,7 @@ for legacy_path in "${legacy_paths[@]:-}"; do
         printf '%s\n' "$record_hash"
       done < <(
         find . -mindepth 1 \
-          \( -name .git -o -name node_modules -o -name worktrees -o -name .next -o -name .expo -o -name dist -o -name build -o -name coverage -o -name .cache \) -prune \
+          \( "${prune_expression[@]}" \) -print0 -prune \
           -o -print0
       ) | LC_ALL=C sort | hash_stream
     )"

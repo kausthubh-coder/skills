@@ -33,9 +33,11 @@ project shape is:
 
 ```text
 .artifacts/
+  .oracle-workspace
   README.md
   human.html
   test.md
+  legacy-manifest.tsv
   runs/
   plans/
   designs/
@@ -76,6 +78,11 @@ recomputes this inventory and compares it with the initialized manifest, so
 editing or deleting legacy content after initialization blocks the run until
 initialization and reconciliation happen again. Initialization also repairs a
 missing migration report without silently changing an already reconciled status.
+The durable `.artifacts/.oracle-workspace` state remembers whether migration was
+ever observed, so removing both the legacy source and its migration controls
+still fails closed and requires initialization to repair the controls. Generated
+dependency/cache directories may be pruned from content hashing, but their paths
+are fingerprinted; only `.sandbox/worktrees/` receives the worktree exclusion.
 
 Starter content is not verified truth. Inspect the project, validate commands,
 and update `.artifacts/human.html` and `.artifacts/test.md` before relying on them.

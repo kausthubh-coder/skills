@@ -39,6 +39,8 @@ test -f "$skill_dir/references/html-artifacts.md"
 test -f "$skill_dir/assets/templates/artifact-template.html"
 
 bash "$skill_dir/scripts/oracle_init.sh" "$project_dir" >/dev/null
+test -f "$project_dir/.artifacts/.oracle-workspace"
+test -f "$project_dir/.artifacts/legacy-manifest.tsv"
 test -f "$project_dir/.artifacts/human.html"
 test -f "$project_dir/.artifacts/test.md"
 test -d "$project_dir/.artifacts/plans"

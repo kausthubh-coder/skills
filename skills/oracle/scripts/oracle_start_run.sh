@@ -33,6 +33,7 @@ skill_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 legacy_manifest_helper="$skill_dir/scripts/oracle_legacy_manifest.sh"
 artifacts_dir="$root/.artifacts"
 runs_dir="$artifacts_dir/runs"
+workspace_state="$artifacts_dir/.oracle-workspace"
 legacy_migration_status="$artifacts_dir/legacy-migration.status"
 legacy_migration_report="$artifacts_dir/legacy-migration.md"
 legacy_manifest_file="$artifacts_dir/legacy-manifest.tsv"
@@ -50,6 +51,7 @@ for managed_directory in "$artifacts_dir" "$runs_dir"; do
 done
 
 for managed_file in \
+  "$workspace_state" \
   "$legacy_migration_status" \
   "$legacy_migration_report" \
   "$legacy_manifest_file"; do
@@ -65,27 +67,46 @@ if [ ! -f "$legacy_manifest_helper" ] || [ -L "$legacy_manifest_helper" ]; then
   exit 1
 fi
 
+if [ ! -f "$workspace_state" ] \
+  || ! grep -qx 'oracle-workspace-version=2' "$workspace_state"; then
+  echo "Oracle run error: Oracle workspace state is missing, damaged, or unsupported" >&2
+  echo "Run Oracle init before planning or implementation: $workspace_state" >&2
+  exit 1
+fi
+
+if [ ! -f "$legacy_manifest_file" ]; then
+  echo "Oracle run error: initialized legacy manifest is missing: $legacy_manifest_file" >&2
+  echo "Run Oracle init before planning or implementation." >&2
+  exit 1
+fi
+
+legacy_seen=""
+if grep -qx 'legacy-migration-seen=yes' "$workspace_state"; then
+  legacy_seen="yes"
+elif grep -qx 'legacy-migration-seen=no' "$workspace_state"; then
+  legacy_seen="no"
+else
+  echo "Oracle run error: workspace state is missing its legacy migration marker: $workspace_state" >&2
+  exit 1
+fi
+
 legacy_current_manifest="$(bash "$legacy_manifest_helper" "$root")"
-migration_control_found="no"
-for migration_control in \
-  "$legacy_migration_status" \
-  "$legacy_migration_report" \
-  "$legacy_manifest_file"; do
-  if [ -e "$migration_control" ]; then
-    migration_control_found="yes"
-    break
-  fi
-done
+if [ "$(cat "$legacy_manifest_file")" != "$legacy_current_manifest" ]; then
+  echo "Oracle run error: current legacy Oracle content differs from the initialized manifest" >&2
+  echo "Run Oracle init again, reconcile the changed content, and only then mark legacy-migration.status as 'reconciled'." >&2
+  exit 1
+fi
 
-if [ -n "$legacy_current_manifest" ] || [ "$migration_control_found" = "yes" ]; then
-  if [ ! -f "$legacy_manifest_file" ] \
-    || [ "$(cat "$legacy_manifest_file")" != "$legacy_current_manifest" ]; then
-    echo "Oracle run error: current legacy Oracle content differs from the initialized manifest" >&2
-    echo "Run Oracle init again, reconcile the changed content, and only then mark legacy-migration.status as 'reconciled'." >&2
-    exit 1
-  fi
+if [ -n "$legacy_current_manifest" ] && [ "$legacy_seen" != "yes" ]; then
+  echo "Oracle run error: workspace state does not record the current legacy content" >&2
+  echo "Run Oracle init before planning or implementation." >&2
+  exit 1
+fi
 
-  if [ ! -f "$legacy_migration_report" ]; then
+if [ "$legacy_seen" = "yes" ]; then
+  if [ ! -f "$legacy_migration_report" ] \
+    || ! grep -qx '# Oracle Legacy Migration' "$legacy_migration_report" \
+    || ! grep -qx '## Required Reconciliation' "$legacy_migration_report"; then
     echo "Oracle run error: legacy migration instructions are missing: $legacy_migration_report" >&2
     echo "Run Oracle init to repair the migration control files before continuing." >&2
     exit 1
@@ -97,6 +118,10 @@ if [ -n "$legacy_current_manifest" ] || [ "$migration_control_found" = "yes" ]; 
     echo "Review $artifacts_dir/legacy-migration.md and set legacy-migration.status to 'reconciled' only after merging required content." >&2
     exit 1
   fi
+elif [ -e "$legacy_migration_status" ] || [ -e "$legacy_migration_report" ]; then
+  echo "Oracle run error: migration controls conflict with workspace state" >&2
+  echo "Run Oracle init to repair the migration control files before continuing." >&2
+  exit 1
 fi
 
 mkdir -p "$runs_dir"

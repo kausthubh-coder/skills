@@ -24,6 +24,7 @@ legacy_manifest_helper="$skill_dir/scripts/oracle_legacy_manifest.sh"
 template_version="2"
 template_filename="html-artifact-template-v${template_version}.html"
 artifacts="$root/.artifacts"
+workspace_state="$artifacts/.oracle-workspace"
 template_destination="$artifacts/examples/$template_filename"
 now="$(date +"%Y-%m-%d %H:%M:%S %Z")"
 iso_now="$(date +"%Y-%m-%dT%H:%M:%S%z")"
@@ -70,6 +71,7 @@ done
 
 for managed_file in \
   "$artifacts/README.md" \
+  "$workspace_state" \
   "$artifacts/human.html" \
   "$artifacts/test.md" \
   "$artifacts/legacy-migration.status" \
@@ -133,8 +135,10 @@ isolated experiments, run evidence, demos, conclusions, and human documentation.
 
 ```text
 .artifacts/
+  .oracle-workspace
   human.html
   test.md
+  legacy-manifest.tsv
   runs/
   plans/
   designs/
@@ -149,9 +153,10 @@ isolated experiments, run evidence, demos, conclusions, and human documentation.
     worktrees/
 ```
 
-Legacy projects may also contain `legacy-migration.md`,
-`legacy-migration.status`, and `legacy-manifest.tsv` until old root-level Oracle
-material is reconciled.
+`.oracle-workspace` and `legacy-manifest.tsv` are durable integrity controls.
+Legacy projects also contain `legacy-migration.md` and
+`legacy-migration.status` after old root-level Oracle material is detected, even
+when that material is later removed.
 
 - Commit `human.html`, `test.md`, and useful plans, design decisions, examples,
   demos, conclusions, and safe run evidence when they belong in the PR.
@@ -468,34 +473,51 @@ if [ ! -f "$template_destination" ]; then
 fi
 printf '%s\n' "$template_filename" > "$artifacts/examples/current-template.txt"
 
-migration_control_found="no"
-for migration_control in \
-  "$artifacts/legacy-migration.status" \
-  "$artifacts/legacy-migration.md" \
-  "$artifacts/legacy-manifest.tsv"; do
-  if [ -e "$migration_control" ]; then
-    migration_control_found="yes"
-    break
+legacy_seen_before="no"
+if [ -f "$workspace_state" ]; then
+  if ! grep -qx 'oracle-workspace-version=2' "$workspace_state"; then
+    echo "Oracle init error: unsupported or damaged workspace state: $workspace_state" >&2
+    exit 1
   fi
-done
+  if grep -qx 'legacy-migration-seen=yes' "$workspace_state"; then
+    legacy_seen_before="yes"
+  elif ! grep -qx 'legacy-migration-seen=no' "$workspace_state"; then
+    echo "Oracle init error: workspace state is missing its legacy migration marker: $workspace_state" >&2
+    exit 1
+  fi
+fi
+
+migration_history_found="$legacy_seen_before"
+if [ -e "$artifacts/legacy-migration.status" ] \
+  || [ -e "$artifacts/legacy-migration.md" ] \
+  || [ -s "$artifacts/legacy-manifest.tsv" ]; then
+  migration_history_found="yes"
+fi
 
 manifest_tmp="$artifacts/.legacy-manifest.tmp.$$"
 bash "$legacy_manifest_helper" "$root" > "$manifest_tmp"
 
-if [ -s "$manifest_tmp" ] || [ "$migration_control_found" = "yes" ]; then
-  manifest_changed="yes"
-  if [ -f "$artifacts/legacy-manifest.tsv" ] \
-    && cmp -s "$manifest_tmp" "$artifacts/legacy-manifest.tsv"; then
-    manifest_changed="no"
-  fi
-  mv "$manifest_tmp" "$artifacts/legacy-manifest.tsv"
-  manifest_tmp=""
+manifest_changed="yes"
+if [ -f "$artifacts/legacy-manifest.tsv" ] \
+  && cmp -s "$manifest_tmp" "$artifacts/legacy-manifest.tsv"; then
+  manifest_changed="no"
+fi
+mv "$manifest_tmp" "$artifacts/legacy-manifest.tsv"
+manifest_tmp=""
+
+if [ -s "$artifacts/legacy-manifest.tsv" ] || [ "$migration_history_found" = "yes" ]; then
+  printf '%s\n' \
+    'oracle-workspace-version=2' \
+    'legacy-migration-seen=yes' > "$workspace_state"
 
   if [ "$manifest_changed" = "yes" ] || [ ! -f "$artifacts/legacy-migration.status" ]; then
     printf '%s\n' "pending" > "$artifacts/legacy-migration.status"
   fi
 
-  if [ "$manifest_changed" = "yes" ] || [ ! -f "$artifacts/legacy-migration.md" ]; then
+  if [ "$manifest_changed" = "yes" ] \
+    || [ ! -f "$artifacts/legacy-migration.md" ] \
+    || ! grep -qx '# Oracle Legacy Migration' "$artifacts/legacy-migration.md" \
+    || ! grep -qx '## Required Reconciliation' "$artifacts/legacy-migration.md"; then
     {
       printf '%s\n\n' '# Oracle Legacy Migration'
       printf '%s\n\n' 'Legacy Oracle migration state was detected. Reconcile useful legacy content into the canonical `.artifacts/` workspace and verify any removals before starting a plan or implementation run.'
@@ -534,8 +556,9 @@ if [ -s "$manifest_tmp" ] || [ "$migration_control_found" = "yes" ]; then
     echo "Oracle runs are blocked until .artifacts/legacy-migration.status is set to reconciled after manual review." >&2
   fi
 else
-  rm -f "$manifest_tmp"
-  manifest_tmp=""
+  printf '%s\n' \
+    'oracle-workspace-version=2' \
+    'legacy-migration-seen=no' > "$workspace_state"
 fi
 
 echo "Oracle workspace initialized at: $root"
