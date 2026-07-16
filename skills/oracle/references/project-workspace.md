@@ -68,12 +68,14 @@ and durable project knowledge, verifies the canonical files, and sets
 `.artifacts/legacy-migration.status` to `reconciled`. Never move a registered live
 Git worktree directory; remove or relocate it with `git worktree` operations.
 Oracle stores a relative-path fingerprint inventory in
-`.artifacts/legacy-manifest.tsv`; newly discovered paths or changed legacy files
-anywhere in the full non-generated legacy tree reset the status to `pending` and
-require another reconciliation. Every run start independently recomputes this
-inventory and compares it with the initialized manifest, so editing legacy
-content after initialization blocks the run until initialization and
-reconciliation happen again.
+`.artifacts/legacy-manifest.tsv`; added, changed, or removed legacy files anywhere
+in the full non-generated legacy tree reset the status to `pending` and require
+another reconciliation. If the inventory becomes empty, verify that removals
+were intentional before marking it reconciled. Every run start independently
+recomputes this inventory and compares it with the initialized manifest, so
+editing or deleting legacy content after initialization blocks the run until
+initialization and reconciliation happen again. Initialization also repairs a
+missing migration report without silently changing an already reconciled status.
 
 Starter content is not verified truth. Inspect the project, validate commands,
 and update `.artifacts/human.html` and `.artifacts/test.md` before relying on them.

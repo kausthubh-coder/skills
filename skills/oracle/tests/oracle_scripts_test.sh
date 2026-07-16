@@ -66,6 +66,15 @@ test -d "$template_collision"
 test "$(file_mode "$template_collision")" = "755"
 test ! -e "$template_collision/artifact-template.html"
 
+altered_template_root="$tmp/altered-template-root"
+altered_template="$altered_template_root/.artifacts/examples/html-artifact-template-v2.html"
+mkdir -p "$(dirname "$altered_template")"
+printf '%s\n' '<!doctype html><script>customized()</script>' > "$altered_template"
+altered_template_hash="$(shasum "$altered_template")"
+expect_failure bash "$skill_dir/scripts/oracle_init.sh" "$altered_template_root"
+test "$altered_template_hash" = "$(shasum "$altered_template")"
+test ! -e "$altered_template_root/.artifacts/examples/current-template.txt"
+
 legacy_root="$tmp/legacy-root"
 mkdir -p "$legacy_root/.design" "$legacy_root/.sandbox"
 printf '%s\n' 'legacy human' > "$legacy_root/human.md"
@@ -117,13 +126,42 @@ bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
 test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
 
 printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+newline_legacy_file="$legacy_root/.design/"$'line\nbreak'
+printf '%s\n' 'newline legacy design' > "$newline_legacy_file"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+printf '%s\n' 'newline legacy design changed' > "$newline_legacy_file"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
 printf '%s\n' 'legacy human changed after init' > "$legacy_root/human.md"
 expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "direct run must recheck legacy manifest"
 bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
 test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
 
 printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+rm "$legacy_root/.artifacts/legacy-migration.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test -f "$legacy_root/.artifacts/legacy-migration.md"
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "reconciled"
 bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "reconciled plan" >/dev/null
+
+deletion_root="$tmp/deletion-root"
+mkdir -p "$deletion_root"
+printf '%s\n' 'legacy human only' > "$deletion_root/human.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$deletion_root" >/dev/null 2>&1
+test "$(cat "$deletion_root/.artifacts/legacy-migration.status")" = "pending"
+rm "$deletion_root/human.md"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$deletion_root" 20260712-1157-deleted-legacy plan "deleted legacy content must fail closed"
+bash "$skill_dir/scripts/oracle_init.sh" "$deletion_root" >/dev/null 2>&1
+test "$(cat "$deletion_root/.artifacts/legacy-migration.status")" = "pending"
+test ! -s "$deletion_root/.artifacts/legacy-manifest.tsv"
+grep -q 'prior inventory changed to empty' "$deletion_root/.artifacts/legacy-migration.md"
+printf '%s\n' 'reconciled' > "$deletion_root/.artifacts/legacy-migration.status"
+bash "$skill_dir/scripts/oracle_start_run.sh" "$deletion_root" 20260712-1157-deleted-legacy plan "intentional deletion reconciled" >/dev/null
 
 run_id=20260712-1200-thread-lanes
 bash "$skill_dir/scripts/oracle_start_run.sh" "$plain" "$run_id" plan "plan cli and web" >/dev/null
@@ -287,7 +325,8 @@ printf '%s\n' \
   "consolidated artifact paths and legacy preservation: pass" \
   "human HTML and reusable visual template: pass" \
   "managed symlink and path-type rejection: pass" \
-  "complete legacy manifest, start-time recheck, gate, and deduplicated notice: pass" \
+  "NUL-safe legacy manifest, fail-closed start gate, report repair, and deduplicated notice: pass" \
+  "immutable template integrity: pass" \
   "worktree ancestor symlink rejection before mutation: pass" \
   "plan acceptance and phase integrity: pass" \
   "direct-implement plan gate: pass" \

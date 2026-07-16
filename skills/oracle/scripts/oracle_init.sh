@@ -213,7 +213,7 @@ if [ ! -f "$artifacts/human.html" ]; then
     footer { padding:2rem 0 3rem; color:var(--muted); }
     @media (max-width:760px) { h1 { font-size:2.2rem; } .section-head,.facts,.flow,.links { grid-template-columns:1fr; } .section-head { gap:.4rem; } .step:not(:last-child)::after { top:auto; right:50%; bottom:-1.1rem; content:"down"; font-size:.75rem; } }
     @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
-    @media print { :root { --bg:#fff; --surface:#fff; --text:#111; --muted:#444; --line:#aaa; --code:#f2f2f2; } nav { display:none; } body { font-size:11pt; } a::after { content:" (" attr(href) ")"; font-size:.85em; } section,table,.fact,.step { break-inside:avoid; } }
+    @media print { :root { --bg:#fff; --surface:#fff; --text:#111; --muted:#444; --line:#aaa; --accent:#005963; --accent-soft:#e6f2f3; --warn:#784600; --warn-soft:#fff1d6; --code:#f2f2f2; } nav { display:none; } body { font-size:11pt; } a::after { content:" (" attr(href) ")"; font-size:.85em; } section,table,.fact,.step { break-inside:avoid; } }
   </style>
 </head>
 <body>
@@ -456,16 +456,33 @@ if [ ! -f "$artifacts/examples/README.md" ]; then
 EOF
 fi
 
+if [ -f "$template_destination" ] && ! cmp -s "$template" "$template_destination"; then
+  echo "Oracle init error: immutable versioned HTML template differs from the packaged template: $template_destination" >&2
+  echo "Move the customized file to a new artifact name, then rerun Oracle init." >&2
+  exit 1
+fi
+
 if [ ! -f "$template_destination" ]; then
   cp "$template" "$template_destination"
   chmod 644 "$template_destination"
 fi
 printf '%s\n' "$template_filename" > "$artifacts/examples/current-template.txt"
 
+migration_control_found="no"
+for migration_control in \
+  "$artifacts/legacy-migration.status" \
+  "$artifacts/legacy-migration.md" \
+  "$artifacts/legacy-manifest.tsv"; do
+  if [ -e "$migration_control" ]; then
+    migration_control_found="yes"
+    break
+  fi
+done
+
 manifest_tmp="$artifacts/.legacy-manifest.tmp.$$"
 bash "$legacy_manifest_helper" "$root" > "$manifest_tmp"
 
-if [ -s "$manifest_tmp" ]; then
+if [ -s "$manifest_tmp" ] || [ "$migration_control_found" = "yes" ]; then
   manifest_changed="yes"
   if [ -f "$artifacts/legacy-manifest.tsv" ] \
     && cmp -s "$manifest_tmp" "$artifacts/legacy-manifest.tsv"; then
@@ -476,31 +493,43 @@ if [ -s "$manifest_tmp" ]; then
 
   if [ "$manifest_changed" = "yes" ] || [ ! -f "$artifacts/legacy-migration.status" ]; then
     printf '%s\n' "pending" > "$artifacts/legacy-migration.status"
+  fi
+
+  if [ "$manifest_changed" = "yes" ] || [ ! -f "$artifacts/legacy-migration.md" ]; then
     {
       printf '%s\n\n' '# Oracle Legacy Migration'
-      printf '%s\n\n' 'Legacy Oracle paths were found and preserved. Reconcile their useful content into the canonical `.artifacts/` workspace before starting a plan or implementation run.'
+      printf '%s\n\n' 'Legacy Oracle migration state was detected. Reconcile useful legacy content into the canonical `.artifacts/` workspace and verify any removals before starting a plan or implementation run.'
       printf '%s\n' '## Legacy Paths'
-      while IFS=$'\t' read -r _legacy_kind legacy_relative _legacy_fingerprint; do
-        printf -- '- `%s`\n' "$legacy_relative"
-      done < "$artifacts/legacy-manifest.tsv"
+      if [ -s "$artifacts/legacy-manifest.tsv" ]; then
+        while IFS=$'\t' read -r _legacy_kind legacy_relative _legacy_fingerprint; do
+          printf -- '- `%s`\n' "$legacy_relative"
+        done < "$artifacts/legacy-manifest.tsv"
+      else
+        printf '%s\n' '- No current legacy paths. A prior inventory changed to empty; verify that every removal was intentional and that useful content was reconciled.'
+      fi
       printf '%s\n' \
         '' \
         '## Required Reconciliation' \
         '' \
-        '1. Merge operational testing instructions into `.artifacts/test.md`.' \
-        '2. Merge durable codebase knowledge into `.artifacts/human.html`.' \
-        '3. Move design prototypes only after verifying dependencies and paths.' \
-        '4. Never move a registered live Git worktree directory by hand; use `git worktree` operations.' \
-        '5. After verifying the canonical files, replace `pending` with `reconciled` in `.artifacts/legacy-migration.status`.' \
+        '1. Verify that missing legacy paths were intentionally removed; restore them first if deletion was accidental.' \
+        '2. Merge operational testing instructions into `.artifacts/test.md`.' \
+        '3. Merge durable codebase knowledge into `.artifacts/human.html`.' \
+        '4. Move design prototypes only after verifying dependencies and paths.' \
+        '5. Never move a registered live Git worktree directory by hand; use `git worktree` operations.' \
+        '6. After verifying the canonical files, replace `pending` with `reconciled` in `.artifacts/legacy-migration.status`.' \
         '' \
-        'Oracle fingerprints the full non-generated legacy tree in `.artifacts/legacy-manifest.tsv`. Adding or changing legacy content resets the status to `pending`, and run start independently verifies the current tree against this manifest.'
+        'Oracle fingerprints the full non-generated legacy tree in `.artifacts/legacy-manifest.tsv`. Added, changed, or removed legacy content resets the status to `pending`, and run start independently verifies the current tree against this manifest.'
     } > "$artifacts/legacy-migration.md"
   fi
 
-  echo "Oracle init notice: legacy Oracle paths were preserved:" >&2
-  while IFS=$'\t' read -r _legacy_kind legacy_relative _legacy_fingerprint; do
-    echo "  $root/$legacy_relative" >&2
-  done < "$artifacts/legacy-manifest.tsv"
+  if [ -s "$artifacts/legacy-manifest.tsv" ]; then
+    echo "Oracle init notice: legacy Oracle paths were preserved:" >&2
+    while IFS=$'\t' read -r _legacy_kind legacy_relative _legacy_fingerprint; do
+      echo "  $root/$legacy_relative" >&2
+    done < "$artifacts/legacy-manifest.tsv"
+  else
+    echo "Oracle init notice: the prior legacy inventory is now empty; verify that removals were intentional." >&2
+  fi
   if [ "$(sed -n '1p' "$artifacts/legacy-migration.status")" != "reconciled" ]; then
     echo "Oracle runs are blocked until .artifacts/legacy-migration.status is set to reconciled after manual review." >&2
   fi

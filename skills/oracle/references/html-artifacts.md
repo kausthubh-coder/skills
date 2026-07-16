@@ -23,6 +23,10 @@ immutable versioned template when practical. Copy it to the destination,
 replace its placeholders, remove irrelevant example sections, and preserve only
 visuals that improve comprehension.
 
+Do not customize the installed versioned template in place. Oracle init verifies
+it against the packaged template and fails closed on a mismatch; copy it to a
+dated artifact path before editing.
+
 Before delivery, verify no `{{PLACEHOLDER}}` token remains. Status is neutral by
 default; set `data-state` to `pass`, `warning`, or `fail` only when evidence
 supports that meaning. Replace score labels and bar percentages together, use a

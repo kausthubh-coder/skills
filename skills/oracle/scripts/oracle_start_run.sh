@@ -66,11 +66,28 @@ if [ ! -f "$legacy_manifest_helper" ] || [ -L "$legacy_manifest_helper" ]; then
 fi
 
 legacy_current_manifest="$(bash "$legacy_manifest_helper" "$root")"
-if [ -n "$legacy_current_manifest" ]; then
+migration_control_found="no"
+for migration_control in \
+  "$legacy_migration_status" \
+  "$legacy_migration_report" \
+  "$legacy_manifest_file"; do
+  if [ -e "$migration_control" ]; then
+    migration_control_found="yes"
+    break
+  fi
+done
+
+if [ -n "$legacy_current_manifest" ] || [ "$migration_control_found" = "yes" ]; then
   if [ ! -f "$legacy_manifest_file" ] \
     || [ "$(cat "$legacy_manifest_file")" != "$legacy_current_manifest" ]; then
     echo "Oracle run error: current legacy Oracle content differs from the initialized manifest" >&2
     echo "Run Oracle init again, reconcile the changed content, and only then mark legacy-migration.status as 'reconciled'." >&2
+    exit 1
+  fi
+
+  if [ ! -f "$legacy_migration_report" ]; then
+    echo "Oracle run error: legacy migration instructions are missing: $legacy_migration_report" >&2
+    echo "Run Oracle init to repair the migration control files before continuing." >&2
     exit 1
   fi
 

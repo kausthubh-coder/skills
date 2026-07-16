@@ -35,6 +35,11 @@ grep -q 'data-state="{{STATUS_STATE}}"' "$example"
 grep -q 'aria-hidden="true"' "$example"
 grep -q 'min-width: 620px' "$example"
 grep -q '@media (prefers-reduced-motion: reduce)' "$example"
+grep -q -- '--success: #176238' "$example"
+grep -q -- '--warning: #784600' "$example"
+grep -q -- '--danger: #8f2525' "$example"
+grep -q -- '--accent:#005963' "$human"
+grep -q -- '--warn:#784600' "$human"
 if grep -Eq '>4\.[05]<' "$example"; then
   echo "HTML template contains realistic hard-coded review scores" >&2
   exit 1

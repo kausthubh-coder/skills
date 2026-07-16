@@ -65,20 +65,28 @@ for legacy_path in "${legacy_paths[@]:-}"; do
     kind="directory"
     fingerprint="$(
       cd "$legacy_path"
-      while IFS= read -r entry; do
+      while IFS= read -r -d '' entry; do
         if [ -L "$entry" ]; then
-          printf 'symlink\t%s\t%s\n' "$entry" "$(readlink "$entry" | hash_stream)"
+          record_hash="$({
+            printf 'symlink\0%s\0' "$entry"
+            readlink "$entry"
+          } | hash_stream)"
         elif [ -f "$entry" ]; then
-          printf 'file\t%s\t%s\n' "$entry" "$(hash_file "$entry")"
+          record_hash="$({
+            printf 'file\0%s\0' "$entry"
+            hash_file "$entry"
+          } | hash_stream)"
         elif [ -d "$entry" ]; then
-          printf 'directory\t%s\n' "$entry"
+          record_hash="$(printf 'directory\0%s\0' "$entry" | hash_stream)"
+        else
+          record_hash="$(printf 'other\0%s\0' "$entry" | hash_stream)"
         fi
+        printf '%s\n' "$record_hash"
       done < <(
-        find . \
+        find . -mindepth 1 \
           \( -name .git -o -name node_modules -o -name worktrees -o -name .next -o -name .expo -o -name dist -o -name build -o -name coverage -o -name .cache \) -prune \
-          -o -print \
-          | LC_ALL=C sort
-      ) | hash_stream
+          -o -print0
+      ) | LC_ALL=C sort | hash_stream
     )"
   else
     kind="other"
