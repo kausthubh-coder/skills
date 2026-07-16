@@ -57,6 +57,15 @@ ln -s "$outside/human-target" "$child_symlink_root/.artifacts/human.html"
 expect_failure bash "$skill_dir/scripts/oracle_init.sh" "$child_symlink_root"
 test ! -e "$outside/human-target"
 
+type_collision_root="$tmp/type-collision-root"
+template_collision="$type_collision_root/.artifacts/examples/html-artifact-template-v2.html"
+mkdir -p "$template_collision"
+chmod 755 "$template_collision"
+expect_failure bash "$skill_dir/scripts/oracle_init.sh" "$type_collision_root"
+test -d "$template_collision"
+test "$(file_mode "$template_collision")" = "755"
+test ! -e "$template_collision/artifact-template.html"
+
 legacy_root="$tmp/legacy-root"
 mkdir -p "$legacy_root/.design" "$legacy_root/.sandbox"
 printf '%s\n' 'legacy human' > "$legacy_root/human.md"
@@ -93,6 +102,23 @@ bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
 test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
 printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
 printf '%s\n' 'legacy design variant changed' > "$legacy_root/.design/variant.md"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+mkdir -p "$legacy_root/.design/flows/code/editor/variants"
+printf '%s\n' 'deep legacy design variant' > "$legacy_root/.design/flows/code/editor/variants/view.html"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+printf '%s\n' 'deep legacy design variant changed' > "$legacy_root/.design/flows/code/editor/variants/view.html"
+bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
+test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
+
+printf '%s\n' 'reconciled' > "$legacy_root/.artifacts/legacy-migration.status"
+printf '%s\n' 'legacy human changed after init' > "$legacy_root/human.md"
+expect_failure bash "$skill_dir/scripts/oracle_start_run.sh" "$legacy_root" 20260712-1159-legacy-migration plan "direct run must recheck legacy manifest"
 bash "$skill_dir/scripts/oracle_init.sh" "$legacy_root" >/dev/null 2>&1
 test "$(cat "$legacy_root/.artifacts/legacy-migration.status")" = "pending"
 
@@ -260,8 +286,8 @@ printf '%s\n' \
   "oracle init and templates: pass" \
   "consolidated artifact paths and legacy preservation: pass" \
   "human HTML and reusable visual template: pass" \
-  "managed symlink rejection: pass" \
-  "legacy migration manifest, fingerprints, gate, and deduplicated notice: pass" \
+  "managed symlink and path-type rejection: pass" \
+  "complete legacy manifest, start-time recheck, gate, and deduplicated notice: pass" \
   "worktree ancestor symlink rejection before mutation: pass" \
   "plan acceptance and phase integrity: pass" \
   "direct-implement plan gate: pass" \

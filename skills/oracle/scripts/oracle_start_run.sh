@@ -29,36 +29,51 @@ fi
 root="$(cd "$root" && pwd -P)"
 request_text="${request_text//$'\n'/ }"
 request_text="${request_text//$'\t'/ }"
+skill_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
+legacy_manifest_helper="$skill_dir/scripts/oracle_legacy_manifest.sh"
 artifacts_dir="$root/.artifacts"
 runs_dir="$artifacts_dir/runs"
 legacy_migration_status="$artifacts_dir/legacy-migration.status"
+legacy_migration_report="$artifacts_dir/legacy-migration.md"
+legacy_manifest_file="$artifacts_dir/legacy-manifest.tsv"
 run_dir="$runs_dir/$run_id"
 lock_dir="$runs_dir/.$run_id.init.lock"
 tmp_run_dir=""
 now="$(date +"%Y-%m-%d %H:%M:%S %Z")"
 
-for managed_path in "$artifacts_dir" "$runs_dir" "$legacy_migration_status"; do
-  if [ -L "$managed_path" ]; then
-    echo "Oracle run error: managed path must not be a symlink: $managed_path" >&2
+for managed_directory in "$artifacts_dir" "$runs_dir"; do
+  if [ -L "$managed_directory" ] \
+    || { [ -e "$managed_directory" ] && [ ! -d "$managed_directory" ]; }; then
+    echo "Oracle run error: managed path must be a real directory: $managed_directory" >&2
     exit 1
   fi
 done
 
-legacy_source_found="no"
-for legacy_candidate in \
-  "$root/.design" \
-  "$root/.sandbox" \
-  "$root/human.md" \
-  "$root/HUMAN.md" \
-  "$root/test.md" \
-  "$root/TEST.md"; do
-  if [ -e "$legacy_candidate" ] || [ -L "$legacy_candidate" ]; then
-    legacy_source_found="yes"
-    break
+for managed_file in \
+  "$legacy_migration_status" \
+  "$legacy_migration_report" \
+  "$legacy_manifest_file"; do
+  if [ -L "$managed_file" ] \
+    || { [ -e "$managed_file" ] && [ ! -f "$managed_file" ]; }; then
+    echo "Oracle run error: managed path must be a regular file: $managed_file" >&2
+    exit 1
   fi
 done
 
-if [ "$legacy_source_found" = "yes" ]; then
+if [ ! -f "$legacy_manifest_helper" ] || [ -L "$legacy_manifest_helper" ]; then
+  echo "Oracle run error: packaged legacy manifest helper is missing or unsafe: $legacy_manifest_helper" >&2
+  exit 1
+fi
+
+legacy_current_manifest="$(bash "$legacy_manifest_helper" "$root")"
+if [ -n "$legacy_current_manifest" ]; then
+  if [ ! -f "$legacy_manifest_file" ] \
+    || [ "$(cat "$legacy_manifest_file")" != "$legacy_current_manifest" ]; then
+    echo "Oracle run error: current legacy Oracle content differs from the initialized manifest" >&2
+    echo "Run Oracle init again, reconcile the changed content, and only then mark legacy-migration.status as 'reconciled'." >&2
+    exit 1
+  fi
+
   if [ ! -f "$legacy_migration_status" ] \
     || [ "$(sed -n '1p' "$legacy_migration_status")" != "reconciled" ]; then
     echo "Oracle run error: legacy Oracle content must be reconciled before planning or implementation" >&2

@@ -44,7 +44,7 @@ Create or repair the single `.artifacts/` workspace, including `human.html`, `te
 
 `.artifacts/human.html` is the polished internal codebase map for people and agents. `.artifacts/test.md` is the project-specific operating manual used by testing threads. Test evidence belongs under `.artifacts/runs/<run-id>/`.
 
-If legacy root `.design`, `.sandbox`, `human.md`, or `test.md` content exists, initialization preserves it and creates `.artifacts/legacy-migration.md`, a fingerprinted manifest, and a pending status. Read and reconcile the legacy content before planning or implementation. Runs remain blocked until `.artifacts/legacy-migration.status` is explicitly set to `reconciled`; never mark it reconciled without merging operational testing instructions and durable project knowledge. New or changed legacy content resets the status to `pending`.
+If legacy root `.design`, `.sandbox`, `human.md`, or `test.md` content exists, initialization preserves it and creates `.artifacts/legacy-migration.md`, a fingerprinted manifest, and a pending status. Read and reconcile the legacy content before planning or implementation. Runs remain blocked until `.artifacts/legacy-migration.status` is explicitly set to `reconciled`; never mark it reconciled without merging operational testing instructions and durable project knowledge. New or changed content anywhere in the non-generated legacy tree resets the status to `pending`, and every run start recomputes the inventory so a stale reconciled marker cannot bypass the gate.
 
 ### `oracle plan`
 

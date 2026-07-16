@@ -33,6 +33,7 @@ HOME="$home_dir" npm_config_cache="$cache_dir" \
 skill_dir="$home_dir/.agents/skills/oracle"
 test -f "$skill_dir/SKILL.md"
 test -x "$skill_dir/scripts/oracle_init.sh"
+test -x "$skill_dir/scripts/oracle_legacy_manifest.sh"
 test -f "$skill_dir/references/orchestration.md"
 test -f "$skill_dir/references/html-artifacts.md"
 test -f "$skill_dir/assets/templates/artifact-template.html"

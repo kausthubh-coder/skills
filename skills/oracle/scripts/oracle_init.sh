@@ -20,6 +20,7 @@ fi
 root="$(cd "$root" && pwd -P)"
 skill_dir="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd -P)"
 template="$skill_dir/assets/templates/artifact-template.html"
+legacy_manifest_helper="$skill_dir/scripts/oracle_legacy_manifest.sh"
 template_version="2"
 template_filename="html-artifact-template-v${template_version}.html"
 artifacts="$root/.artifacts"
@@ -36,40 +37,62 @@ html_escape() {
 project_name_html="$(html_escape "$project_name")"
 now_html="$(html_escape "$now")"
 
-for managed_path in \
+require_directory_path() {
+  local path="$1"
+  if [ -L "$path" ] || { [ -e "$path" ] && [ ! -d "$path" ]; }; then
+    echo "Oracle init error: managed path must be a real directory: $path" >&2
+    exit 1
+  fi
+}
+
+require_file_path() {
+  local path="$1"
+  if [ -L "$path" ] || { [ -e "$path" ] && [ ! -f "$path" ]; }; then
+    echo "Oracle init error: managed path must be a regular file: $path" >&2
+    exit 1
+  fi
+}
+
+for managed_directory in \
   "$artifacts" \
+  "$artifacts/runs" \
+  "$artifacts/plans" \
+  "$artifacts/designs" \
+  "$artifacts/designs/workbench" \
+  "$artifacts/demos" \
+  "$artifacts/conclusions" \
+  "$artifacts/examples" \
+  "$artifacts/sandbox" \
+  "$artifacts/sandbox/worktrees" \
+  "$artifacts/sandbox/prototypes"; do
+  require_directory_path "$managed_directory"
+done
+
+for managed_file in \
   "$artifacts/README.md" \
   "$artifacts/human.html" \
   "$artifacts/test.md" \
   "$artifacts/legacy-migration.status" \
   "$artifacts/legacy-migration.md" \
   "$artifacts/legacy-manifest.tsv" \
-  "$artifacts/runs" \
-  "$artifacts/plans" \
-  "$artifacts/designs" \
   "$artifacts/designs/README.md" \
   "$artifacts/designs/index.json" \
   "$artifacts/designs/.gitignore" \
-  "$artifacts/designs/workbench" \
-  "$artifacts/demos" \
-  "$artifacts/conclusions" \
-  "$artifacts/examples" \
   "$artifacts/examples/README.md" \
   "$artifacts/examples/current-template.txt" \
   "$template_destination" \
-  "$artifacts/sandbox" \
-  "$artifacts/sandbox/worktrees" \
-  "$artifacts/sandbox/prototypes" \
   "$artifacts/sandbox/.gitignore" \
   "$artifacts/sandbox/README.md"; do
-  if [ -L "$managed_path" ]; then
-    echo "Oracle init error: managed path must not be a symlink: $managed_path" >&2
-    exit 1
-  fi
+  require_file_path "$managed_file"
 done
 
 if [ ! -f "$template" ] || [ -L "$template" ]; then
   echo "Oracle init error: packaged HTML template is missing or unsafe: $template" >&2
+  exit 1
+fi
+
+if [ ! -f "$legacy_manifest_helper" ] || [ -L "$legacy_manifest_helper" ]; then
+  echo "Oracle init error: packaged legacy manifest helper is missing or unsafe: $legacy_manifest_helper" >&2
   exit 1
 fi
 
@@ -439,84 +462,10 @@ if [ ! -f "$template_destination" ]; then
 fi
 printf '%s\n' "$template_filename" > "$artifacts/examples/current-template.txt"
 
-legacy_paths=()
-add_legacy_path() {
-  local candidate="$1"
-  local existing
-  if [ ! -e "$candidate" ] && [ ! -L "$candidate" ]; then
-    return
-  fi
-  for existing in "${legacy_paths[@]:-}"; do
-    if [ -n "$existing" ] && [ "$candidate" -ef "$existing" ]; then
-      return
-    fi
-  done
-  legacy_paths+=("$candidate")
-}
+manifest_tmp="$artifacts/.legacy-manifest.tmp.$$"
+bash "$legacy_manifest_helper" "$root" > "$manifest_tmp"
 
-for legacy_candidate in \
-  "$root/.design" \
-  "$root/.sandbox" \
-  "$root/human.md" \
-  "$root/HUMAN.md" \
-  "$root/test.md" \
-  "$root/TEST.md"; do
-  add_legacy_path "$legacy_candidate"
-done
-
-if [ "${#legacy_paths[@]}" -gt 0 ]; then
-  hash_stream() {
-    if command -v shasum >/dev/null 2>&1; then
-      shasum -a 256 | awk '{print $1}'
-    else
-      sha256sum | awk '{print $1}'
-    fi
-  }
-
-  hash_file() {
-    if command -v shasum >/dev/null 2>&1; then
-      shasum -a 256 "$1" | awk '{print $1}'
-    else
-      sha256sum "$1" | awk '{print $1}'
-    fi
-  }
-
-  manifest_tmp="$artifacts/.legacy-manifest.tmp.$$"
-  : > "$manifest_tmp"
-  for legacy_path in "${legacy_paths[@]}"; do
-    legacy_relative="${legacy_path#"$root"/}"
-    if [ -L "$legacy_path" ]; then
-      legacy_kind="symlink"
-      legacy_fingerprint="$(readlink "$legacy_path" | hash_stream)"
-    elif [ -f "$legacy_path" ]; then
-      legacy_kind="file"
-      legacy_fingerprint="$(hash_file "$legacy_path")"
-    elif [ -d "$legacy_path" ]; then
-      legacy_kind="directory"
-      legacy_fingerprint="$(
-        cd "$legacy_path"
-        while IFS= read -r legacy_entry; do
-          if [ -L "$legacy_entry" ]; then
-            printf 'symlink\t%s\t%s\n' "$legacy_entry" "$(readlink "$legacy_entry" | hash_stream)"
-          elif [ -f "$legacy_entry" ]; then
-            printf 'file\t%s\t%s\n' "$legacy_entry" "$(hash_file "$legacy_entry")"
-          elif [ -d "$legacy_entry" ]; then
-            printf 'directory\t%s\n' "$legacy_entry"
-          fi
-        done < <(
-          find . -mindepth 1 -maxdepth 3 \
-            \( -name .git -o -name node_modules -o -name worktrees -o -name .next -o -name .expo -o -name dist -o -name build -o -name .cache \) -prune \
-            -o -print \
-            | LC_ALL=C sort
-        ) | hash_stream
-      )"
-    else
-      legacy_kind="other"
-      legacy_fingerprint="present"
-    fi
-    printf '%s\t%s\t%s\n' "$legacy_kind" "$legacy_relative" "$legacy_fingerprint" >> "$manifest_tmp"
-  done
-
+if [ -s "$manifest_tmp" ]; then
   manifest_changed="yes"
   if [ -f "$artifacts/legacy-manifest.tsv" ] \
     && cmp -s "$manifest_tmp" "$artifacts/legacy-manifest.tsv"; then
@@ -531,9 +480,9 @@ if [ "${#legacy_paths[@]}" -gt 0 ]; then
       printf '%s\n\n' '# Oracle Legacy Migration'
       printf '%s\n\n' 'Legacy Oracle paths were found and preserved. Reconcile their useful content into the canonical `.artifacts/` workspace before starting a plan or implementation run.'
       printf '%s\n' '## Legacy Paths'
-      for legacy_path in "${legacy_paths[@]}"; do
-        printf -- '- `%s`\n' "${legacy_path#"$root"/}"
-      done
+      while IFS=$'\t' read -r _legacy_kind legacy_relative _legacy_fingerprint; do
+        printf -- '- `%s`\n' "$legacy_relative"
+      done < "$artifacts/legacy-manifest.tsv"
       printf '%s\n' \
         '' \
         '## Required Reconciliation' \
@@ -544,17 +493,20 @@ if [ "${#legacy_paths[@]}" -gt 0 ]; then
         '4. Never move a registered live Git worktree directory by hand; use `git worktree` operations.' \
         '5. After verifying the canonical files, replace `pending` with `reconciled` in `.artifacts/legacy-migration.status`.' \
         '' \
-        'Oracle fingerprints this bounded inventory in `.artifacts/legacy-manifest.tsv`. Adding or changing legacy content resets the status to `pending`.'
+        'Oracle fingerprints the full non-generated legacy tree in `.artifacts/legacy-manifest.tsv`. Adding or changing legacy content resets the status to `pending`, and run start independently verifies the current tree against this manifest.'
     } > "$artifacts/legacy-migration.md"
   fi
 
   echo "Oracle init notice: legacy Oracle paths were preserved:" >&2
-  for legacy_path in "${legacy_paths[@]}"; do
-    echo "  $legacy_path" >&2
-  done
+  while IFS=$'\t' read -r _legacy_kind legacy_relative _legacy_fingerprint; do
+    echo "  $root/$legacy_relative" >&2
+  done < "$artifacts/legacy-manifest.tsv"
   if [ "$(sed -n '1p' "$artifacts/legacy-migration.status")" != "reconciled" ]; then
     echo "Oracle runs are blocked until .artifacts/legacy-migration.status is set to reconciled after manual review." >&2
   fi
+else
+  rm -f "$manifest_tmp"
+  manifest_tmp=""
 fi
 
 echo "Oracle workspace initialized at: $root"

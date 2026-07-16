@@ -69,8 +69,11 @@ and durable project knowledge, verifies the canonical files, and sets
 Git worktree directory; remove or relocate it with `git worktree` operations.
 Oracle stores a relative-path fingerprint inventory in
 `.artifacts/legacy-manifest.tsv`; newly discovered paths or changed legacy files
-within the bounded inventory reset the status to `pending` and require another
-reconciliation.
+anywhere in the full non-generated legacy tree reset the status to `pending` and
+require another reconciliation. Every run start independently recomputes this
+inventory and compares it with the initialized manifest, so editing legacy
+content after initialization blocks the run until initialization and
+reconciliation happen again.
 
 Starter content is not verified truth. Inspect the project, validate commands,
 and update `.artifacts/human.html` and `.artifacts/test.md` before relying on them.
