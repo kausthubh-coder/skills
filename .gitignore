@@ -1,7 +1,6 @@
+_sources/
+reports/
 .DS_Store
-.artifacts/
-.design/
-.sandbox/
 .env
 .env.*
 !.env.example

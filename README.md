@@ -1,112 +1,51 @@
-# Oracle
+# skills
 
-[![skills.sh](https://skills.sh/b/kausthubh-coder/skills)](https://skills.sh/kausthubh-coder/skills)
+My personal skill library. One folder of skills, linked into Claude Code and Codex (CLI, app, and through T3 Code), plus a base `AGENTS.md` that new projects start from.
 
-Oracle is a Codex-first agent skill for planning and implementing software through
-one structured project-local `.artifacts/` workspace, isolated Git worktrees,
-independent implementation, testing, and review tasks, polished HTML decision
-pages, and evidence-backed refinement loops.
+Lives at `dev/skills` locally and [kausthubh-coder/skills](https://github.com/kausthubh-coder/skills) on GitHub.
 
-## Install
+## Layout
 
-Install Oracle globally for Codex:
+| Path | What |
+|---|---|
+| `skills/` | Global skills. Each folder is linked into every agent, so an edit here is live everywhere |
+| `skills/init-project/` | `/init-project`: start a new project (interview, name, scaffold on my stack, agent-native setup) |
+| `skills/optimize/` | `/optimize`: audit an existing project and plan agent-native improvements at a chosen depth |
+| `skills/init-project/references/AGENTS.base.md` | The base AGENTS.md every project starts from |
+| `skills/my-skills/` | Lets any agent add, edit or update skills in this library |
+| `sources.json` | Where each copied skill came from, its license, upstream commit, and what I changed |
+| `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
+| `scripts/link.mjs` | Links `skills/*` into each agent's global folder |
+| `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
+| `reports/` | Agent-native audits of my projects (local only, gitignored) |
+| `licenses/` | Upstream licenses (MIT requires keeping them) |
+| `_sources/` | Local clones of the upstream repos (gitignored) |
+| `_retired/` | Skills I stopped using, kept for reference and not linked. Includes `oracle`, which this repo used to hold |
 
-```bash
-npx skills add kausthubh-coder/skills \
-  --skill oracle \
-  --global \
-  --agent codex \
-  --yes
+## Global vs project skills
+
+- **Global** (this library): skills I want in every project. Keep the list short; every skill's description is in context in every session.
+- **Project**: skills for one repo (`verify-<app>`, deploy steps) live in that repo's `.agents/skills/`, with `.claude/skills` linked to it. `/init-project` sets this up for new projects; `/optimize` adds it to existing ones.
+
+Where each agent reads skills:
+
+| Agent | Global | Project |
+|---|---|---|
+| Claude Code | `~/.claude/skills` | `.claude/skills` |
+| Codex | `~/.agents/skills` | `.agents/skills` |
+
+## Use it
+
+```
+node scripts/link.mjs --dry-run   # see what would be linked
+node scripts/link.mjs             # link new skills, prune deleted ones
+node scripts/link.mjs --unlink    # remove every link to this library
+node scripts/upstream.mjs         # check upstream for changes
 ```
 
-Install it into the current project for any agent supported by the `skills` CLI:
+Links are junctions on Windows (no admin needed). The script never overwrites an existing folder; it reports a conflict instead.
 
-```bash
-npx skills add kausthubh-coder/skills --skill oracle
-```
+## Notes
 
-The repository will appear on skills.sh automatically after the public GitHub
-source is installed through the `skills` CLI. There is no separate submission
-form.
-
-## Commands
-
-```text
-oracle init [project root]
-oracle plan <goal>
-oracle implement <goal or plan>
-```
-
-- `oracle init` creates or repairs `.artifacts/human.html`, `.artifacts/test.md`,
-  plans, designs and runnable variants, examples, demos, conclusions, run
-  evidence, prototypes, and sandbox worktrees without changing product behavior.
-- `oracle plan` researches the project and writes a dated, decision-grade HTML
-  plan under `.artifacts/plans/`.
-- `oracle implement` splits separable work into isolated lanes, gives each lane
-  fresh implementation, testing, and review tasks, loops on evidence, integrates
-  accepted checkpoints, and writes a dated conclusion under
-  `.artifacts/conclusions/`.
-
-HTML artifacts follow a shared offline-friendly visual standard. They use
-structured summaries, architecture or dependency diagrams, timelines,
-comparison tables, test matrices, and score plots when those representations
-make the evidence easier to understand.
-
-In Codex, invoke the skill directly:
-
-```text
-$oracle init
-$oracle plan redesign the onboarding flow
-$oracle implement the accepted onboarding plan
-```
-
-## Compatibility
-
-The workspace, planning, testing, artifact, and Git contracts are portable. The
-full implementation workflow is Codex-first because it relies on real Codex
-tasks/threads for independent implementation, testing, and review roles. An
-agent without equivalent task orchestration should not claim that it completed
-the full Oracle loop.
-
-Oracle never grants permission to push, deploy, mutate production data, or
-expose secrets. Those actions still require explicit user authority.
-
-## Repository Layout
-
-```text
-skills/oracle/
-  SKILL.md
-  agents/openai.yaml
-  assets/templates/
-  references/
-  scripts/
-  tests/
-```
-
-The `skills/oracle/` directory is the complete installable unit. Repository
-documentation and license files remain outside the installed skill.
-
-## Development
-
-Run the deterministic regression suite:
-
-```bash
-bash skills/oracle/tests/oracle_scripts_test.sh
-bash tests/html_artifacts_test.sh
-```
-
-Check local discovery with the official CLI:
-
-```bash
-npx skills add . --list
-```
-
-Test a disposable install before publishing:
-
-```bash
-bash tests/skills_cli_smoke.sh
-```
-
-## License
-
-MIT
+- `LICENSE` (MIT) covers my own skills. Copied skills keep their upstream license, listed in `sources.json`: pstack and Matt Pocock are MIT (notices in `licenses/`); `before-and-after` is PolyForm Shield.
+- This folder is in OneDrive. If agents ever can't read a skill, mark the folder "Always keep on this device".

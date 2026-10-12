@@ -1,0 +1,150 @@
+{
+  "skills": {
+    "create-verification-skill": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/create-verification-skill",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "writes to .agents/skills/verify-<app>/ instead of .cursor/skills/"
+      ],
+      "commit": "ea32d95",
+      "upstreamHash": "a2e50d2189277217"
+    },
+    "maintain-verification-skill": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/maintain-verification-skill",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "looks in .agents/skills/verify-*/ first"
+      ],
+      "commit": "ea32d95",
+      "upstreamHash": "283083c954764139"
+    },
+    "correct": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/correct",
+      "license": "MIT (Lauren Tan)",
+      "changes": [],
+      "commit": "ea32d95",
+      "upstreamHash": "61c8a417f95b6e3c"
+    },
+    "benchmark-checklist": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/benchmark-checklist",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "removed references to poteto-mode playbooks (Opening a PR, Perf issue, Hillclimb)"
+      ],
+      "commit": "ea32d95",
+      "upstreamHash": "4ed522cb6ea05fed"
+    },
+    "unslop": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/unslop",
+      "license": "MIT (Lauren Tan)",
+      "changes": [],
+      "commit": "ea32d95",
+      "upstreamHash": "2e57ee5eac607dd8"
+    },
+    "principle-prove-it-works": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/principle-prove-it-works",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "removed reference to show-me-your-work"
+      ],
+      "commit": "ea32d95",
+      "upstreamHash": "6777a72ed3c15bbd"
+    },
+    "principle-test-behavior-not-implementation": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/principle-test-behavior-not-implementation",
+      "license": "MIT (Lauren Tan)",
+      "changes": [],
+      "commit": "ea32d95",
+      "upstreamHash": "9f4f33a502d503ff"
+    },
+    "principle-minimize-reader-load": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/principle-minimize-reader-load",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "removed link to principle-guard-the-context-window"
+      ],
+      "commit": "ea32d95",
+      "upstreamHash": "31dddf8eec76cd18"
+    },
+    "grilling": {
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/grilling",
+      "license": "MIT (Matt Pocock)",
+      "changes": [],
+      "commit": "49dd158",
+      "upstreamHash": "ef1641a2047b71b6"
+    },
+    "grill-me": {
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/grill-me",
+      "license": "MIT (Matt Pocock)",
+      "changes": [],
+      "commit": "49dd158",
+      "upstreamHash": "9cdbb4b8f7a3aeae"
+    },
+    "handoff": {
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/handoff",
+      "license": "MIT (Matt Pocock)",
+      "changes": [],
+      "commit": "49dd158",
+      "upstreamHash": "8ebcf017c0a59681"
+    },
+    "writing-for-agents": {
+      "repo": "mattpocock/skills",
+      "path": "skills/productivity/writing-for-agents",
+      "license": "MIT (Matt Pocock)",
+      "changes": [],
+      "commit": "49dd158",
+      "upstreamHash": "95da47fc97af998e"
+    },
+    "diagnosing-bugs": {
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/diagnosing-bugs",
+      "license": "MIT (Matt Pocock)",
+      "changes": [],
+      "commit": "49dd158",
+      "upstreamHash": "ede7254edbd22fca"
+    },
+    "codebase-design": {
+      "repo": "mattpocock/skills",
+      "path": "skills/engineering/codebase-design",
+      "license": "MIT (Matt Pocock)",
+      "changes": [],
+      "commit": "49dd158",
+      "upstreamHash": "b2888e4f4e8c0af3"
+    },
+    "evidence-driven-testing": {
+      "repo": "michaelshimeles/skills",
+      "path": "evidence-driven-testing",
+      "license": "none stated; shared for people to copy (Ras Mic)",
+      "changes": [],
+      "commit": "4b72f46",
+      "upstreamHash": "7e0fcfc228890c29"
+    },
+    "before-and-after": {
+      "repo": "michaelshimeles/skills",
+      "path": "before-and-after",
+      "license": "PolyForm Shield 1.0.0 (James Clements), personal use",
+      "changes": [],
+      "commit": "4b72f46",
+      "upstreamHash": "729f270118b8a43a"
+    },
+    "code-structure": {
+      "repo": "michaelshimeles/skills",
+      "path": "code-structure",
+      "license": "none stated; shared for people to copy (Ras Mic)",
+      "changes": [],
+      "commit": "4b72f46",
+      "upstreamHash": "3b704d95f0f8abc8"
+    }
+  }
+}
