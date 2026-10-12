@@ -29,6 +29,15 @@ for (const file of files) {
   const h1s = html.match(/<h1[\s>]/gi) ?? [];
   if (h1s.length !== 1) errors.push(`${h1s.length} <h1> elements; use exactly one, and make it the answer`);
 
+  // The saved file must carry its own colors in both schemes
+  const css = (html.match(/<style[\s\S]*?<\/style>/gi) ?? []).join("\n");
+  const hostVars = [...new Set((css.match(/var\(--(?:foreground|muted-foreground|card|card-foreground|primary|border|font-sans)\b/g) ?? []).map((v) => v.slice(4)))];
+  if (hostVars.length)
+    errors.push(`uses a host app's theme variables (${hostVars.join(", ")}), which exist only inside T3's html_render; define the page's own colors (start from the template)`);
+  for (const m of css.matchAll(/(--[\w-]+)\s*:\s*var\(\1\b/g)) errors.push(`${m[1]} refers to itself, so it is invalid`);
+  if (/color-scheme\s*:[^;]*dark/.test(css) && !/prefers-color-scheme\s*:\s*dark|light-dark\(/.test(css))
+    errors.push("declares dark mode support but defines no dark colors: text will be unreadable in dark mode");
+
   // Leftover template text
   // Blank out styles and comments but keep their newlines, so line numbers still match the file.
   const blank = (s) => s.replace(/[^\n]/g, " ");

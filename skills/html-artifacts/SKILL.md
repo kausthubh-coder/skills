@@ -60,18 +60,23 @@ The page is complete with zero clicks. Interaction is for "what if?" questions (
 
 If the repo already has a format for these pages (a stylesheet, earlier plans), follow it. Otherwise copy [assets/template.html](assets/template.html) and fill it: it has the type scale, spacing, light and dark themes, print styles and the components named above. Delete every block you don't use, and stay within its tokens rather than adding colors or sizes.
 
-One self-contained file that works offline: inline CSS, system fonts, images inlined or beside the file, any library pinned to an exact version.
+The saved file is the artifact, and it stands alone: someone opens it in a browser next month, offline, in dark mode. So it carries its own colors for both schemes (the template's), inline CSS, system fonts, images inlined or beside the file, and any library pinned to an exact version. Build the file first; showing it in a chat is a copy of it (step 7), not the target.
 
 Keep the look quiet so the content leads. Color marks meaning (status, the changed thing, the pick) and always comes with a word. Labels are sentence case. Numbers like 01/02 only for a real sequence. A boxed card only for a bounded item, never around a whole section. Gradients, emoji, decorative icons and rows of big standalone numbers read as generated, so they go. For type, spacing and hierarchy detail, the `critly` skill's Typography, Color and Layout concepts apply.
 
 ## 6. Check it
 
 1. `node <this skill's folder>/scripts/check.mjs page.html` until it reports no errors: leftover TODOs, structure, unpinned scripts, missing alt text, length.
-2. Look at it at 390 and 1280 wide, light and dark. In T3, `html_preview` (`width`, `appearance`). Elsewhere, `bunx playwright@1 screenshot --full-page --viewport-size=390,844 --color-scheme=dark "file:///<abs path>" shot.png` and the same at 1280 light, then read the screenshots. Nothing overflows, diagrams read on a phone, the first screen holds the answer.
+2. Screenshot the saved file in a real browser, phone and desktop, dark and light, and look at every image:
+   ```
+   bunx playwright@1 screenshot --full-page --viewport-size=390,844 --color-scheme=dark "file:///<abs path>" phone-dark.png
+   bunx playwright@1 screenshot --full-page --viewport-size=1280,800 --color-scheme=light "file:///<abs path>" desk-light.png
+   ```
+   (First run on a machine: `bunx playwright@1 install chromium`.) A phone screenshot wider than 390px means something overflows. Check that all text is readable in both schemes, diagrams read on a phone, and the first screen holds the answer. T3's `html_preview` is not this check: it renders inside T3's theme, so a page that only works there passes it.
 3. Read it top to bottom once as the reader. Rewrite anything you had to read twice.
 
 ## 7. Deliver
 
 - **Where:** in a repo, wherever it keeps plans or reports (`.agent/plans`, `docs/plans`…); otherwise `.agents/plans/` for plans and `.agents/reports/` for the rest, named `<date>-<slug>.html`. Outside a repo, the current folder.
-- **Show it:** in T3, also `html_render` it, with `<style>html{background:none}body{padding:0}</style>` added so it sits on the thread's background. Elsewhere, give the absolute path.
+- **Show it:** in T3, also `html_render` the same file with `<style>html{background:none}body{padding:0}</style>` added so it sits on the thread's background. Elsewhere, give the absolute path.
 - Reply with the answer in a line or two, the path, and anything you couldn't check. The page already says the rest.
