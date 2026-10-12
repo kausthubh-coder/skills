@@ -36,6 +36,22 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `/optimize standard`
 - **Good run:** finds real gaps or says there are none; reads my threads for that repo; writes the plan to the repo's plans folder and waits.
 
+## html-artifacts
+
+### teach: git rebase
+- **Open with (scratch):** `make me an html page that explains git rebase vs merge, i always mess it up`
+- **Me:** knows basic git (commit, push, branches). Messes up when rebasing a branch someone else pushed to.
+- **Good run:** h1 states the model in a sentence; terms before use; a drawn commit graph before and after; the "rebasing a shared branch" mistake refuted head-on; self-check questions with hidden answers; check.mjs clean; screenshots at 390 and 1280 looked at; `html_render` in the thread.
+
+### report: what the agent did
+- **Repo:** krida, worktree.
+- **Open with:** `write up what changed in the last few commits as an html report so i can review it`
+- **Good run:** h1 is the outcome, not "Report"; changes grouped by behavior; each claim beside its evidence; checks named, skipped ones marked; a 3-5 minute read; saved in the repo's plans folder or `.agents/reports/`.
+
+### compare: costs
+- **Open with (scratch):** `html page comparing convex vs supabase vs neon for a small app, mainly cost`
+- **Good run:** h1 is a recommendation with its condition; one table with real numbers, the assumptions and the date prices were checked; sources linked; no invented prices.
+
 ## Should not trigger
 
 ### plain question

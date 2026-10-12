@@ -1,0 +1,212 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TODO: the page's answer, short</title>
+<style>
+/* Tokens. Neutrals do the work; the accent marks links and the current thing;
+   green, amber and red appear only when they mean pass, warning or failure. */
+:root {
+  color-scheme: light dark;
+  --bg: #fcfcfb;      --surface: #f2f2f0;   --line: #dcdcd8;
+  --text: #1b1b1a;    --text-2: #4a4a47;    --text-3: #67675f;
+  --accent: #2a5db0;  --accent-bg: #e8eefa;
+  --ok: #23703a;      --ok-bg: #e6f2e9;
+  --warn: #8a5a00;    --warn-bg: #fbf0d9;
+  --bad: #b3261e;     --bad-bg: #fbe7e5;
+  --code-bg: #f2f2f0;
+
+  /* Type scale (~1.25): caption, body, subhead, title, display. Use nothing else. */
+  --fs-caption: 0.875rem; --fs-body: 1.0625rem; --fs-sub: 1.3125rem; --fs-title: 1.625rem; --fs-display: 2.0625rem;
+  /* Spacing scale. Gaps inside a group are about half the gaps between groups. */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px;
+
+  --measure: 39rem;   /* prose line length: ~70 characters at body size */
+  --wide: 1080px;     /* tables, diagrams, comparisons */
+  --radius: 8px;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161616;      --surface: #212120;   --line: #353533;
+    --text: #ececea;    --text-2: #bcbcb6;    --text-3: #9b9b94;
+    --accent: #8fb3f5;  --accent-bg: #1d2a42;
+    --ok: #7fcf94;      --ok-bg: #18301f;
+    --warn: #e6b85c;    --warn-bg: #352a12;
+    --bad: #f2928b;     --bad-bg: #3b1d1a;
+    --code-bg: #212120;
+  }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: var(--s7) var(--s5) var(--s8);
+  font: 400 var(--fs-body)/1.6 var(--sans); color: var(--text);
+}
+main > * { max-width: var(--measure); margin-inline: auto; }
+main > .wide { max-width: var(--wide); }
+
+h1, h2, h3 { line-height: 1.25; text-wrap: balance; margin-block: 0; }
+h1 { font-size: var(--fs-display); font-weight: 650; letter-spacing: -0.02em; }
+h2 { font-size: var(--fs-title); font-weight: 650; letter-spacing: -0.015em; margin-top: var(--s8); }
+h3 { font-size: var(--fs-sub); font-weight: 600; letter-spacing: -0.01em; margin-top: var(--s6); }
+h2 + *, h3 + * { margin-top: var(--s3); }
+p, ul, ol, table, pre, figure, details, .callout, .steps, .flow { margin-block: var(--s4) 0; }
+p { text-wrap: pretty; }
+li + li { margin-top: var(--s2); }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+strong { font-weight: 600; }
+.muted { color: var(--text-3); }
+small, .caption { font-size: var(--fs-caption); color: var(--text-3); }
+.num { font-variant-numeric: tabular-nums; }
+hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--s7); }
+
+/* Header: what this is, then the answer as the h1, then the short version. */
+.meta { font-size: var(--fs-caption); color: var(--text-3); display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); align-items: center; margin-bottom: var(--s3); }
+.lede { font-size: var(--fs-sub); line-height: 1.5; color: var(--text-2); margin-top: var(--s4); }
+.tldr { background: var(--surface); border-radius: var(--radius); padding: var(--s5); margin-top: var(--s6); }
+.tldr > :first-child { margin-top: 0; }
+.tldr ul { padding-left: 1.2em; }
+
+/* Table of contents, for pages with more than ~4 sections. */
+nav.toc { font-size: var(--fs-caption); margin-top: var(--s6); }
+nav.toc ol { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); list-style: none; padding: 0; margin: 0; }
+nav.toc li + li { margin-top: 0; }
+
+/* Status: always a word, colour only reinforces it. */
+.tag { display: inline-block; font-size: var(--fs-caption); font-weight: 600; line-height: 1; padding: 5px 8px; border-radius: 999px; background: var(--surface); color: var(--text-2); white-space: nowrap; }
+.tag.ok { background: var(--ok-bg); color: var(--ok); }
+.tag.warn { background: var(--warn-bg); color: var(--warn); }
+.tag.bad { background: var(--bad-bg); color: var(--bad); }
+.tag.info { background: var(--accent-bg); color: var(--accent); }
+
+/* Callouts: one job each. Use sparingly; if everything is a callout nothing is. */
+.callout { border-left: 3px solid var(--line); padding: var(--s1) 0 var(--s1) var(--s4); }
+.callout > :first-child { margin-top: 0; }
+.callout.ask { border-color: var(--accent); }   /* what I need from the reader */
+.callout.risk { border-color: var(--warn); }
+.callout.bad { border-color: var(--bad); }
+.label { display: block; font-size: var(--fs-caption); font-weight: 600; color: var(--text-2); margin-bottom: var(--s1); }
+
+/* Numbered steps for a sequence the reader follows. */
+.steps { list-style: none; padding: 0; counter-reset: step; }
+.steps > li { counter-increment: step; position: relative; padding-left: 2.5em; }
+.steps > li + li { margin-top: var(--s4); }
+.steps > li::before { content: counter(step); position: absolute; left: 0; top: 0.1em; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--surface); color: var(--text-2); font-size: var(--fs-caption); font-weight: 600; display: grid; place-items: center; }
+
+/* Flow: boxes and arrows in plain HTML. Wraps to a column on narrow screens. */
+.flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--s2); }
+.flow .node { flex: 1 1 140px; background: var(--surface); border-radius: var(--radius); padding: var(--s3) var(--s4); }
+.flow .node b { display: block; font-weight: 600; }
+.flow .node span { font-size: var(--fs-caption); color: var(--text-3); }
+.flow .node.hl { background: var(--accent-bg); }
+.flow .arrow { align-self: center; color: var(--text-3); }
+@media (max-width: 560px) { .flow { flex-direction: column; } .flow .node { flex: none; } .flow .arrow { transform: rotate(90deg); } }
+
+/* Two things side by side (before/after, option A/B). Stacks when narrow. */
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--s5); margin-top: var(--s4); }
+.pair > * { margin: 0; min-width: 0; }
+
+/* Tables: header row, left-aligned text, right-aligned numbers, scroll when narrow. */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-caption); line-height: 1.5; }
+th, td { text-align: left; vertical-align: top; padding: var(--s2) var(--s3); border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--text-2); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+tr.pick td { background: var(--accent-bg); }
+
+/* Code and paths. */
+code { font-family: var(--mono); font-size: 0.9em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre { background: var(--code-bg); border-radius: var(--radius); padding: var(--s4); overflow-x: auto; font-size: var(--fs-caption); line-height: 1.55; }
+pre code { background: none; padding: 0; overflow-wrap: normal; }
+pre.mermaid { background: none; padding: 0; text-align: center; }
+figcaption { font-size: var(--fs-caption); color: var(--text-3); margin-top: var(--s2); }
+.code-label { font: 500 var(--fs-caption) var(--mono); color: var(--text-3); margin-bottom: calc(-1 * var(--s2)); }
+.diff .add { color: var(--ok); } .diff .del { color: var(--bad); }
+
+/* Depth on demand. The summary line must say what is inside. */
+details { border-top: 1px solid var(--line); padding-top: var(--s3); }
+details + details { margin-top: 0; }
+details > :not(summary) { margin-top: var(--s3); }
+details:last-of-type { border-bottom: 1px solid var(--line); padding-bottom: var(--s3); }
+summary { cursor: pointer; font-weight: 600; }
+summary small { font-weight: 400; margin-left: var(--s2); }
+
+/* Self-check for teaching pages: question in the summary, answer inside. */
+.check summary { font-weight: 500; }
+.check summary::before { content: "Check: "; color: var(--text-3); font-weight: 600; }
+
+footer { margin-top: var(--s8); font-size: var(--fs-caption); color: var(--text-3); }
+footer > * { max-width: var(--measure); margin-inline: auto; }
+
+@media (max-width: 560px) { body { padding: var(--s6) var(--s4) var(--s7); } h2 { margin-top: var(--s7); } }
+@media print {
+  :root { color-scheme: light; }
+  body { padding: 0; } nav.toc { display: none; }
+  details { border: 0; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-3); }
+  h2, h3 { break-after: avoid; } figure, table, .flow, .pair { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<main>
+<!-- Keep only the parts this page needs. Delete every unused block and every TODO. -->
+
+<header>
+  <div class="meta"><span>TODO: project</span><span>TODO: date</span><span class="tag ok">TODO: status word</span></div>
+  <h1>TODO: the answer, as a sentence ("The importer now skips duplicates; one migration still needs your review")</h1>
+  <p class="lede">TODO: one or two sentences of context the reader needs before anything else.</p>
+</header>
+
+<section class="tldr" aria-label="Summary">
+  <ul>
+    <li>TODO: the outcome</li>
+    <li>TODO: the strongest evidence</li>
+    <li>TODO: the main risk or open question</li>
+  </ul>
+</section>
+
+<div class="callout ask"><span class="label">What I need from you</span><p>TODO: the decision or action, or delete this block.</p></div>
+
+<nav class="toc" aria-label="Contents"><ol><li><a href="#one">TODO</a></li><li><a href="#two">TODO</a></li></ol></nav>
+
+<h2 id="one">TODO: section heading that states its point</h2>
+<p>TODO</p>
+
+<div class="flow wide" role="img" aria-label="TODO: the flow in words">
+  <div class="node"><b>TODO</b><span>TODO</span></div><div class="arrow" aria-hidden="true">→</div>
+  <div class="node hl"><b>TODO</b><span>changed</span></div><div class="arrow" aria-hidden="true">→</div>
+  <div class="node"><b>TODO</b><span>TODO</span></div>
+</div>
+
+<div class="table-wrap wide"><table>
+  <thead><tr><th>Option</th><th>TODO</th><th class="n">Cost / mo</th></tr></thead>
+  <tbody>
+    <tr class="pick"><td><strong>TODO</strong> <span class="tag info">pick</span></td><td>TODO</td><td class="n">$0</td></tr>
+    <tr><td>TODO</td><td>TODO</td><td class="n">$0</td></tr>
+  </tbody>
+</table></div>
+
+<div class="pair wide">
+  <div><span class="label">Before</span><pre><code>TODO</code></pre></div>
+  <div><span class="label">After</span><pre><code>TODO</code></pre></div>
+</div>
+
+<ol class="steps"><li>TODO</li><li>TODO</li></ol>
+
+<div class="callout risk"><span class="label">Risk</span><p>TODO</p></div>
+
+<h2 id="two">TODO</h2>
+<details><summary>TODO: what is inside <small>TODO: why open it</small></summary><p>TODO</p></details>
+<details class="check"><summary>TODO: a question that tests the main idea</summary><p>TODO: the answer, and why the tempting wrong answer is wrong.</p></details>
+
+</main>
+<footer><p>TODO: sources, commit or run, commands used, what was not checked. Generated TODO: date.</p></footer>
+<script>/* Print every folded section. */ addEventListener("beforeprint", () => document.querySelectorAll("details").forEach((d) => (d.open = true)));</script>
+</body>
+</html>

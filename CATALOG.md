@@ -1,6 +1,6 @@
 # Skill catalog
 
-Every skill I looked at from the four sources, what it does, and whether it's in the library.
+Every skill I looked at from the four sources (plus prior art for HTML pages at the end), what it does, and whether it's in the library.
 Snapshot: 2026-10-11.
 
 ✅ in the library · ➕ worth adding later, or per project · ✖ skip (reason given)
@@ -125,3 +125,16 @@ Project-specific, so not installed.
 | contribution-triage | Enforces T3's contribution policy: closes ineligible PRs, sends eligible ones to Macroscope review | ✖ only for maintainers |
 
 Also worth reading: T3's `AGENTS.md` (glossary, "three ways to hurt yourself", "hit every surface") and its custom lint rules in `oxlint-plugin-t3code/`.
+
+## HTML pages · researched for `html-artifacts` (2026-10-12)
+
+Prior art for agents writing HTML for people. `html-artifacts` is my own skill; it borrows ideas from these, no files.
+
+| Skill | What it does | |
+|---|---|---|
+| nicobailon/visual-explainer (MIT) | Explainer, diff-review and plan pages; figure-first rules, hand-drawn SVG, four visual "registers", slides and video | ✖ too heavy and a recognisable house style. Took: headings as claims, labeled arrows, the 390/1280 light/dark check |
+| anthropics/skills frontend-design (Apache-2.0) | Distinctive product and marketing UI, with the best list of AI design tells | ✖ aimed at product UI. Took: the tells |
+| anthropics/html-effectiveness (MIT) | 20 example pages from Thariq's "unreasonable effectiveness of HTML" post | ✖ examples only. Took: pages the reader can answer |
+| dogum/html-artifacts (Apache-2.0) | When to use HTML vs markdown, a Playwright verify script, a tells list | ✖ its default CSS breaks its own rules. Took: the "would this just be headings and paragraphs?" test |
+| plannotator/effective-html (MIT) | Router plus plan, diagram, wireframe and prototype skills | ✖ ties into its own CLI. Took: keep assumptions apart from decisions |
+| f-labs-io/agent-html-skills (MIT) | 17 content skills with a submit-back listener | ✖ sprawling. Took: SVG text doesn't wrap, size boxes for it |
