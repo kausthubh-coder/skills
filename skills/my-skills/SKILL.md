@@ -5,7 +5,7 @@ description: Add, edit, remove or update skills in my personal skill library, wh
 
 # My skill library
 
-The library lives at `C:\Users\kaust\OneDrive\Documents\dev\agent-skills`, a public git repo (`kausthubh-coder/skills`). Read its `README.md` before changing anything. Commit each change; push only when I ask. `reports/` is gitignored, so keep anything private there.
+The library lives at `C:\Users\kaust\OneDrive\Documents\dev\agent-skills`, a public git repo (`kausthubh-coder/skills`). Read its `README.md` before changing anything, and `docs/philosophy.md` and `docs/me.md` before writing or rewriting a skill. Bigger work (testing skills in threads, reworking several) belongs in a thread opened in the library itself, where `AGENTS.md` sets the agent up as manager. Commit each change; push only when I ask. `reports/` is gitignored, so keep anything private there.
 
 - `skills/<name>/` are global skills. Each is linked (a junction) into `~/.agents/skills` (Codex) and `~/.claude/skills` (Claude Code), so an edit in the library is live in every agent at once. Edit the library copy, never the linked path.
 - `sources.json` records where each skill came from (upstream repo, path, commit, license) and what I changed.

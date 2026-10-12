@@ -4,6 +4,8 @@ My personal skill library. One folder of skills, linked into Claude Code and Cod
 
 Lives at `dev/agent-skills` locally and [kausthubh-coder/skills](https://github.com/kausthubh-coder/skills) on GitHub.
 
+A thread opened in this repo acts as the library's manager: `AGENTS.md` says how it tests skills in real threads and improves them. The thinking behind the skills is in `docs/philosophy.md`.
+
 ## Layout
 
 | Path | What |
@@ -13,6 +15,8 @@ Lives at `dev/agent-skills` locally and [kausthubh-coder/skills](https://github.
 | `skills/optimize/` | `/optimize`: audit an existing project and plan agent-native improvements at a chosen depth |
 | `skills/init-project/references/AGENTS.base.md` | The base AGENTS.md every project starts from |
 | `skills/my-skills/` | Lets any agent add, edit or update skills in this library |
+| `AGENTS.md`, `docs/` | The manager's brief, my philosophy, my setup and decisions, how skills are tested |
+| `evals/scenarios.md` | Scenarios for testing skills in real threads |
 | `sources.json` | Where each copied skill came from, its license, upstream commit, and what I changed. `local` lists my own repos whose skills are linked from their checkout |
 | `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
 | `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder |

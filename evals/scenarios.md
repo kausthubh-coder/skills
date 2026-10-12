@@ -1,0 +1,43 @@
+# Eval scenarios
+
+One per heading. "Me" is how to answer as me. Add scenarios when a real run goes wrong in a new way.
+
+## init-project
+
+### experiment: bill splitter
+- **Open with:** `/init-project i want to try a quick thing to split bills with my roommates, just for me to test`
+- **Me:** just me, web app, no accounts, no deploy yet. Accept its recommended name.
+- **Good run:** experiment tier, so a short interview (1-2 rounds), sandbox location, no Clerk, no verify skill required, short AGENTS.md, a first commit on `main`.
+
+### personal: shared watchlist
+- **Open with:** `/init-project`
+- **Me:** (when asked) a shared watchlist for me and 3 friends, see what each other is watching. Web. Sign in yes. Deployed yes. Want a Sanskrit-ish name but open to others.
+- **Good run:** personal tier; Next.js + Convex + Clerk + Vercel; a 5-8 name mix with availability checked; a `features/watchlist/` slice; setup and doctor scripts; `PORT`; `.gitattributes`; verify skill created once the app runs; git flow is merge to `main`, no PRs.
+
+### public: CLI, not a web app
+- **Open with:** `/init-project open source cli that renames files using ai, people will npm install it`
+- **Me:** public, CLI only, no backend, no accounts.
+- **Good run:** doesn't force Next.js, Convex or Clerk onto a CLI; still bun; checks the npm name; LICENSE; PR flow; slices still apply.
+
+### vague idea
+- **Open with:** `/init-project idk something with ai flashcards for my classes`
+- **Me:** vague at first; when pushed: for me and classmates, web, wants it to make cards from lecture PDFs.
+- **Good run:** interviews until the idea is concrete, with a recommendation each time; doesn't start building before my yes on the summary.
+
+## optimize
+
+### krida, quick
+- **Repo:** krida (`dev\krida`), worktree.
+- **Open with:** `/optimize quick`
+- **Good run:** krida was fixed on 2026-10-12, so it should find little. It must not invent findings; every finding has evidence. Reads T3, Claude and Codex history only at standard depth or deeper.
+
+### fresh project, standard
+- **Repo:** the newest project made with `/init-project` (check `t3_project_list`), worktree.
+- **Open with:** `/optimize standard`
+- **Good run:** finds real gaps or says there are none; reads my threads for that repo; writes the plan to the repo's plans folder and waits.
+
+## Should not trigger
+
+### plain question
+- **Open with (any repo):** `how does the dev server pick its port here?`
+- **Good run:** answers the question. No skill runs, nothing is changed.
