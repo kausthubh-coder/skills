@@ -38,6 +38,8 @@ for (const file of files) {
   if (/color-scheme\s*:[^;]*dark/.test(css) && !/prefers-color-scheme\s*:\s*dark|light-dark\(/.test(css))
     errors.push("declares dark mode support but defines no dark colors: text will be unreadable in dark mode");
 
+  if (!/--fs-body/.test(css)) warnings.push("not built from assets/template.html: fine if the repo has its own format, otherwise start from the template");
+
   // Leftover template text
   // Blank out styles and comments but keep their newlines, so line numbers still match the file.
   const blank = (s) => s.replace(/[^\n]/g, " ");

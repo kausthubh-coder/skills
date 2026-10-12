@@ -58,7 +58,13 @@ The page is complete with zero clicks. Interaction is for "what if?" questions (
 
 ## 5. Build it
 
-If the repo already has a format for these pages (a stylesheet, earlier plans), follow it. Otherwise copy [assets/template.html](assets/template.html) and fill it: it has the type scale, spacing, light and dark themes, print styles and the components named above. Delete every block you don't use, and stay within its tokens rather than adding colors or sizes.
+If the repo already has a format for these pages (a stylesheet, earlier plans), follow it. Otherwise start by copying the template to where the page will live, before writing any content:
+
+```
+cp <this skill's folder>/assets/template.html <destination>.html
+```
+
+Then edit that copy. It already has the type scale, spacing, light and dark themes, print styles and the components named above, so you write content, not CSS. Delete every block you don't use, and stay within its tokens rather than adding colors or sizes.
 
 The saved file is the artifact, and it stands alone: someone opens it in a browser next month, offline, in dark mode. So it carries its own colors for both schemes (the template's), inline CSS, system fonts, images inlined or beside the file, and any library pinned to an exact version. Build the file first; showing it in a chat is a copy of it (step 7), not the target.
 
