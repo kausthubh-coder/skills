@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// Links every folder in skills/ into each agent's global skills folder, so editing the library
-// updates every agent at once. Uses junctions on Windows (no admin needed), symlinks elsewhere.
+// Links every folder in skills/, plus the skill folders of the local repos listed under "local" in
+// sources.json, into each agent's global skills folder, so editing the source updates every agent
+// at once. Uses junctions on Windows (no admin needed), symlinks elsewhere.
 //
 //   node scripts/link.mjs            link new skills, prune links to skills that no longer exist
 //   node scripts/link.mjs --dry-run  show what would change
@@ -28,12 +29,25 @@ const norm = (p) => {
   const clean = path.resolve(p.replace(/^\\\\\?\\/, ""));
   return process.platform === "win32" ? clean.toLowerCase() : clean;
 };
-const libraryPrefix = norm(skillsDir) + path.sep;
+// Folders whose subfolders are skills: this library, then local repos that own their skills (Critly).
+const local = JSON.parse(fs.readFileSync(path.join(root, "sources.json"), "utf8")).local ?? {};
+const skillDirs = [skillsDir];
+for (const [name, { path: rel }] of Object.entries(local)) {
+  const dir = path.resolve(root, rel);
+  if (fs.existsSync(dir)) skillDirs.push(dir);
+  else console.log(`- ${name}: ${dir} does not exist, its skills were not linked or pruned`);
+}
+const prefixes = skillDirs.map((d) => norm(d) + path.sep);
 
-const skills = fs
-  .readdirSync(skillsDir, { withFileTypes: true })
-  .filter((e) => e.isDirectory() && fs.existsSync(path.join(skillsDir, e.name, "SKILL.md")))
-  .map((e) => e.name);
+// Skill name -> source folder.
+const skills = new Map();
+for (const dir of skillDirs) {
+  for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!e.isDirectory() || !fs.existsSync(path.join(dir, e.name, "SKILL.md"))) continue;
+    if (skills.has(e.name)) throw new Error(`Two skills named ${e.name}: ${skills.get(e.name)} and ${dir}`);
+    skills.set(e.name, path.join(dir, e.name));
+  }
+}
 
 // Where a link points, or null if the entry is not a link.
 function linkTarget(p) {
@@ -68,16 +82,15 @@ for (const { agent, dir } of targets) {
   for (const entry of fs.readdirSync(dir)) {
     const p = path.join(dir, entry);
     const t = linkTarget(p);
-    if (!t || !t.startsWith(libraryPrefix)) continue;
-    if (unlinkAll || !skills.includes(entry)) {
+    if (!t || !prefixes.some((pre) => t.startsWith(pre))) continue;
+    if (unlinkAll || t !== norm(skills.get(entry) ?? "")) {
       removeLink(p);
       changes.push(`${tag}removed ${entry}`);
     }
   }
 
   if (!unlinkAll) {
-    for (const name of skills) {
-      const src = path.join(skillsDir, name);
+    for (const [name, src] of skills) {
       const dest = path.join(dir, name);
       const t = linkTarget(dest);
       if (t === norm(src)) continue;

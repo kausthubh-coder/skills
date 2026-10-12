@@ -2,7 +2,7 @@
 
 My personal skill library. One folder of skills, linked into Claude Code and Codex (CLI, app, and through T3 Code), plus a base `AGENTS.md` that new projects start from.
 
-Lives at `dev/skills` locally and [kausthubh-coder/skills](https://github.com/kausthubh-coder/skills) on GitHub.
+Lives at `dev/agent-skills` locally and [kausthubh-coder/skills](https://github.com/kausthubh-coder/skills) on GitHub.
 
 ## Layout
 
@@ -13,14 +13,18 @@ Lives at `dev/skills` locally and [kausthubh-coder/skills](https://github.com/ka
 | `skills/optimize/` | `/optimize`: audit an existing project and plan agent-native improvements at a chosen depth |
 | `skills/init-project/references/AGENTS.base.md` | The base AGENTS.md every project starts from |
 | `skills/my-skills/` | Lets any agent add, edit or update skills in this library |
-| `sources.json` | Where each copied skill came from, its license, upstream commit, and what I changed |
+| `sources.json` | Where each copied skill came from, its license, upstream commit, and what I changed. `local` lists my own repos whose skills are linked from their checkout |
 | `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
-| `scripts/link.mjs` | Links `skills/*` into each agent's global folder |
+| `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder |
 | `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
 | `reports/` | Agent-native audits of my projects (local only, gitignored) |
 | `licenses/` | Upstream licenses (MIT requires keeping them) |
 | `_sources/` | Local clones of the upstream repos (gitignored) |
 | `_retired/` | Skills I stopped using, kept for reference and not linked. Includes `oracle`, which this repo used to hold |
+
+## Critly
+
+`critly` and `critly-audit` belong to Critly (`dev/critly/craft`, repo `kausthubh-coder/craft`), which generates them from its concepts with `bun run build:skill`. `sources.json` lists that folder under `local`, so `link.mjs` links them straight from the checkout: a rebuild there is live in every agent. Don't install them with `npx skills add` on this machine; that would put a second copy in the way.
 
 ## Global vs project skills
 
