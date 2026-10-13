@@ -6,7 +6,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 
 - **Agents:** T3 Code running Claude Code and Codex, plus the Codex app. Nothing else (no Cursor, no OpenCode). Skills are linked into `~/.claude/skills` and `~/.agents/skills` only.
 - **Machine:** Windows 11. Projects live in OneDrive at `C:\Users\kaust\OneDrive\Documents\dev`. Experiments go in `dev\sandbox\<name>`; real projects in `dev\<name>`. Read `dev\sandbox\AGENTS.md` for the sandbox rules and how promotion works.
-- **Stack:** bun, Next.js for web apps, Convex, Clerk, Vercel. Nothing else by default; anything else is decided per project. Never npm or npx.
+- **Stack:** bun, Next.js for web apps, Convex, Clerk, Vercel. Nothing else by default; anything else is decided per project. New projects never use npm or npx. Existing repos keep the package manager their lockfile uses (krida is npm) until I decide to switch.
 - **GitHub:** `kausthubh-coder`.
 - **Cost:** for mechanical work that needs no taste (moving files, cleanups, bulk edits), use GPT subagents through T3 `delegate_task` to save Claude usage.
 
