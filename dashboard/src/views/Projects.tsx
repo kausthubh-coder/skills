@@ -7,12 +7,21 @@ const PLACE: Record<Place, { label: string; tone: "ok" | "warn" | "bad" }> = {
 };
 const Flow = ({ p }: { p?: Place }) => (p ? <Tag tone={PLACE[p].tone}>{PLACE[p].label}</Tag> : <span className="muted">—</span>);
 const rate = (n: number, d: number) => (d ? `${Math.round((n / d) * 100)}%` : "—");
+// The audit names projects as T3 does ("No project", "kausthubh-portfolio"); the collector shortens them.
+const key = (name: string) => {
+  const l = name.toLowerCase();
+  if (l.includes("portfolio")) return "portfolio";
+  if (l.includes("murmur") || l.includes("likh")) return "likh";
+  if (l.includes("scratch") || l === "no project") return "scratch";
+  if (l.includes("studi")) return "studi";
+  return l;
+};
 
 export function Projects({ data, audits }: ViewProps) {
   const verdicts = new Map<string, { good: number; mixed: number; bad: number }>();
   for (const t of audits[0]?.threads ?? []) {
-    const v = verdicts.get(t.project) ?? { good: 0, mixed: 0, bad: 0 };
-    v[t.verdict]++; verdicts.set(t.project, v);
+    const v = verdicts.get(key(t.project)) ?? { good: 0, mixed: 0, bad: 0 };
+    v[t.verdict]++; verdicts.set(key(t.project), v);
   }
   const rows = data.projects.filter((p) => p.sessions > 0 || p.flows).filter((p) => p.name !== "other");
   return (
@@ -26,7 +35,7 @@ export function Projects({ data, audits }: ViewProps) {
           <thead><tr><th>Project</th><th className="n">Sessions</th><th className="n">Frustrated</th><th className="n">Praise</th><th>Last audit</th><th>Worktree</th><th>Ship</th><th>Verify</th></tr></thead>
           <tbody>
             {rows.map((p) => {
-              const v = verdicts.get(p.name);
+              const v = verdicts.get(key(p.name));
               return (
                 <tr key={p.name}>
                   <td>{p.name}</td>

@@ -38,7 +38,7 @@ export function Skills({ data, audits }: ViewProps) {
       </div>
       <Section title={`${rows.length} skills`}>
         <div className="table-wrap"><table>
-          <thead><tr><th>Skill</th><th className="n">Loads</th><th className="n">Claude</th><th className="n">Codex</th><th className="n" title="Times a routing rule applied and the skill didn't load. Word-list matches until the audit confirms them.">Misses?</th><th>Last used</th><th>Status</th></tr></thead>
+          <thead><tr><th>Skill</th><th className="n">Loads</th><th className="n">Claude</th><th className="n">Codex</th><th className="n" title="Times a routing rule applied and the skill didn't load. Word-list matches until the audit confirms them.">Misses?</th><th className="n">Last used</th><th>Status</th></tr></thead>
           <tbody>
             {rows.map((s) => {
               const g = grades.get(s.name);
@@ -49,7 +49,7 @@ export function Skills({ data, audits }: ViewProps) {
                     <td><code>{s.name}</code>{s.userOnly && <span className="muted small"> · user-only</span>}</td>
                     <td className="n">{s.loads}</td><td className="n">{s.claude}</td><td className="n">{s.codex}</td>
                     <td className="n">{s.misses || ""}</td>
-                    <td className="num">{s.lastUsed ? shortDay(s.lastUsed) : <span className="muted">never</span>}</td>
+                    <td className="n">{s.lastUsed ? shortDay(s.lastUsed) : <span className="muted">never</span>}</td>
                     <td>{status(s, g?.grade)}</td>
                   </tr>
                   {expanded && g && (

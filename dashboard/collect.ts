@@ -227,7 +227,9 @@ function flowsFor(repo: string) {
   };
   // origin/main, not local main: some main checkouts are weeks behind
   const state = (kind: string) => has("origin/main", kind) ? "main" : has("agent-flows", kind) || has("t3/optimize-agent-workflow", kind) ? "branch" : "none";
-  return { worktree: state("worktree-"), ship: state("ship-"), verify: state("verify-") };
+  // older repos named their verify skill test-<app> (Studi's test-studi)
+  const verify = [state("verify-"), state("test-")].sort((a, b) => ["main", "branch", "none"].indexOf(a) - ["main", "branch", "none"].indexOf(b))[0];
+  return { worktree: state("worktree-"), ship: state("ship-"), verify };
 }
 
 export function collect() {
