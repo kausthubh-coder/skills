@@ -51,7 +51,7 @@ From the 2026-10-12 audits of krida, Studi and kriyan (`reports/` in the skill l
 
 ## 3. Plan
 
-Write the plan where this repo keeps plans (look for `.agent/plans`, `docs/plans`, or similar; otherwise `.agents/plans/`), named `optimize-<date>.md`. Use the repo's own format if it has one (Studi uses HTML plans).
+Write the plan as an HTML page with the `html-artifacts` skill (Plan type), never Markdown: I read it. Save it where this repo keeps plans (look for `.agent/plans`, `docs/plans`, or similar; otherwise `.agents/plans/`), named `<date>-optimize.html`. Keep a status block on it that you update as items finish.
 
 - **Snapshot:** stack, layout, size, and the agent setup today.
 - **Findings**, grouped by the five audit areas, each with evidence.

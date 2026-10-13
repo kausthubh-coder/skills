@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plan: a skills dashboard and an audit every two days</title>
+<style>
+/* Tokens. Neutrals do the work; the accent marks links and the current thing;
+   green, amber and red appear only when they mean pass, warning or failure. */
+:root {
+  color-scheme: light dark;
+  --bg: #fcfcfb;      --surface: #f2f2f0;   --line: #dcdcd8;
+  --text: #1b1b1a;    --text-2: #4a4a47;    --text-3: #67675f;
+  --accent: #2a5db0;  --accent-bg: #e8eefa;
+  --ok: #23703a;      --ok-bg: #e6f2e9;
+  --warn: #8a5a00;    --warn-bg: #fbf0d9;
+  --bad: #b3261e;     --bad-bg: #fbe7e5;
+  --code-bg: #f2f2f0;
+
+  /* Type scale (~1.25): caption, body, subhead, title, display. Use nothing else. */
+  --fs-caption: 0.875rem; --fs-body: 1.0625rem; --fs-sub: 1.3125rem; --fs-title: 1.625rem; --fs-display: 2.0625rem;
+  /* Spacing scale. Gaps inside a group are about half the gaps between groups. */
+  --s1: 4px; --s2: 8px; --s3: 12px; --s4: 16px; --s5: 24px; --s6: 32px; --s7: 48px; --s8: 72px;
+
+  --measure: 39rem;   /* prose line length: ~70 characters at body size */
+  --wide: 1080px;     /* tables, diagrams, comparisons */
+  --radius: 8px;
+  --sans: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #161616;      --surface: #212120;   --line: #353533;
+    --text: #ececea;    --text-2: #bcbcb6;    --text-3: #9b9b94;
+    --accent: #8fb3f5;  --accent-bg: #1d2a42;
+    --ok: #7fcf94;      --ok-bg: #18301f;
+    --warn: #e6b85c;    --warn-bg: #352a12;
+    --bad: #f2928b;     --bad-bg: #3b1d1a;
+    --code-bg: #212120;
+  }
+}
+
+* { box-sizing: border-box; }
+html { background: var(--bg); -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; padding: var(--s7) var(--s5) var(--s8);
+  font: 400 var(--fs-body)/1.6 var(--sans); color: var(--text);
+}
+main > * { max-width: var(--measure); margin-inline: auto; }
+main > .wide { max-width: var(--wide); }
+
+h1, h2, h3 { line-height: 1.25; text-wrap: balance; margin-block: 0; }
+h1 { font-size: var(--fs-display); font-weight: 650; letter-spacing: -0.02em; }
+h2 { font-size: var(--fs-title); font-weight: 650; letter-spacing: -0.015em; margin-top: var(--s8); }
+h3 { font-size: var(--fs-sub); font-weight: 600; letter-spacing: -0.01em; margin-top: var(--s6); }
+h2 + *, h3 + * { margin-top: var(--s3); }
+p, ul, ol, table, pre, figure, details, .callout, .steps, .flow { margin-block: var(--s4) 0; }
+p { text-wrap: pretty; }
+li + li { margin-top: var(--s2); }
+a { color: var(--accent); text-underline-offset: 2px; }
+a:focus-visible, summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 2px; }
+strong { font-weight: 600; }
+.muted { color: var(--text-3); }
+small, .caption { font-size: var(--fs-caption); color: var(--text-3); }
+.num { font-variant-numeric: tabular-nums; }
+hr { border: 0; border-top: 1px solid var(--line); margin-block: var(--s7); }
+
+/* Header: what this is, then the answer as the h1, then the short version. */
+.meta { font-size: var(--fs-caption); color: var(--text-3); display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); align-items: center; margin-bottom: var(--s3); }
+.lede { font-size: var(--fs-sub); line-height: 1.5; color: var(--text-2); margin-top: var(--s4); }
+.tldr { background: var(--surface); border-radius: var(--radius); padding: var(--s5); margin-top: var(--s6); }
+.tldr > :first-child { margin-top: 0; }
+.tldr ul { padding-left: 1.2em; }
+
+/* Table of contents, for pages with more than ~4 sections. */
+nav.toc { font-size: var(--fs-caption); margin-top: var(--s6); }
+nav.toc ol { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s5); list-style: none; padding: 0; margin: 0; }
+nav.toc li + li { margin-top: 0; }
+
+/* Status: always a word, colour only reinforces it. */
+.tag { display: inline-block; font-size: var(--fs-caption); font-weight: 600; line-height: 1; padding: 5px 8px; border-radius: 999px; background: var(--surface); color: var(--text-2); white-space: nowrap; }
+.tag.ok { background: var(--ok-bg); color: var(--ok); }
+.tag.warn { background: var(--warn-bg); color: var(--warn); }
+.tag.bad { background: var(--bad-bg); color: var(--bad); }
+.tag.info { background: var(--accent-bg); color: var(--accent); }
+
+/* Callouts: one job each. Use sparingly; if everything is a callout nothing is. */
+.callout { border-left: 3px solid var(--line); padding: var(--s1) 0 var(--s1) var(--s4); }
+.callout > :first-child { margin-top: 0; }
+.callout.ask { border-color: var(--accent); }   /* what I need from the reader */
+.callout.risk { border-color: var(--warn); }
+.callout.bad { border-color: var(--bad); }
+.label { display: block; font-size: var(--fs-caption); font-weight: 600; color: var(--text-2); margin-bottom: var(--s1); }
+
+/* Numbered steps for a sequence the reader follows. */
+.steps { list-style: none; padding: 0; counter-reset: step; }
+.steps > li { counter-increment: step; position: relative; padding-left: 2.5em; }
+.steps > li + li { margin-top: var(--s4); }
+.steps > li::before { content: counter(step); position: absolute; left: 0; top: 0.1em; width: 1.7em; height: 1.7em; border-radius: 50%; background: var(--surface); color: var(--text-2); font-size: var(--fs-caption); font-weight: 600; display: grid; place-items: center; }
+
+/* Flow: boxes and arrows in plain HTML. Wraps to a column on narrow screens. */
+.flow { display: flex; flex-wrap: wrap; align-items: stretch; gap: var(--s2); }
+.flow .node { flex: 1 1 140px; background: var(--surface); border-radius: var(--radius); padding: var(--s3) var(--s4); }
+.flow .node b { display: block; font-weight: 600; }
+.flow .node span { font-size: var(--fs-caption); color: var(--text-3); }
+.flow .node.hl { background: var(--accent-bg); }
+.flow .arrow { align-self: center; color: var(--text-3); }
+@media (max-width: 560px) { .flow { flex-direction: column; } .flow .node { flex: none; } .flow .arrow { transform: rotate(90deg); } }
+
+/* Two things side by side (before/after, option A/B). Stacks when narrow. */
+.pair { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 300px), 1fr)); gap: var(--s5); margin-top: var(--s4); }
+.pair > * { margin: 0; min-width: 0; }
+
+/* Tables: header row, left-aligned text, right-aligned numbers, scroll when narrow. */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: var(--fs-caption); line-height: 1.5; }
+th, td { text-align: left; vertical-align: top; padding: var(--s2) var(--s3); border-bottom: 1px solid var(--line); }
+th { font-weight: 600; color: var(--text-2); }
+td.n, th.n { text-align: right; font-variant-numeric: tabular-nums; }
+tr.pick td { background: var(--accent-bg); }
+
+/* Code and paths. */
+code { font-family: var(--mono); font-size: 0.9em; background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+pre { background: var(--code-bg); border-radius: var(--radius); padding: var(--s4); overflow-x: auto; font-size: var(--fs-caption); line-height: 1.55; }
+pre code { background: none; padding: 0; overflow-wrap: normal; }
+pre.mermaid { background: none; padding: 0; text-align: center; }
+figcaption { font-size: var(--fs-caption); color: var(--text-3); margin-top: var(--s2); }
+.code-label { font: 500 var(--fs-caption) var(--mono); color: var(--text-3); margin-bottom: calc(-1 * var(--s2)); }
+.diff .add { color: var(--ok); } .diff .del { color: var(--bad); }
+
+/* Depth on demand. The summary line must say what is inside. */
+details { border-top: 1px solid var(--line); padding-top: var(--s3); }
+details + details { margin-top: 0; }
+details > :not(summary) { margin-top: var(--s3); }
+details:last-of-type { border-bottom: 1px solid var(--line); padding-bottom: var(--s3); }
+summary { cursor: pointer; font-weight: 600; }
+summary small { font-weight: 400; margin-left: var(--s2); }
+
+/* Self-check for teaching pages: question in the summary, answer inside. */
+.check summary { font-weight: 500; }
+.check summary::before { content: "Check: "; color: var(--text-3); font-weight: 600; }
+
+footer { margin-top: var(--s8); font-size: var(--fs-caption); color: var(--text-3); }
+footer > * { max-width: var(--measure); margin-inline: auto; }
+
+@media (max-width: 560px) { body { padding: var(--s6) var(--s4) var(--s7); } h2 { margin-top: var(--s7); } }
+@media print {
+  :root { color-scheme: light; }
+  body { padding: 0; } nav.toc { display: none; }
+  details { border: 0; }
+  a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 0.8em; color: var(--text-3); }
+  h2, h3 { break-after: avoid; } figure, table, .flow, .pair { break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+<main>
+
+<header>
+  <div class="meta"><span>Skill library</span><span>13 Oct 2026</span><span class="tag info">Plan, waiting for your go</span></div>
+  <h1>Build a local skills dashboard, fed by an audit that reads your threads every two days</h1>
+  <p class="lede">You want to see whether your skills are doing their job: how often each one loads, where it should have loaded and didn't, and how you reacted. Today that takes a manual audit like the one we did on 13 October. This makes it automatic.</p>
+</header>
+
+<section class="tldr" aria-label="Summary">
+  <ul>
+    <li><strong>What you get:</strong> a page you open with <code>bun run dashboard</code>. It shows skill loads, misses, your frustration and praise, repeated instructions, and the latest audit's recommendations.</li>
+    <li><strong>How it stays current:</strong> a T3 scheduled task opens a fresh thread in this repo every 48 hours. That thread reads what's new in your Claude Code, Codex and T3 history and writes an audit.</li>
+    <li><strong>Covers Critly too:</strong> its two skills and its check runs, the Critly project's threads, and the dashboard itself is built to pass Critly's check.</li>
+    <li><strong>Main risk:</strong> word lists misread tone. The audit has a model confirm every signal before it's counted.</li>
+  </ul>
+</section>
+
+<div class="callout ask"><span class="label">What I need from you (reply "go" to take all the defaults)</span>
+<ol>
+  <li><strong>How often:</strong> every 2 days (default), daily, or every 3 days.</li>
+  <li><strong>Who judges:</strong> Claude makes the calls and GPT helpers do the bulk sorting (default), or one model for everything.</li>
+  <li><strong>Accepting a recommendation:</strong> you tell the audit thread (default), or later a dashboard button that starts a thread to do it.</li>
+</ol></div>
+
+<nav class="toc" aria-label="Contents"><ol><li><a href="#done">Done means</a></li><li><a href="#how">How it works</a></li><li><a href="#signals">Signals</a></li><li><a href="#views">Views</a></li><li><a href="#options">Options</a></li><li><a href="#scope">Scope</a></li><li><a href="#risks">Risks</a></li><li><a href="#order">Order</a></li></ol></nav>
+
+<h2 id="done">Done means you can open one page and see which skills work</h2>
+<ul>
+  <li><strong>Counts you can trust:</strong> run against your history up to 13 October, the dashboard shows about 60 self-picked skill loads in about 213 Claude sessions, and zero <code>diagnosing-bugs</code> loads before the routing block. That's what the manual audit found.</li>
+  <li><strong>Every signal links</strong> to its thread and quotes your words.</li>
+  <li><strong>The audit has run on its own once,</strong> on schedule, and its recommendations show on the Overview.</li>
+  <li><strong>The dashboard passes</strong> <code>lint:ui</code> at exit 0 and a taste pass on every view, in light and dark.</li>
+</ul>
+
+<h2 id="how">Three pieces: a collector, an audit, and the dashboard</h2>
+<div class="flow wide" role="img" aria-label="Your session logs feed a collector, which writes a data file. Every two days an audit thread judges what's new and writes recommendations. The dashboard reads both.">
+  <div class="node"><b>Your history</b><span>Claude Code and Codex sessions, T3 threads</span></div><div class="arrow" aria-hidden="true">→</div>
+  <div class="node"><b>Collector</b><span>a script, no AI, seconds</span></div><div class="arrow" aria-hidden="true">→</div>
+  <div class="node hl"><b>Audit</b><span>every 48 h, a fresh T3 thread</span></div><div class="arrow" aria-hidden="true">→</div>
+  <div class="node"><b>Dashboard</b><span><code>bun run dashboard</code></span></div>
+</div>
+
+<h3>The collector counts; it never judges</h3>
+<p><code>scripts/collect.mjs</code> reads your Claude Code sessions, your Codex sessions, and T3's thread list (read-only), so each session maps to its thread and project. It records every skill load and how it happened: the agent picked it, you typed <code>/name</code>, or a routing line sent it. It also flags candidate misses and signals in your messages, then writes <code>reports/dashboard/data.json</code>. It only reads what changed since the last run, so opening the dashboard refreshes it.</p>
+
+<h3>The audit judges what's new and proposes, never edits</h3>
+<p>A project skill in this repo, <code>audit-skills</code>, runs the collector, then reads only the flagged items since the last audit. GPT helpers sort them; the main agent decides which signals are real, grades each skill that ran, and turns repeated instructions into rule ideas for <code>/correct</code>. If a description or the routing block changed, it reruns the trigger tests. It writes its report as an HTML page (this skill), plus a data file the dashboard reads. It never changes a skill without your OK.</p>
+
+<h3>The dashboard is one page for one person</h3>
+<p>A small page served by Bun on a free port, opened in your browser or T3's preview. The feel follows Critly's Product Feel and Density concepts. You scan it every day or two, so it's compact and quiet: one accent color for "needs you", green, amber and red only when they mean something, and tabular numbers.</p>
+
+<h2 id="signals">What it looks for, with real examples from your threads</h2>
+<div class="table-wrap wide"><table>
+  <thead><tr><th>Signal</th><th>How it's found</th><th>Example from 11 to 13 October</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Missed skill</strong></td><td>A routing-line case matched, but the skill never loaded</td><td>"krida is just ablnk screen now why ?" with no <code>diagnosing-bugs</code></td></tr>
+    <tr><td><strong>Frustration</strong></td><td>Word list, then confirmed by the audit</td><td>"it works fine what tf are you takign baout" (likh)</td></tr>
+    <tr><td><strong>Praise</strong></td><td>Word list, then confirmed</td><td>"good jpn, update teh pr" (krida)</td></tr>
+    <tr><td><strong>Done, then broken</strong></td><td>The agent said done and your next message says it still fails</td><td>"the subtiels choser… you cnat lcick on them" after "merged and live"</td></tr>
+    <tr><td><strong>Repeated instruction</strong></td><td>The same ask twice, in one thread or across a project</td><td>"ok just do it loalcy for now", then again after <code>/compact</code></td></tr>
+    <tr><td><strong>Critly runs</strong></td><td><code>critly check</code>, <code>lint:ui</code> and <code>taste</code> commands</td><td>kriyan's <code>critly check</code> going from 181 errors to 0</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="views">Six views, led by what needs your decision</h2>
+<div class="table-wrap wide"><table>
+  <thead><tr><th>View</th><th>Leads with</th><th>Also shows</th></tr></thead>
+  <tbody>
+    <tr><td><strong>Overview</strong></td><td>Open recommendations from the last audit</td><td>Loads and misses per day (Claude and Codex), frustration against praise, last audit summary</td></tr>
+    <tr><td><strong>Skills</strong></td><td>One row per skill, including Critly's</td><td>Loads by how, misses, your reactions after, last used, unused for 14 days (retire candidates). A row opens its timeline and quotes</td></tr>
+    <tr><td><strong>Signals</strong></td><td>Feed of your quotes, newest first</td><td>Project, thread link, what was or wasn't loaded. Repeats grouped as rule ideas</td></tr>
+    <tr><td><strong>Projects</strong></td><td>krida, kriyan, likh, Critly, Studi, this library</td><td>Threads, frustration and praise rates, whether <code>main</code> has its worktree, ship and verify skills, setup failures</td></tr>
+    <tr><td><strong>Audits</strong></td><td>Each run, newest first</td><td>Its recommendations: open, accepted, done or rejected</td></tr>
+    <tr><td><strong>Trigger tests</strong></td><td>Latest results as a skill-by-case grid</td><td>Claude and Codex side by side</td></tr>
+  </tbody>
+</table></div>
+
+<h2 id="options">A Bun page beats a Next.js app or a regenerated HTML file</h2>
+<div class="table-wrap wide"><table>
+  <thead><tr><th>Option</th><th>Good</th><th>Costs</th></tr></thead>
+  <tbody>
+    <tr class="pick"><td><strong>Bun page</strong> <span class="tag info">pick</span></td><td>One command, on your stack, filters and drill-downs work, reads fresh data on open</td><td>A small server to start</td></tr>
+    <tr><td>Next.js app</td><td>Your default for real web apps</td><td>A framework, a build and a config for one page you use alone</td></tr>
+    <tr><td>Static HTML from each audit</td><td>Nothing to run, opens anywhere</td><td>Stale between audits; filtering hundreds of signals gets clumsy</td></tr>
+  </tbody>
+</table></div>
+<p>The page is a tool you click around in, not something deployed or shared, so a framework adds weight without buying anything. The audit still writes each report as a standalone HTML page, so you can read any run without starting the dashboard.</p>
+
+<h2 id="scope">In scope: your machine and your history; out: anything cloud</h2>
+<ul>
+  <li><strong>In:</strong> Claude Code, Codex and T3 history on this machine. All your projects. Library and Critly skills. Trigger test results.</li>
+  <li><strong>Out:</strong> deploying the dashboard, sharing data anywhere, editing skills automatically, and history from other machines.</li>
+  <li><strong>Privacy:</strong> this repo is public. Data, quotes and audit pages live under <code>reports/</code>, which is gitignored. Only code and the skill get committed.</li>
+  <li><strong>Main checkout:</strong> the build and the scheduled audit run on this repo's main checkout, not a worktree. You're switching its threads to local.</li>
+</ul>
+
+<h2 id="risks">Three ways this could fail, and what prevents each</h2>
+<div class="callout risk"><span class="label">Tone misread</span><p>A word list flags "this is stupid" about a bug as anger at the agent. Every signal is confirmed by the audit before it counts, and the feed shows the quote so you can overrule it.</p></div>
+<div class="callout risk"><span class="label">Noise you stop reading</span><p>Too many low-value recommendations and you ignore the page. The audit ranks them and shows at most five open ones; the rest wait.</p></div>
+<div class="callout risk"><span class="label">Cost creep</span><p>Re-reading all history every run would be slow and expensive. The collector is incremental, and the audit only judges what's new since its last run.</p></div>
+
+<h2 id="order">Five steps, each checked before the next</h2>
+<ol class="steps">
+  <li><strong>Collector and data file.</strong> Checked against the 13 October hand counts.</li>
+  <li><strong>Overview, Skills and Signals views.</strong> <code>lint:ui</code> at exit 0, a taste pass on each, light and dark.</li>
+  <li><strong>The <code>audit-skills</code> skill and one manual run.</strong> I read its verdicts against threads we both know.</li>
+  <li><strong>The schedule.</strong> T3 scheduled task every 48 hours, a fresh thread per run. I report the next run time.</li>
+  <li><strong>Projects, Audits and Trigger tests views,</strong> plus tracking each recommendation's status.</li>
+</ol>
+
+<details><summary>Files this adds <small>where everything lives</small></summary>
+<ul>
+  <li><code>scripts/collect.mjs</code>: the collector</li>
+  <li><code>.agents/skills/audit-skills/SKILL.md</code>: the audit, a project skill in this repo</li>
+  <li><code>dashboard/</code>: the page (<code>index.html</code>, React components, Bun server), <code>.critly/policy.json</code></li>
+  <li><code>reports/dashboard/data.json</code>, <code>reports/audits/&lt;date&gt;.html</code> and <code>.json</code>: data and audit pages (gitignored)</li>
+</ul></details>
+<details><summary>Data sources <small>what the collector reads, read-only</small></summary>
+<ul>
+  <li><code>~/.claude/projects/**/*.jsonl</code>: Claude Code sessions, including T3's</li>
+  <li><code>~/.codex/sessions/**</code>: Codex sessions</li>
+  <li><code>~/.t3/userdata/statev2.sqlite</code>: thread titles, projects and worktree paths, to link a session to its thread</li>
+  <li><code>reports/evals/trigger.jsonl</code>: trigger test results</li>
+</ul></details>
+
+</main>
+<footer><p>Based on the 13 October audit, the trigger tests and the threads quoted above. Nothing here is built yet. Written 13 Oct 2026.</p></footer>
+<script>/* Print every folded section. */ addEventListener("beforeprint", () => document.querySelectorAll("details").forEach((d) => (d.open = true)));</script>
+</body>
+</html>

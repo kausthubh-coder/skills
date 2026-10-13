@@ -36,7 +36,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 
 ## What I ask the manager to do
 
-- **Test a skill or run a suite:** follow `docs/evals.md`. Launch the test threads, play me, check the output yourself, grade it, and write it up in `reports/evals/`.
+- **Test a skill or run a suite:** follow `docs/evals.md`. Launch the test threads, play me, check the output yourself, grade it, and write it up in `reports/evals/` as an HTML page (`html-artifacts`).
 - **Is this skill working?** Also look at real use: search T3 threads (`t3_thread_search`, `t3_thread_list`) in my projects for runs of that skill and where I corrected the agent. Real runs beat made-up scenarios.
 - **Improve a skill:** change it from evidence (an eval or a real thread), rerun the scenario that failed, and only then call it fixed.
 - **Add a skill:** first ask whether I'll use it outside one project; if not, it goes in that project. Then follow `skills/my-skills/SKILL.md`. Write a scenario for it in `evals/scenarios.md`.

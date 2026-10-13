@@ -38,6 +38,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | A short "load this skill when…" block (`global/skills.md`) in my global CLAUDE.md and Codex AGENTS.md | Trigger tests: process skills went from 0/3 to 3/3 with it; descriptions alone weren't enough |
 | Every project gets `worktree-<app>` and `ship-<app>` skills (`create-project-flows`) | I start each task in a fresh T3 worktree; shipping should also update `main` and the main checkout |
 | krida's optimize branch stays unmerged until I've tested it | I don't want to risk production. Not a skills problem |
+| Anything I read (plans, reports, audits, comparisons) is an HTML page from `html-artifacts`; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
 | `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |
 
 ## Corrections I've given (don't repeat these mistakes)
@@ -55,6 +56,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 - Thread drafts that were too generic, leaned on anti-cheating advice written for older models, or pushed too many things at once.
 - Counted an unmerged branch I kept back on purpose as a skills failure.
 - Proposed per-skill workarounds before testing why skills don't trigger. Test first.
+- Wrote a plan and reports for me as Markdown files. Anything I read is HTML (`html-artifacts`).
 
 ## Projects the skills have been tested on
 
