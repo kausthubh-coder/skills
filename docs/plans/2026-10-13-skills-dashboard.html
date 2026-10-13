@@ -164,8 +164,8 @@ footer > * { max-width: var(--measure); margin-inline: auto; }
 
 <section class="tldr" aria-label="Summary">
   <ul>
-    <li><strong>What you get:</strong> a page you open with <code>bun run dashboard</code>. It shows skill loads, misses, your frustration and praise, repeated instructions, and the latest audit's recommendations.</li>
-    <li><strong>How it stays current:</strong> a T3 scheduled task opens a fresh thread in this repo every 48 hours. That thread reads what's new in your Claude Code, Codex and T3 history and writes an audit.</li>
+    <li><strong>What you get:</strong> a small live site, one click from T3's preview. It shows skill loads, misses, your frustration and praise, repeated instructions, and the audit's suggestions.</li>
+    <li><strong>How it stays current:</strong> a T3 scheduled task opens a fresh thread in this repo every 48 hours. That thread reads your new threads, judges them, writes suggestions, and can extend the site itself.</li>
     <li><strong>Covers Critly too:</strong> its two skills and its check runs, the Critly project's threads, and the dashboard itself is built to pass Critly's check.</li>
     <li><strong>Main risk:</strong> word lists misread tone. The audit has a model confirm every signal before it's counted.</li>
   </ul>
@@ -193,38 +193,41 @@ footer > * { max-width: var(--measure); margin-inline: auto; }
   <div class="node"><b>Your history</b><span>Claude Code and Codex sessions, T3 threads</span></div><div class="arrow" aria-hidden="true">→</div>
   <div class="node"><b>Collector</b><span>a script, no AI, seconds</span></div><div class="arrow" aria-hidden="true">→</div>
   <div class="node hl"><b>Audit</b><span>every 48 h, a fresh T3 thread</span></div><div class="arrow" aria-hidden="true">→</div>
-  <div class="node"><b>Dashboard</b><span><code>bun run dashboard</code></span></div>
+  <div class="node"><b>Dashboard</b><span>live site, one click in T3</span></div>
 </div>
 
 <h3>The collector counts; it never judges</h3>
 <p><code>scripts/collect.mjs</code> reads your Claude Code sessions, your Codex sessions, and T3's thread list (read-only), so each session maps to its thread and project. It records every skill load and how it happened: the agent picked it, you typed <code>/name</code>, or a routing line sent it. It also flags candidate misses and signals in your messages, then writes <code>reports/dashboard/data.json</code>. It only reads what changed since the last run, so opening the dashboard refreshes it.</p>
 
-<h3>The audit judges what's new and proposes, never edits</h3>
-<p>A project skill in this repo, <code>audit-skills</code>, runs the collector, then reads only the flagged items since the last audit. GPT helpers sort them; the main agent decides which signals are real, grades each skill that ran, and turns repeated instructions into rule ideas for <code>/correct</code>. If a description or the routing block changed, it reruns the trigger tests. It writes its report as an HTML page (this skill), plus a data file the dashboard reads. It never changes a skill without your OK.</p>
+<h3>The audit reads your actual threads, then proposes</h3>
+<p>A project skill in this repo, <code>audit-skills</code>, runs the collector first, which points it at what changed. Then it reads every thread that had new activity since the last audit with T3's thread tools: your messages in full, the agent's final answers, and the tool calls where a skill should have run. Helper agents read threads in parallel and report back; the main agent makes the calls. It decides which signals are real, catches what a word list can't (a correction phrased politely, a "done" that you disproved two messages later), grades each skill that ran, and turns repeated instructions into rule ideas for <code>/correct</code>. If a description or the routing block changed, it reruns the trigger tests. It writes its report as an HTML page. It never changes a skill without your OK.</p>
 
-<h3>The dashboard is one page for one person</h3>
-<p>A small page served by Bun on a free port, opened in your browser or T3's preview. The feel follows Critly's Product Feel and Density concepts. You scan it every day or two, so it's compact and quiet: one accent color for "needs you", green, amber and red only when they mean something, and tabular numbers.</p>
+<h3>The dashboard is a small live site that the audit agent also edits</h3>
+<p>A small React site served by Bun. It reads the collector's data live, so numbers are current whenever you open it, and a "Recollect" button refreshes them. It also reads what the audit wrote: verdicts, grades and <strong>Suggestions</strong> (skills to add, retire or fix, AGENTS.md lines, upstream skills worth copying, project fixes). Each audit run may also change the site itself, adding a section when it finds something worth tracking; those edits must pass the typecheck, <code>lint:ui</code> and a taste pass before the run commits them. The feel follows Critly's Product Feel and Density concepts: compact and quiet, one accent color for "needs you", tabular numbers.</p>
+<h3>You never type a command to see it</h3>
+<p>A T3 project action, "Dashboard", starts the site and opens it in T3's preview with one click. Each audit thread ends by opening the preview on what changed.</p>
 
 <h2 id="signals">What it looks for, with real examples from your threads</h2>
 <div class="table-wrap wide"><table>
-  <thead><tr><th>Signal</th><th>How it's found</th><th>Example from 11 to 13 October</th></tr></thead>
+  <thead><tr><th>Signal</th><th>How it's found</th><th>Example from 11 to 13 October (paraphrased; quotes stay in <code>reports/</code>)</th></tr></thead>
   <tbody>
-    <tr><td><strong>Missed skill</strong></td><td>A routing-line case matched, but the skill never loaded</td><td>"krida is just ablnk screen now why ?" with no <code>diagnosing-bugs</code></td></tr>
-    <tr><td><strong>Frustration</strong></td><td>Word list, then confirmed by the audit</td><td>"it works fine what tf are you takign baout" (likh)</td></tr>
-    <tr><td><strong>Praise</strong></td><td>Word list, then confirmed</td><td>"good jpn, update teh pr" (krida)</td></tr>
-    <tr><td><strong>Done, then broken</strong></td><td>The agent said done and your next message says it still fails</td><td>"the subtiels choser… you cnat lcick on them" after "merged and live"</td></tr>
-    <tr><td><strong>Repeated instruction</strong></td><td>The same ask twice, in one thread or across a project</td><td>"ok just do it loalcy for now", then again after <code>/compact</code></td></tr>
+    <tr><td><strong>Missed skill</strong></td><td>A routing-line case matched, but the skill never loaded</td><td>krida went blank and you asked why; no <code>diagnosing-bugs</code></td></tr>
+    <tr><td><strong>Frustration</strong></td><td>Found by the agent reading the thread, helped by a word list</td><td>likh: you said it worked fine and the agent was testing the wrong thing</td></tr>
+    <tr><td><strong>Praise</strong></td><td>Same</td><td>krida: "good job", then update the PR</td></tr>
+    <tr><td><strong>Done, then broken</strong></td><td>The agent said done and your next message says it still fails</td><td>krida's subtitle menu couldn't be clicked after "merged and live"</td></tr>
+    <tr><td><strong>Repeated instruction</strong></td><td>The same ask twice, in one thread or across a project</td><td>"do it locally", given again after <code>/compact</code></td></tr>
     <tr><td><strong>Critly runs</strong></td><td><code>critly check</code>, <code>lint:ui</code> and <code>taste</code> commands</td><td>kriyan's <code>critly check</code> going from 181 errors to 0</td></tr>
   </tbody>
 </table></div>
 
-<h2 id="views">Six views, led by what needs your decision</h2>
+<h2 id="views">Seven views, led by what needs your decision</h2>
 <div class="table-wrap wide"><table>
   <thead><tr><th>View</th><th>Leads with</th><th>Also shows</th></tr></thead>
   <tbody>
     <tr><td><strong>Overview</strong></td><td>Open recommendations from the last audit</td><td>Loads and misses per day (Claude and Codex), frustration against praise, last audit summary</td></tr>
     <tr><td><strong>Skills</strong></td><td>One row per skill, including Critly's</td><td>Loads by how, misses, your reactions after, last used, unused for 14 days (retire candidates). A row opens its timeline and quotes</td></tr>
     <tr><td><strong>Signals</strong></td><td>Feed of your quotes, newest first</td><td>Project, thread link, what was or wasn't loaded. Repeats grouped as rule ideas</td></tr>
+    <tr><td><strong>Suggestions</strong></td><td>What the audit thinks you should add, retire or fix</td><td>New skills, AGENTS.md lines, upstream skills to copy, project fixes; each with its evidence and Accept or Skip</td></tr>
     <tr><td><strong>Projects</strong></td><td>krida, kriyan, likh, Critly, Studi, this library</td><td>Threads, frustration and praise rates, whether <code>main</code> has its worktree, ship and verify skills, setup failures</td></tr>
     <tr><td><strong>Audits</strong></td><td>Each run, newest first</td><td>Its recommendations: open, accepted, done or rejected</td></tr>
     <tr><td><strong>Trigger tests</strong></td><td>Latest results as a skill-by-case grid</td><td>Claude and Codex side by side</td></tr>
@@ -253,12 +256,13 @@ footer > * { max-width: var(--measure); margin-inline: auto; }
 <h2 id="risks">Three ways this could fail, and what prevents each</h2>
 <div class="callout risk"><span class="label">Tone misread</span><p>A word list flags "this is stupid" about a bug as anger at the agent. Every signal is confirmed by the audit before it counts, and the feed shows the quote so you can overrule it.</p></div>
 <div class="callout risk"><span class="label">Noise you stop reading</span><p>Too many low-value recommendations and you ignore the page. The audit ranks them and shows at most five open ones; the rest wait.</p></div>
-<div class="callout risk"><span class="label">Cost creep</span><p>Re-reading all history every run would be slow and expensive. The collector is incremental, and the audit only judges what's new since its last run.</p></div>
+<div class="callout risk"><span class="label">Cost creep</span><p>Reading every thread every run would be slow and expensive. The collector is incremental, and the audit only reads threads with activity since its last run.</p></div>
+<div class="callout risk"><span class="label">The site rots as agents edit it</span><p>Every run adding a view turns it into a junk drawer. A run may add at most one section, must pass the checks, and should remove a view nobody needed before adding one.</p></div>
 
 <h2 id="order">Five steps, each checked before the next</h2>
 <ol class="steps">
   <li><strong>Collector and data file.</strong> Checked against the 13 October hand counts.</li>
-  <li><strong>Overview, Skills and Signals views.</strong> <code>lint:ui</code> at exit 0, a taste pass on each, light and dark.</li>
+  <li><strong>Overview, Skills, Signals and Suggestions views, and the T3 "Dashboard" action.</strong> <code>lint:ui</code> at exit 0, a taste pass on each, light and dark.</li>
   <li><strong>The <code>audit-skills</code> skill and one manual run.</strong> I read its verdicts against threads we both know.</li>
   <li><strong>The schedule.</strong> T3 scheduled task every 48 hours, a fresh thread per run. I report the next run time.</li>
   <li><strong>Projects, Audits and Trigger tests views,</strong> plus tracking each recommendation's status.</li>
