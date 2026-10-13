@@ -1,7 +1,7 @@
 {
   "local": {
     "critly": {
-      "repo": "kausthubh-coder/craft",
+      "repo": "kausthubh-coder/critly",
       "path": "../critly/craft/skills",
       "note": "Critly owns these skills. They are generated from content/ by `bun run build:skill` in ../critly/craft; edit the concepts there, never the generated files."
     }

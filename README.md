@@ -30,7 +30,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 
 ## Critly
 
-`critly` and `critly-audit` belong to Critly (`dev/critly/craft`, repo `kausthubh-coder/craft`), which generates them from its concepts with `bun run build:skill`. `sources.json` lists that folder under `local`, so `link.mjs` links them straight from the checkout: a rebuild there is live in every agent. Don't install them with `npx skills add` on this machine; that would put a second copy in the way.
+`critly` and `critly-audit` belong to Critly (`dev/critly/craft`, repo `kausthubh-coder/critly`), which generates them from its concepts with `bun run build:skill`. `sources.json` lists that folder under `local`, so `link.mjs` links them straight from the checkout: a rebuild there is live in every agent. Don't install them with `npx skills add` on this machine; that would put a second copy in the way.
 
 ## Global vs project skills
 
