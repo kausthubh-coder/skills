@@ -10,7 +10,7 @@ The library lives at `C:\Users\kaust\OneDrive\Documents\dev\agent-skills`, a pub
 - `skills/<name>/` are global skills. Each is linked (a junction) into `~/.agents/skills` (Codex) and `~/.claude/skills` (Claude Code), so an edit in the library is live in every agent at once. Edit the library copy, never the linked path.
 - `sources.json` records where each skill came from (upstream repo, path, commit, license) and what I changed.
 - `CATALOG.md` lists every skill I looked at upstream and whether I took it.
-- `critly` and `critly-audit` are linked from my Critly checkout (`sources.json` → `local`), not stored here. Change them in `C:\Users\kaust\OneDrive\Documents\dev\critly\craft` and commit there. `critly/references/` and the marked section of `critly/SKILL.md` are generated from `content/` by `bun run build:skill`: edit the concept, then rebuild. The rest of `critly/SKILL.md` and all of `critly-audit/` are hand-written.
+- `critly` and `critly-audit` are linked from my Critly checkout (`sources.json` → `local`), not stored here. Change them in `C:\Users\kaust\OneDrive\Documents\dev\critly` (the repo; `plan/`, `eval/` and the other local folders there aren't in git) and commit there. `critly/references/` and the marked section of `critly/SKILL.md` are generated from `content/` by `bun run build:skill`: edit the concept, then rebuild. The rest of `critly/SKILL.md` and all of `critly-audit/` are hand-written.
 
 ## Add a skill
 

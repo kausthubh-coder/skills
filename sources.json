@@ -2,8 +2,8 @@
   "local": {
     "critly": {
       "repo": "kausthubh-coder/critly",
-      "path": "../critly/craft/skills",
-      "note": "Critly owns these skills. They are generated from content/ by `bun run build:skill` in ../critly/craft; edit the concepts there, never the generated files."
+      "path": "../critly/skills",
+      "note": "Critly owns these skills. They are generated from content/ by `bun run build:skill` in ../critly; edit the concepts there, never the generated files."
     }
   },
   "skills": {
