@@ -1,0 +1,15 @@
+[
+  { "id": "blank-screen", "expect": "diagnosing-bugs", "prompt": "krida is just ablnk screen now why ?" },
+  { "id": "not-working", "expect": "diagnosing-bugs", "prompt": "the search is not working ? i typed dune and nothing showed up" },
+  { "id": "stops-at-41", "expect": "diagnosing-bugs", "prompt": "search results stop at 41, why" },
+  { "id": "slow-trailer", "expect": "diagnosing-bugs|critly", "prompt": "it setll takes too long to play trialer" },
+  { "id": "pr-description", "expect": "unslop", "prompt": "write the PR description for the changes on this branch" },
+  { "id": "agents-md-rule", "expect": "writing-for-agents", "prompt": "add a rule to AGENTS.md that agents must use the edit tool, not sed or python, to change files" },
+  { "id": "grill", "expect": "grilling", "prompt": "grill me on this: i want to move the backend off convex to supabase" },
+  { "id": "html-compare", "expect": "html-artifacts", "prompt": "make me an html page comparing convex vs supabase vs neon, mainly cost" },
+  { "id": "ui-polish", "expect": "critly|critly-audit", "prompt": "the search results ui looks bad, make it better" },
+  { "id": "bench-writeup", "expect": "benchmark-checklist", "prompt": "i measured the new trailer preload, it went from 1.2s to 0.45s. write that up as the result for the PR" },
+  { "id": "no-verify", "expect": "create-verification-skill", "prompt": "you keep saying its done without testing it. set something up in this repo so you can actually use the app yourself and check" },
+  { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
+  { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
+]

@@ -1,0 +1,1 @@
+{ "name": "watchly", "private": true, "scripts": { "dev": "vite --port ${PORT:-5173}", "check": "tsc -b && vitest run" } }
