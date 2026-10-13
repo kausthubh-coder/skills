@@ -45,6 +45,16 @@
       "commit": "ea32d95",
       "upstreamHash": "4ed522cb6ea05fed"
     },
+    "bro": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/bro",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "added agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)"
+      ],
+      "commit": "dbf4981",
+      "upstreamHash": "b651827a1c11465d"
+    },
     "unslop": {
       "repo": "cursor/plugins",
       "path": "pstack/skills/unslop",

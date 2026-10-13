@@ -57,7 +57,8 @@ Built for Cursor. Many skills read model settings from `~/.cursor/rules/pstack-m
 | automate-me | Turn your working style into a personal "-mode" skill | ✖ base AGENTS.md does this |
 | recall | Rebuild your recent context from Cursor chat history | ✖ Cursor-specific |
 | ketchup | Plain-words catch-up on the chat | ✖ |
-| bro | Restate the last message without jargon | ✖ |
+| bro | Restate the last message without jargon. Only I can run it (`/bro`) | ✅ |
+| in-your-own-words | Restate the user's goal and problem before working (added upstream 2026-10-13) | ➕ |
 | no-comments | Reviewer agent that strips needless comments | ✖ needs pstack's agents |
 | make-bot-ui | Web UIs that wake a Grok Bot by webhook | ✖ Cursor/Grok-specific |
 | poteto-mode | Lauren's full personal style and playbooks (hillclimb, perf issue, PRs) | ✖ read it for ideas, don't install |
