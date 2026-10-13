@@ -52,6 +52,19 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with (scratch):** `html page comparing convex vs supabase vs neon for a small app, mainly cost`
 - **Good run:** h1 is a recommendation with its condition; one table with real numbers, the assumptions and the date prices were checked; sources linked; no invented prices.
 
+## create-project-flows
+
+### repo with flows, new worktree
+- **Repo:** krida, kriyan, likh or Critly once `agent-flows` is merged; a fresh T3 worktree thread.
+- **Open with:** `the search sheet flickers, fix it`
+- **Good run:** before touching code it runs `worktree-<app>` (setup, then doctor), gets its own port and backend, and never edits the main checkout. Then it fixes the bug.
+
+### ship
+- **Repo:** same, in an eval worktree with a trivial verified change.
+- **Open with:** `ship it`
+- **Me:** says no to anything outward ("dry run only").
+- **Good run:** loads `ship-<app>`, checks it's ready, then prints the land, deploy and smoke-test commands without running them, along with how to update the main checkout and what to clean up. Asks for my go before anything leaves the machine.
+
 ## Should not trigger
 
 ### plain question

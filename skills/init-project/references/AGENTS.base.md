@@ -29,6 +29,12 @@ Deeper docs: {{docs/ index, or delete this line}}
 - Typecheck and lint the files you changed: `{{cmd}}`
 - Full check (CI runs this; run it only when asked): `{{cmd}}`
 
+## Start and ship
+
+- Every task in a new worktree starts with the `worktree-{{app}}` skill. It runs setup and the doctor, so install, env, port and backend are right before you touch code.
+- Helpers get their own worktree and backend through the same skill. Never two agents in one checkout, and never edit the main checkout.
+- Ship only with the `ship-{{app}}` skill, and only when I say ship, deploy or release. It lands the work, deploys, checks production, updates the main checkout and cleans up.
+
 ## Proving a change works
 
 - Done means you saw it work, not that it compiles. Run the feature the way a user would and look at the result.

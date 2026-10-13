@@ -17,7 +17,8 @@ The library lives at `C:\Users\kaust\OneDrive\Documents\dev\agent-skills`, a pub
 1. A skill that only matters for one repo goes in that repo's `.agents/skills/`, not here.
 2. Create `skills/<name>/SKILL.md`. The folder name and the `name:` field must match. Follow the `writing-for-agents` skill for the description: front-load the trigger, one trigger per branch.
 3. From upstream: copy the whole folder from `_sources/`, add an entry to `sources.json` with the commit, and record every edit you make under `changes`. Only copy skills whose license allows it (MIT is fine). For no license or a restrictive one, install from upstream with `bunx skills add <repo> -g` instead and note it in `CATALOG.md`.
-4. Run `node scripts/link.mjs` to link it everywhere. Run it again after a rename or delete; it prunes stale links.
+4. If agents must load it on their own and it's a process (how to debug, write, check), add a line to `global/skills.md`; the description alone won't make them use it. Only I can run it? Add `disable-model-invocation: true` and `agents/openai.yaml` with `policy: allow_implicit_invocation: false` (Codex ignores the first).
+5. Run `node scripts/link.mjs` to link it everywhere and sync `global/skills.md` into my global CLAUDE.md and Codex AGENTS.md. Run it again after a rename or delete; it prunes stale links.
 
 ## Update from upstream
 

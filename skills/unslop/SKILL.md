@@ -1,6 +1,6 @@
 ---
 name: unslop
-description: Cut AI tells from any writing. Use whenever you write or edit prose a person will read (docs, READMEs, PR descriptions, commit messages, release notes, emails, posts, UI copy), or when asked to unslop, de-AI, or make text sound less like AI.
+description: Make prose sound human, not AI-written. Use whenever you write a PR description, commit message, doc, README, release note, post, email or UI copy, or when asked to unslop or de-AI text.
 ---
 
 # Unslop

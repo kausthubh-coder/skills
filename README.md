@@ -14,6 +14,8 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `skills/init-project/` | `/init-project`: start a new project (interview, name, scaffold on my stack, agent-native setup) |
 | `skills/optimize/` | `/optimize`: audit an existing project and plan agent-native improvements at a chosen depth |
 | `skills/init-project/references/AGENTS.base.md` | The base AGENTS.md every project starts from |
+| `skills/create-project-flows/` | Writes a project's own `worktree-<app>` and `ship-<app>` skills |
+| `global/skills.md` | Short "load this skill when…" list that `link.mjs` writes into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Agents skip skills they only see in the skill list (`reports/evals/2026-10-13-trigger.md`) |
 | `skills/my-skills/` | Lets any agent add, edit or update skills in this library |
 | `AGENTS.md`, `docs/` | The manager's brief, my philosophy, my setup and decisions, how skills are tested |
 | `evals/scenarios.md` | Scenarios for testing skills in real threads |
@@ -46,7 +48,7 @@ Where each agent reads skills:
 
 ```
 node scripts/link.mjs --dry-run   # see what would be linked
-node scripts/link.mjs             # link new skills, prune deleted ones
+node scripts/link.mjs             # link new skills, prune deleted ones, sync global/skills.md
 node scripts/link.mjs --unlink    # remove every link to this library
 node scripts/upstream.mjs         # check upstream for changes
 ```

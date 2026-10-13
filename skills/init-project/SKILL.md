@@ -50,7 +50,7 @@ Steps only I can do (signing in to Convex, Clerk keys, linking Vercel, creating 
 - `CLAUDE.md` is one line: `@AGENTS.md`.
 - Project skills go in `.agents/skills/`. Link `.claude/skills` to it so Claude Code and Codex read the same folder. On Windows: `New-Item -ItemType Junction -Path .claude\skills -Target .agents\skills` (a junction needs no admin rights).
 - Lint, strict types, and a test runner with one real behavior test, so `bun run check` works from the first commit. Add the day-one items from `stack.md` (`.gitattributes`, `PORT`, setup and doctor scripts).
-- Personal and public tiers: register the project in T3 Code (`t3_project_create` if available) with `scripts/setup.mjs` as its worktree-create script.
+- Run `create-project-flows` to write `worktree-<name>` and `ship-<name>` (experiments can skip ship). Personal and public tiers: register the project in T3 Code (`t3_project_create` if available), and set setup as its worktree-create script the way that skill says. `t3_project_update` scripts are silently ignored.
 
 ## 5. Verification
 

@@ -109,6 +109,24 @@ for (const { agent, dir } of targets) {
   if (!changes.length) console.log("    up to date");
 }
 
+// global/skills.md goes into each agent's always-loaded instructions, between markers, so the rest of
+// those files (my own notes) is never touched. Agents skip skills they only see in the skill list;
+// this block is what makes them load the ones that matter (reports/evals/2026-10-13-trigger.md).
+const START = "<!-- skills library: start (edit global/skills.md, then run scripts/link.mjs) -->";
+const END = "<!-- skills library: end -->";
+const block = `${START}\n${fs.readFileSync(path.join(root, "global", "skills.md"), "utf8").trim()}\n${END}`;
+for (const file of [path.join(home, ".claude", "CLAUDE.md"), path.join(home, ".codex", "AGENTS.md")]) {
+  const before = fs.existsSync(file) ? fs.readFileSync(file, "utf8").replace(/\r\n/g, "\n") : "";
+  const at = before.indexOf(START);
+  const end = before.indexOf(END);
+  const after = at >= 0 && end > at
+    ? before.slice(0, at) + block + before.slice(end + END.length)
+    : `${block}\n\n${before}`.trimEnd() + "\n";
+  if (unlinkAll || after === before) continue;
+  if (!dryRun) fs.writeFileSync(file, after);
+  console.log(`- ${tag}updated the skills block in ${file}`);
+}
+
 if (conflicts) {
   console.log(`\n${conflicts} conflict(s). Remove or rename the existing folder, then run again.`);
   process.exitCode = 1;

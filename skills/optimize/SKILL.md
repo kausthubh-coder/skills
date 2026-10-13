@@ -47,6 +47,7 @@ From the 2026-10-12 audits of krida, Studi and kriyan (`reports/` in the skill l
 - Dozens of stale worktrees with stranded uncommitted work.
 - Tests listed by hand (some never run); e2e that skips on a missing function and looks like a pass.
 - Agents said done without driving the changed screens.
+- T3's worktree-create script never ran. With project settings folded, T3 only reads `projectSettingsOverrides` in `~/.t3/userdata/settings.json`, and scripts saved through `t3_project_update` are ignored. No `worktree-<app>` or `ship-<app>` skill, so the main checkout falls weeks behind.
 
 ## 3. Plan
 
@@ -61,8 +62,8 @@ Show me the plan and wait. I pick the items.
 
 ## 4. Carry it out
 
-- One item at a time. Each ends in a state you checked (`principle-sequence-verifiable-units` idea: known-good, one change, check, next).
+- One item at a time. Each ends in a state you checked: known-good, one change, check, next.
 - Prefer the strongest fix: make the mistake impossible (structure, types), then a lint rule whose error says what to do instead, then a test, then docs last (the `correct` skill's order).
-- Missing verification comes first. If there's no `verify-*` skill, run `create-verification-skill` before restructuring anything, so every later step can be proven. If one exists but may be stale, run `maintain-verification-skill`.
+- Missing verification comes first. If there's no `verify-*` skill, run `create-verification-skill` before restructuring anything, so every later step can be proven. If one exists but may be stale, run `maintain-verification-skill`. If there's no `worktree-<app>` or `ship-<app>` skill, run `create-project-flows`.
 - Restructures move code without changing behavior, so behavior tests and the verify skill must pass before and after each step.
 - Never commit, push or deploy unless I ask. Update the plan file as items finish.

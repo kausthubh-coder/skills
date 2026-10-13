@@ -35,6 +35,10 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | Ras Mic's skills are copied in (`evidence-driven-testing`, `before-and-after`, `code-structure`) | They're published for people to copy |
 | Critly's skills are linked from the Critly checkout, not stored here | Critly generates them; a rebuild there should be live everywhere |
 | AGENTS.md about 100 lines, deep material in `docs/` | See philosophy §3 |
+| A short "load this skill when…" block (`global/skills.md`) in my global CLAUDE.md and Codex AGENTS.md | Trigger tests: process skills went from 0/3 to 3/3 with it; descriptions alone weren't enough |
+| Every project gets `worktree-<app>` and `ship-<app>` skills (`create-project-flows`) | I start each task in a fresh T3 worktree; shipping should also update `main` and the main checkout |
+| krida's optimize branch stays unmerged until I've tested it | I don't want to risk production. Not a skills problem |
+| `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |
 
 ## Corrections I've given (don't repeat these mistakes)
 
@@ -49,6 +53,8 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 - Lectured me on security.
 - Defaulted to a `dev` branch and PRs for personal projects.
 - Thread drafts that were too generic, leaned on anti-cheating advice written for older models, or pushed too many things at once.
+- Counted an unmerged branch I kept back on purpose as a skills failure.
+- Proposed per-skill workarounds before testing why skills don't trigger. Test first.
 
 ## Projects the skills have been tested on
 

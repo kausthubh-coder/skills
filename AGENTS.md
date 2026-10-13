@@ -23,6 +23,9 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `skills/init-project/` | `/init-project` and its references: stack, layout, naming, the base AGENTS.md for new projects |
 | `skills/optimize/` | `/optimize`, including the checklist of gaps all my projects had |
 | `skills/my-skills/` | How any agent, in any repo, adds or edits skills here. Keep it in sync with this file |
+| `skills/create-project-flows/` | Writes a project's `worktree-<app>` and `ship-<app>` skills |
+| `global/skills.md` | The "load this skill when…" block that `link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md |
+| `evals/trigger/` | Trigger tests: does an agent pick the right skill on its own? |
 | `docs/evals.md` | How to test a skill with real threads, and the rubric |
 | `evals/scenarios.md` | The test scenarios |
 | `sources.json`, `CATALOG.md`, `licenses/` | Where copied skills came from, every upstream skill I looked at, upstream licenses |
@@ -47,7 +50,9 @@ When a finding is about my philosophy rather than a skill (something I believe t
 
 - Read the whole skill and the scenarios for it first.
 - Keep it short. Steer with what good looks like and why; script only fixed steps (commands, paths). Global skill descriptions are in every session's context, so every word there costs.
-- Description: front-load the trigger (`writing-for-agents`). Prose: run `unslop`.
+- Description: say what it does and when, in my words, within the first ~80 characters (Codex cuts the rest). Prose: run `unslop`.
+- Agents pick knowledge skills (templates, formats, rule sets) from the description alone. Process skills (debugging, writing, checking their own work) need a line in `global/skills.md`. Rerun `evals/trigger` after changing either.
+- User-only skills need `disable-model-invocation: true` for Claude Code and `agents/openai.yaml` with `policy: allow_implicit_invocation: false` for Codex. A skill another skill calls must not be user-only.
 - Copied skills: record every change in `sources.json` → `changes`.
 - After a rename or delete: `node scripts/link.mjs`.
 - Update `README.md`, `docs/me.md` or this file when what they say stops being true.

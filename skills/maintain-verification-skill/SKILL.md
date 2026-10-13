@@ -1,7 +1,6 @@
 ---
 name: maintain-verification-skill
-description: "Periodic pass that keeps a project's verification skill and feature map honest: parallel source readers per feature, one live session driving every feature, at most one PR of proven corrections. Use for /maintain-verification-skill or \"audit the verify skill\"."
-disable-model-invocation: true
+description: "Bring a repo's verify-<app> skill back in line with the app. Use after big feature changes, or when its steps, selectors or feature map no longer match what the app does."
 ---
 
 # Maintain a verification skill

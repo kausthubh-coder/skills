@@ -12,7 +12,9 @@
       "path": "pstack/skills/create-verification-skill",
       "license": "MIT (Lauren Tan)",
       "changes": [
-        "writes to .agents/skills/verify-<app>/ instead of .cursor/skills/"
+        "writes to .agents/skills/verify-<app>/ instead of .cursor/skills/",
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
       "commit": "ea32d95",
       "upstreamHash": "a2e50d2189277217"
@@ -22,7 +24,9 @@
       "path": "pstack/skills/maintain-verification-skill",
       "license": "MIT (Lauren Tan)",
       "changes": [
-        "looks in .agents/skills/verify-*/ first"
+        "looks in .agents/skills/verify-*/ first",
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
       "commit": "ea32d95",
       "upstreamHash": "283083c954764139"
@@ -31,7 +35,10 @@
       "repo": "cursor/plugins",
       "path": "pstack/skills/correct",
       "license": "MIT (Lauren Tan)",
-      "changes": [],
+      "changes": [
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
+      ],
       "commit": "ea32d95",
       "upstreamHash": "61c8a417f95b6e3c"
     },
@@ -40,7 +47,9 @@
       "path": "pstack/skills/benchmark-checklist",
       "license": "MIT (Lauren Tan)",
       "changes": [
-        "removed references to poteto-mode playbooks (Opening a PR, Perf issue, Hillclimb)"
+        "removed references to poteto-mode playbooks (Opening a PR, Perf issue, Hillclimb)",
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
       "commit": "ea32d95",
       "upstreamHash": "4ed522cb6ea05fed"
@@ -55,11 +64,23 @@
       "commit": "dbf4981",
       "upstreamHash": "b651827a1c11465d"
     },
+    "in-your-own-words": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/in-your-own-words",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)"
+      ],
+      "commit": "dbf4981",
+      "upstreamHash": "007710e015186dbc"
+    },
     "unslop": {
       "repo": "cursor/plugins",
       "path": "pstack/skills/unslop",
       "license": "MIT (Lauren Tan)",
-      "changes": [],
+      "changes": [
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)"
+      ],
       "commit": "ea32d95",
       "upstreamHash": "2e57ee5eac607dd8"
     },
@@ -68,7 +89,9 @@
       "path": "pstack/skills/principle-prove-it-works",
       "license": "MIT (Lauren Tan)",
       "changes": [
-        "removed reference to show-me-your-work"
+        "removed reference to show-me-your-work",
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
       "commit": "ea32d95",
       "upstreamHash": "6777a72ed3c15bbd"
@@ -77,7 +100,10 @@
       "repo": "cursor/plugins",
       "path": "pstack/skills/principle-test-behavior-not-implementation",
       "license": "MIT (Lauren Tan)",
-      "changes": [],
+      "changes": [
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
+      ],
       "commit": "ea32d95",
       "upstreamHash": "9f4f33a502d503ff"
     },
@@ -86,7 +112,9 @@
       "path": "pstack/skills/principle-minimize-reader-load",
       "license": "MIT (Lauren Tan)",
       "changes": [
-        "removed link to principle-guard-the-context-window"
+        "removed link to principle-guard-the-context-window",
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
+        "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
       "commit": "ea32d95",
       "upstreamHash": "31dddf8eec76cd18"
@@ -119,7 +147,9 @@
       "repo": "mattpocock/skills",
       "path": "skills/productivity/writing-for-agents",
       "license": "MIT (Matt Pocock)",
-      "changes": [],
+      "changes": [
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)"
+      ],
       "commit": "49dd158",
       "upstreamHash": "95da47fc97af998e"
     },
@@ -127,7 +157,9 @@
       "repo": "mattpocock/skills",
       "path": "skills/engineering/diagnosing-bugs",
       "license": "MIT (Matt Pocock)",
-      "changes": [],
+      "changes": [
+        "description rewritten in my words with the trigger first (2026-10-13 trigger tests)"
+      ],
       "commit": "49dd158",
       "upstreamHash": "ede7254edbd22fca"
     },
