@@ -13,7 +13,7 @@ A skill is only as good as what an agent actually does with it. Reading `SKILL.m
 3. **Play me.** When the thread asks something, answer the way the scenario and `docs/me.md` say I would: short, typos fine, no extra help. Use `t3_pending_request_respond` for question prompts and `t3_thread_send` for chat. Don't coach it toward the right answer; that hides the bug. If it asks something a good run wouldn't need to ask, answer it, then note that as a finding.
 4. **Follow it** with `t3_thread_wait` (bounded timeouts) and `t3_thread_read`. Use `view: "activity"` to see tool calls, not just messages.
 5. **Check the output yourself.** Open the files it made and run what it says works (`bun run check`, the dev server, the doctor). The thread saying "done" is a claim, not evidence.
-6. **Grade** each run with the rubric below and write it up in `reports/evals/<date>-<skill>.md` (local only). For each finding, include a quote or `file:line` and a link to the thread (`[title](t3-thread://v1/<threadId>)`).
+6. **Grade** each run with the rubric below and write it up as an HTML page with `html-artifacts` (Report type) in `reports/evals/<date>-<skill>.html` (local only). For each finding, include a quote or `file:line` and a link to the thread (`[title](t3-thread://v1/<threadId>)`).
 7. **Fix and rerun.** Change the skill for findings that repeat or matter, then rerun the scenarios that failed. Never call a fix done until a rerun proves it.
 8. **Clean up.** Delete the scratch folders and eval worktrees and branches. Keep the threads; they're the evidence.
 
