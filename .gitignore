@@ -6,3 +6,4 @@ reports/
 !.env.example
 node_modules/
 evals/trigger/variants/
+.claude/skills

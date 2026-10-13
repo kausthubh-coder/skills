@@ -1,0 +1,44 @@
+---
+name: audit-skills
+description: "Audit how well my skills worked in my recent threads and update the skills dashboard. Use for /audit-skills, the scheduled audit, or when I ask how my skills or agents are doing."
+---
+
+# Audit my skills
+
+Find out whether my skills did their job in my recent work, and what to change. The output feeds the dashboard in `dashboard/`. Read `docs/philosophy.md`, `docs/me.md` and `global/skills.md` first: they define "did its job".
+
+## 1. Window and collector
+
+- Window: from the last audit's `window.to` (newest `reports/audits/<date>.json`) to now. With no audit, the last 3 days.
+- Run `bun dashboard/collect.ts`. It counts loads and flags candidate signals; it doesn't judge. Use its `reports/dashboard/data.json` to see which projects and threads were busy.
+
+## 2. Read the threads
+
+Every T3 thread with activity in the window, in every project (`t3_project_list`, then `t3_thread_list` with `settled` true and false). Skip `eval: …` threads and the thread running this audit. Split them across parallel reader agents by project. Each reader reads all my messages, the agent's final answers, and the activity view for Skill calls, SKILL.md reads, checks run and whether the app was driven, then writes `reports/audits/raw/<batch>.json`:
+
+```json
+{"batch":"","window":{"from":"","to":""},
+ "threads":[{"threadId":"","project":"","title":"","agent":"claude|codex","date":"","skills":[],"verdict":"good|mixed|bad","summary":""}],
+ "signals":[{"kind":"frustration|praise|repeat|done_then_broken|missed_skill|correction","threadId":"","project":"","date":"","quote":"","context":"","skill":null}],
+ "skills":[{"name":"","grade":"working|mixed|missed|not_needed","evidence":"","threadIds":[]}],
+ "suggestions":[{"kind":"add|retire|fix-skill|agents-md|routing|project|upstream","title":"","why":"","impact":"high|med|low","evidence":[{"threadId":"","quote":""}]}]}
+```
+
+Only real signals: "this is stupid" about a bug isn't frustration at the agent. Quote me exactly. Include Critly: its two skills, and whether UI work ran `critly check` or `taste`.
+
+## 3. Judge and write
+
+1. Read every batch file yourself. Merge duplicate suggestions, drop weak ones, check the strongest claims against a thread, and rank them. Look at `reports/dashboard/decisions.json`: don't re-suggest what I skipped unless something new happened; carry out what I accepted since the last audit (each in its own commit, proven), and say what you did.
+2. Write `reports/audits/raw/_meta.json`: `{"headline": "<the answer as a sentence>", "summary": ["3-5 lines"], "suggestions": [<final ranked list, at most 8, each with a short kebab-case "id">]}`.
+3. `bun dashboard/merge-audit.ts <today>` writes `reports/audits/<today>.json`. Then move `raw/` to `reports/audits/raw-<today>/`.
+4. Write the report a person reads as an HTML page with `html-artifacts` (Report type): `reports/audits/<today>.html`.
+
+## 4. The dashboard
+
+- Open it in T3's preview (`bun dashboard/server.ts`, port 4791) and look at Overview and anything you changed.
+- You may change the site when something you found deserves a place (a view, a column, a chart). At most one addition per run, and remove a view nobody needs before adding one. Read `dashboard/AGENTS.md` first. `bun run typecheck` and a Critly check (`bun run lint:ui` in `dashboard/`) must pass, then commit.
+- Never put quotes or data in committed files; they stay in `reports/`.
+
+## 5. Report
+
+End with a few lines: the headline, the top suggestions, what you changed, and anything you couldn't read.
