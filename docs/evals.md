@@ -23,7 +23,7 @@ A skill is only as good as what an agent actually does with it. Reading `SKILL.m
 
 ## Trigger tests
 
-Whether an agent picks a skill on its own is tested separately and cheaply. Use `evals/trigger/`, with cases in `cases.json` taken from real prompts. `node evals/trigger/run.mjs snapshot global` copies the skills Claude sees now into `variants/global` (gitignored). Copy that folder to make a variant: edit descriptions, drop skills, or add a `_CLAUDE.md` of always-loaded lines. Then run `node evals/trigger/run.mjs claude <variant> 3` or `node evals/trigger/run.mjs codex 2`. Rerun them after changing any description. The first results are in `reports/evals/2026-10-13-trigger.md`.
+Whether an agent picks a skill on its own is tested separately and cheaply. Use `evals/trigger/`, with cases in `cases.json` taken from real prompts. `node evals/trigger/run.mjs snapshot global` copies the skills Claude sees now into `variants/global` (gitignored). Copy that folder to make a variant: edit descriptions, drop skills, or add a `_CLAUDE.md` of always-loaded lines. Then run `node evals/trigger/run.mjs claude <variant> 3` or `node evals/trigger/run.mjs codex 2`. Rerun them after changing any description. The first results are in `reports/evals/2026-10-13-trigger.html`.
 
 ## Rubric
 
