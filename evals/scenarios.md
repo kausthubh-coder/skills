@@ -46,7 +46,7 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 ### report: what the agent did
 - **Repo:** krida, worktree.
 - **Open with:** `write up what changed in the last few commits as an html report so i can review it`
-- **Good run:** h1 is the outcome, not "Report"; changes grouped by behavior; each claim beside its evidence; checks named, skipped ones marked; a 3-5 minute read; saved in the repo's plans folder or `.agents/reports/`.
+- **Good run:** h1 is the outcome, not "Report"; changes grouped by behavior; each claim beside its evidence; checks named, skipped ones marked; at most 350 visible words, the rest folded; saved in the repo's plans folder or `.agents/reports/`.
 
 ### compare: costs
 - **Open with (scratch):** `html page comparing convex vs supabase vs neon for a small app, mainly cost`
