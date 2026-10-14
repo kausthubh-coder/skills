@@ -20,6 +20,17 @@ The library lives at `C:\Users\kaust\OneDrive\Documents\dev\agent-skills`, a pub
 4. If agents must load it on their own and it's a process (how to debug, write, check), add a line to `global/skills.md`; the description alone won't make them use it. Only I can run it? Add `disable-model-invocation: true` and `agents/openai.yaml` with `policy: allow_implicit_invocation: false` (Codex ignores the first).
 5. Run `node scripts/link.mjs` to link it everywhere and sync `global/skills.md` into my global CLAUDE.md and Codex AGENTS.md. Run it again after a rename or delete; it prunes stale links.
 
+## Facts about my setup
+
+Where my code lives, my stack, my tools and my GitHub are repeated in several files, because agents in other repos never see the library's docs. `docs/me.md` is the source. The copies are in:
+
+- `global/skills.md`, which `node scripts/link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md
+- the skills that act on them: `init-project` and its `references/`, `optimize`, `create-project-flows`, this skill
+- `docs/evals.md`, `evals/scenarios.md`, the library's `AGENTS.md` and `README.md`
+- `C:\Users\kaust\OneDrive\Documents\dev\sandbox\AGENTS.md`, outside the repo and not in git
+
+When a fact changes or you add one, update `docs/me.md` first. Then search every copy for the old wording (`rg -n "<old text>" skills global docs evals AGENTS.md README.md ..\sandbox\AGENTS.md`), fix each one, and run `node scripts/link.mjs`.
+
 ## Update from upstream
 
 Run `node scripts/upstream.mjs`. It pulls `_sources/` and lists the adopted skills whose upstream changed since the recorded commit. For each one, show me the diff, reapply our `changes` on top if I want the update, then bump the commit in `sources.json`.

@@ -12,3 +12,8 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - Making a video, animation, motion graphic or product demo: the HyperFrames skills are parked so they don't crowd the menu. Read `~/.skills-parked/hyperframes/SKILL.md` first. When it says to load `/hyperframes-x` or another skill, read `~/.skills-parked/<that name>/SKILL.md`.
 - Adding or changing Clerk auth: the Clerk skills are parked in `~/.skills-parked/` (`clerk-setup`, `clerk-cli`, `clerk-orgs` and others). Read the one that fits.
 - I name a skill (`/name` or `$name`), even mid-sentence or misspelled: read its SKILL.md in `~/.claude/skills`, `~/.agents/skills` or the repo's `.agents/skills` and follow it. Never say a skill isn't installed without looking there.
+
+# Where my code lives
+
+- Projects: `C:\Users\kaust\OneDrive\Documents\dev\<name>`. Experiments: `dev\sandbox\<name>`, one folder each (rules in `dev\sandbox\AGENTS.md`).
+- A T3 "No project" thread runs in a throwaway folder in `C:\Users\kaust\.t3\scratch\`. I research and think through ideas there or in the sandbox, so never build a project in the scratch folder or the sandbox root. When an idea turns into a project, suggest `/init-project`.

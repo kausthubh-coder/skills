@@ -17,7 +17,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `skills/create-project-flows/` | Writes a project's own `worktree-<app>` and `ship-<app>` skills |
 | `dashboard/` | Skills dashboard: a small React site over my Claude Code, Codex and T3 history (T3 action "Dashboard", port 4791). Data stays in `reports/` |
 | `.agents/skills/audit-skills/` | The audit that reads my threads every 48 hours (T3 scheduled task) and feeds the dashboard |
-| `global/skills.md` | Short "load this skill when…" list that `link.mjs` writes into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Agents skip skills they only see in the skill list (`reports/evals/2026-10-13-trigger.md`) |
+| `global/skills.md` | Short "load this skill when…" list, plus where my code lives, that `link.mjs` writes into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Agents skip skills they only see in the skill list (`reports/evals/2026-10-13-trigger.md`) |
 | `skills/my-skills/` | Lets any agent add, edit or update skills in this library |
 | `AGENTS.md`, `docs/` | The manager's brief, my philosophy, my setup and decisions, how skills are tested |
 | `evals/scenarios.md` | Scenarios for testing skills in real threads |

@@ -24,7 +24,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `skills/optimize/` | `/optimize`, including the checklist of gaps all my projects had |
 | `skills/my-skills/` | How any agent, in any repo, adds or edits skills here. Keep it in sync with this file |
 | `skills/create-project-flows/` | Writes a project's `worktree-<app>` and `ship-<app>` skills |
-| `global/skills.md` | The "load this skill when…" block that `link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md |
+| `global/skills.md` | The "load this skill when…" block, plus where my code lives, that `link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md |
 | `evals/trigger/` | Trigger tests: does an agent pick the right skill on its own? |
 | `dashboard/` | The skills dashboard and its collector; read `dashboard/AGENTS.md` before changing it |
 | `.agents/skills/audit-skills/` | The 48-hour audit of my threads (T3 scheduled task "Skills audit"); `/audit-skills` runs it now |
@@ -59,6 +59,7 @@ When a finding is about my philosophy rather than a skill (something I believe t
 - Copied skills: record every change in `sources.json` → `changes`.
 - After a rename or delete: `node scripts/link.mjs`.
 - Update `README.md`, `docs/me.md` or this file when what they say stops being true.
+- A fact about my setup changed (folders, stack, tools)? Update every copy; `my-skills` → "Facts about my setup" lists where they are.
 
 ## Commands
 
