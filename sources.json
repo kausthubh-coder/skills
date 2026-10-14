@@ -74,6 +74,19 @@
       "commit": "dbf4981",
       "upstreamHash": "007710e015186dbc"
     },
+    "no-comments": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/no-comments",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "bundled pstack/agents/comment-sicko.md as references/comment-sicko.md and spawn it as a plain subagent (Cursor agent types do not exist here)",
+        "replaced /how, /why and /architect (not in this library) with reading the code and git history, and a short sketch that waits for my OK",
+        "dropped references to principle-fix-root-causes and principle-redesign-from-first-principles",
+        "agents/openai.yaml so Codex keeps it user-only"
+      ],
+      "commit": "dbf4981",
+      "upstreamHash": "79d789d94fe8eb52"
+    },
     "unslop": {
       "repo": "cursor/plugins",
       "path": "pstack/skills/unslop",

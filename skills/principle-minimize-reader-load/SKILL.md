@@ -1,6 +1,7 @@
 ---
 name: principle-minimize-reader-load
 description: "Make code quicker to trace. Use when code is hard to follow: count the layers between question and answer and the hidden state a reader must hold, collapse one-caller wrappers, shrink mutable scope."
+user-invocable: false
 ---
 
 # Minimize Reader Load

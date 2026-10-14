@@ -55,6 +55,7 @@ When a finding is about my philosophy rather than a skill (something I believe t
 - Description: say what it does and when, in my words, within the first ~80 characters (Codex cuts the rest). Prose: run `unslop`.
 - Agents pick knowledge skills (templates, formats, rule sets) from the description alone. Process skills (debugging, writing, checking their own work) need a line in `global/skills.md`. Rerun `evals/trigger` after changing either.
 - User-only skills need `disable-model-invocation: true` for Claude Code and `agents/openai.yaml` with `policy: allow_implicit_invocation: false` for Codex. A skill another skill calls must not be user-only.
+- Agent-only skills (I'd never type them) get `user-invocable: false`, so they stay out of my `/` menu. Rarely used plugin skills go in `~/.skills-parked/` with a routing line, not in the global folders.
 - Copied skills: record every change in `sources.json` → `changes`.
 - After a rename or delete: `node scripts/link.mjs`.
 - Update `README.md`, `docs/me.md` or this file when what they say stops being true.

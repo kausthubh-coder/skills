@@ -1,6 +1,7 @@
 ---
 name: benchmark-checklist
 description: "Check a perf number before you report or act on it. Use when you measured, or are given, a speedup, regression, load time or latency, or run a benchmark."
+user-invocable: false
 ---
 
 # Benchmark checklist

@@ -39,6 +39,9 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | Every project gets `worktree-<app>` and `ship-<app>` skills (`create-project-flows`) | I start each task in a fresh T3 worktree; shipping should also update `main` and the main checkout |
 | krida's optimize branch stays unmerged until I've tested it | I don't want to risk production. Not a skills problem |
 | Anything I read (plans, reports, audits, comparisons) is an HTML page from `html-artifacts`; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
+| HyperFrames and Clerk skills parked in `~/.skills-parked/`, reached through `global/skills.md` | They filled the `/` and `$` menus in every project. If `npx skills update` reinstalls them globally, park them again |
+| Skills only agents load (principles, benchmark, maintain-verification, writing-for-agents, codebase-design) have `user-invocable: false` | Hidden from my `/` menu; agents still load them |
+| `/no-comments` copied from pstack | I want a comment-stripping pass on a diff |
 | `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |
 
 ## Corrections I've given (don't repeat these mistakes)

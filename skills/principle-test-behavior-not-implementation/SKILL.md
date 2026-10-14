@@ -1,6 +1,7 @@
 ---
 name: principle-test-behavior-not-implementation
 description: "Write tests that check what users see. Use when you write, change or keep a test: call the code as its users do, assert the exact result, and rewrite tests that pass when everything returns undefined."
+user-invocable: false
 ---
 
 # Test Behavior, Not Implementation

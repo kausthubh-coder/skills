@@ -39,7 +39,7 @@ Read [references/naming.md](references/naming.md). Offer 5-8 candidates. Check e
 
 ## 3. Scaffold
 
-Read [references/stack.md](references/stack.md). Use the official generators and CLIs (`bun create next-app`, `bunx convex dev`, the `clerk-setup` skill), not hand-written config. Use bun everywhere, never npm or npx.
+Read [references/stack.md](references/stack.md). Use the official generators and CLIs (`bun create next-app`, `bunx convex dev`, the `clerk-setup` skill in `~/.skills-parked/clerk-setup/`), not hand-written config. Use bun everywhere, never npm or npx.
 
 Steps only I can do (signing in to Convex, Clerk keys, linking Vercel, creating the GitHub repo) are mine: list them as one numbered checklist with exact commands and links, do everything around them, and continue when I say they're done. Don't stall the rest of setup waiting on them.
 

@@ -59,7 +59,7 @@ Built for Cursor. Many skills read model settings from `~/.cursor/rules/pstack-m
 | ketchup | Plain-words catch-up on the chat | ✖ |
 | bro | Restate the last message without jargon. Only I can run it (`/bro`) | ✅ |
 | in-your-own-words | Restate the user's goal and problem before working (added upstream 2026-10-13). Only I can run it | ✅ |
-| no-comments | Reviewer agent that strips needless comments | ✖ needs pstack's agents |
+| no-comments | Reviewer agent that strips needless comments | ✅ the agent's rules bundled as a reference, run as a plain subagent |
 | make-bot-ui | Web UIs that wake a Grok Bot by webhook | ✖ Cursor/Grok-specific |
 | poteto-mode | Lauren's full personal style and playbooks (hillclimb, perf issue, PRs) | ✖ read it for ideas, don't install |
 | poteto-help | Help for pstack itself | ✖ |
@@ -72,7 +72,7 @@ His engineering skills assume a setup step (`setup-matt-pocock-skills`) that con
 | Skill | What it does | |
 |---|---|---|
 | grilling | Interviews you in rounds about a plan, with a recommended answer for each question | ✅ |
-| grill-me | Shortcut that calls `grilling` | ✅ |
+| grill-me | Shortcut that calls `grilling` | ✖ retired 2026-10-13: never used, `grilling` covers it |
 | handoff | Compacts the chat into a doc a fresh agent can continue from | ✅ |
 | writing-for-agents | How to write skills and AGENTS.md: descriptions as triggers, context cost | ✅ use it when editing this library |
 | diagnosing-bugs | Build a tight pass/fail loop for the bug first, then bisect and test hypotheses | ✅ |
@@ -108,9 +108,9 @@ His `AGENTS.md` (isolate → build → prove → ship) is worth reading. `before
 
 | Skill | What it does | |
 |---|---|---|
-| evidence-driven-testing | Agent tests the UI by computer use while a screen recording with annotations captures it, then posts to the PR. Works on Windows with ffmpeg | ✅ |
-| before-and-after | Before/after screenshots for PRs via `@vercel/before-and-after` | ✅ |
-| code-structure | Actions orchestrate, a shared service layer owns reusable logic | ✅ |
+| evidence-driven-testing | Agent tests the UI by computer use while a screen recording with annotations captures it, then posts to the PR. Works on Windows with ffmpeg | ✖ retired 2026-10-13: never loaded; verify skills do this |
+| before-and-after | Before/after screenshots for PRs via `@vercel/before-and-after` | ✖ retired 2026-10-13: never loaded |
+| code-structure | Actions orchestrate, a shared service layer owns reusable logic | ✖ retired 2026-10-13: never loaded, overlaps `codebase-design` |
 | greploop / greploop-apps | Loop fixing a PR until Greptile gives 5/5 | ✖ only if you use Greptile |
 | new-feature | New worktree from origin/main for every task | ✖ T3 Code handles worktrees |
 | unslop | Cuts AI tells | ✖ library uses pstack's |

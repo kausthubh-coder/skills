@@ -1,6 +1,7 @@
 ---
 name: maintain-verification-skill
 description: "Bring a repo's verify-<app> skill back in line with the app. Use after big feature changes, or when its steps, selectors or feature map no longer match what the app does."
+user-invocable: false
 ---
 
 # Maintain a verification skill

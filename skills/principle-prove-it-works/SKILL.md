@@ -1,6 +1,7 @@
 ---
 name: principle-prove-it-works
 description: "Before you say done, check the real result, not a proxy. Use after any change: run the feature, read the actual value, inspect the diff. 'It compiles' or 'tests pass' is not proof."
+user-invocable: false
 ---
 
 # Prove It Works
