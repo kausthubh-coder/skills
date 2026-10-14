@@ -127,7 +127,7 @@ Project-specific, so not installed.
 
 Also worth reading: T3's `AGENTS.md` (glossary, "three ways to hurt yourself", "hit every surface") and its custom lint rules in `oxlint-plugin-t3code/`.
 
-## HTML pages · researched for `html-artifacts` (2026-10-12)
+## HTML pages · researched for `html-artifacts` (2026-10-12, 2026-10-14)
 
 Prior art for agents writing HTML for people. `html-artifacts` is my own skill; it borrows ideas from these, no files.
 
@@ -139,3 +139,9 @@ Prior art for agents writing HTML for people. `html-artifacts` is my own skill; 
 | dogum/html-artifacts (Apache-2.0) | When to use HTML vs markdown, a Playwright verify script, a tells list | ✖ its default CSS breaks its own rules. Took: the "would this just be headings and paragraphs?" test |
 | plannotator/effective-html (MIT) | Router plus plan, diagram, wireframe and prototype skills | ✖ ties into its own CLI. Took: keep assumptions apart from decisions |
 | f-labs-io/agent-html-skills (MIT) | 17 content skills with a submit-back listener | ✖ sprawling. Took: SVG text doesn't wrap, size boxes for it |
+| pbakaus/impeccable | 24 design commands and a detector of 59 slop rules | ✖ big system on a binary. Took: the machine-checkable tells (side borders, kicker labels, content hidden at rest), "could this be any other product's page?" |
+| leonxlnx/taste-skill | Taste rules for marketing pages, tells grouped in dated waves | ✖ wants motion on everything. Took: every "use this instead" look becomes the next tell, so give a procedure, not a style. This is why the template went |
+| analyticalmonk/explain-this | Explainers with an outline check-in and a fact-check gate | ✖ long paragraphs. Took: back each claim or cut it |
+| Anthropic artifact design guidance (Claude Code, unpublished) | How Claude.ai artifacts should look and draw diagrams | ✖ not a skill to copy. Took: one detail only this subject would have, draw the difference between options, complete at rest |
+
+The research behind the rules (reading, perception, learning) is in `skills/html-artifacts/references/evidence.md`.
