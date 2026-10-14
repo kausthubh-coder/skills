@@ -55,6 +55,8 @@ Embedding a web font costs 50 to 150 KB of base64 and is rarely worth it for a r
 
 `<details><summary>Evidence: 4 quotes from 3 threads</summary>…</details>`. Find-in-page opens closed folds in current Chrome, Firefox and Safari, so folded text is still searchable.
 
+A summary is a tap target: give it at least 44px of height on phones (`summary { padding-block: 0.7rem; cursor: pointer; }`), or `critly check` fails it.
+
 Printed, a closed fold loses its content. Open them all for print:
 
 ```html

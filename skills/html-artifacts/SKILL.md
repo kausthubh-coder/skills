@@ -102,15 +102,16 @@ The saved file stands alone: someone opens it next month, offline, in either sch
 Run all of these on the saved file. Fix, then rerun once or twice; don't loop forever.
 
 1. **Static check:** `node <this skill's folder>/scripts/check.mjs page.html`. Errors must go; fix each warning or know why it stays. It checks the word budget, headings, paragraph length, slop phrasing and decoration, placeholders, host theme variables, both schemes, print handling and pinned scripts.
-2. **Rendered check:** `bunx @kausthubh/critly@0.2 check "file:///<abs path>"`. It loads the page at 390 and 1440 wide in light and dark, and fails on contrast below 4.5:1, sideways scroll on a phone, and lines past 75 characters. Fix every error and review.
-3. **Taste pass:** `bunx @kausthubh/critly@0.2 taste "file:///<abs path>" --out <temp dir>`, then again with `--scheme dark`. Open the squint and overlay images. The thing you chose as the focal point should be what leads; boxes should be few and shallow.
-4. **Look at the whole page:**
+2. **Rendered checks and screenshots**, all together:
    ```
-   bunx playwright@1 screenshot --full-page --viewport-size=390,844 --color-scheme=dark "file:///<abs path>" phone-dark.png
-   bunx playwright@1 screenshot --full-page --viewport-size=1280,800 --color-scheme=light "file:///<abs path>" desk-light.png
+   bunx @kausthubh/critly@0.2 check "file:///<abs path>"
+   bunx @kausthubh/critly@0.2 taste "file:///<abs path>" --out <temp dir>
+   bunx @kausthubh/critly@0.2 taste "file:///<abs path>" --out <temp dir> --scheme dark
+   bunx playwright@1 screenshot --full-page --viewport-size=390,844 --color-scheme=dark "file:///<abs path>" <temp dir>/phone-dark.png
+   bunx playwright@1 screenshot --full-page --viewport-size=1280,800 --color-scheme=light "file:///<abs path>" <temp dir>/desk-light.png
    ```
-   (First run on a machine: `bunx playwright@1 install chromium`.) Open both. T3's `html_preview` is not this check: it renders inside T3's theme.
-5. **Read it as the reader**, folds closed:
+   `check` loads the page at 390 and 1440 wide in both schemes and fails on contrast below 4.5:1, sideways scroll on a phone, small tap targets and lines past 75 characters: fix every error and review. `taste` writes a blurred "squint" image and an overlay of the first screen: the focal point you chose should be what leads, and boxes should be few and shallow. Open those images and both screenshots. (First run on a machine: `bunx playwright@1 install chromium`.) T3's `html_preview` is not this check: it renders inside T3's theme.
+3. **Read it as the reader**, folds closed:
    - The first 844px of the phone shot alone: do you know the answer and what's asked of you?
    - The headings alone: do they give the argument?
    - Every number has its unit and a comparison; every claim says how you know it.
