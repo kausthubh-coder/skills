@@ -8,7 +8,7 @@ A visual earns its place when the reader has to relate several parts at once: a 
 - **Label directly.** Names on the boxes, values on the bars, verbs on the arrows ("writes", "polls every 30s"). Legends and numbered keys make the eye shuttle back and forth.
 - **Draw the mechanism, not the name.** A box labeled "Auth" says nothing; show the token going from the browser to the middleware and what gets checked.
 - **Conventional direction:** time and sequence run left to right or top to bottom, arrows point from cause to effect, size means magnitude.
-- **Highlight what changed or what matters** with the accent fill, and say it in words too. Color is never the only signal: pair it with a word, a shape or a pattern.
+- **Highlight what changed or what matters** with the accent (`var(--accent)` as a stroke or text color, or `.hl` on a flow step), on one thing per figure, and say it in words too. Color is never the only signal: pair it with a word, a shape or a pattern. Everything else stays in ink, `--text-3` and hairlines (`--line`).
 - **Text next to what it explains.** Put the paragraph about the figure directly above or below it, not two sections away. For an expert reader, don't repeat in prose what the figure already shows; say what to notice and stop.
 - **Several states or options side by side** (small multiples, `.pair`) beat an animation between them. For a process, a step-through the reader controls beats autoplay.
 - **Readable at 390px.** Wide diagrams scroll inside `overflow-x: auto` or reflow; text never shrinks below the caption size.
@@ -17,7 +17,7 @@ A visual earns its place when the reader has to relate several parts at once: a 
 
 | Method | Best for | Notes |
 |---|---|---|
-| HTML/CSS (`.flow`, `.steps`, `.pair`, grids) | Pipelines, timelines, before/after, file maps, small multiples | Text wraps, reflows on phones, accessible for free. Try this first |
+| HTML/CSS (`.stats`, `.flow`, `.steps`, `.pair`, a table with `.bar` cells) | Key numbers, pipelines, timelines, before/after, ranked values, small multiples | Text wraps, reflows on phones, accessible for free. Try this first |
 | Inline SVG, drawn by hand | Small important figures (up to ~12 nodes): architecture, a git graph, a data structure, state at each step | Exact placement, uses page colors. Sketch the layout on a grid first, then compute coordinates |
 | Mermaid | Sequence, ER and state diagrams, or more than ~12 nodes where computing layout by hand isn't worth it | Needs a pinned script from a CDN; see below |
 | Chart | Numbers that are compared | Use the `dataviz` skill |

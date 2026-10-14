@@ -1,61 +1,57 @@
 # Page types
 
-Each type answers a different question for a different moment. Start from the skeleton, then cut any section that has nothing true to say. The section headings below are roles; on the page, write headings that state each section's point.
+Each type answers a different question. Start from its skeleton and cut any part that has nothing true to say. The parts below are roles; on the page, each heading states its section's point in 6 words or fewer.
+
+Every type opens the same way. **The first screen**: the h1 (the answer, 8 words at most), a dek line if the h1 needs a condition, a stats row or one visual, and the asks. Every type folds the same things: reasoning, quotes, logs, file lists and long output go in `<details>`, with a summary that says what's inside. The visible page is about 350 words; only teach pages run longer.
 
 ## Report: "what did you do, and can I trust it?"
 
-The reader was not there. They want the outcome, then enough evidence to believe it, then what is left for them.
+The reader was not there. They want the outcome, enough evidence to believe it, and what's left for them.
 
-1. **h1 = the outcome.** "Imports no longer duplicate rows; the backfill still needs a run on prod." Status tag: done, partly done, blocked.
-2. **Summary**: what changed, the strongest evidence, the main risk, what I need from you.
-3. **What changed, by behavior.** Group by what a user or caller now sees, not by file. A before/after pair or a flow with the changed step highlighted usually beats a list of edits.
-4. **Why this way.** Only the decisions a reviewer might question, each with the alternative you rejected and why. Skip if nothing was a judgement call.
-5. **Evidence.** What you ran and what came back: commands, test names, screenshots, numbers. Put each claim next to its evidence (the test result beside the behavior it proves), long output folded. Mark each as verified, inferred, or not checked. A small pass/fail matrix works when there are several surfaces or states; a wall of green checks says less than one honest "not checked".
-6. **Risks and what's left.** Unverified paths, follow-ups, anything you changed that the task didn't ask for.
-7. **Details** (folded): file list with one line each, the full diff summary, logs.
+1. **First screen.** h1 = the outcome ("Imports *no longer duplicate rows*"). Status word: done, partly done or blocked. Stats: the two to four numbers that prove it (tests passed, rows fixed, threads read). Asks, if any.
+2. **What changed, by behavior.** What a user or caller now sees, not which files moved. A before/after pair, a flow with the changed step marked, or one table row per behavior.
+3. **Evidence.** A table: claim, how you checked it, result (verified, inferred or not checked). The command output folds under it. One honest "not checked" row says more than a column of passes.
+4. **Risks and what's left.** One `.note` line each, with what you'll do about it.
+5. **Folded:** decisions a reviewer might question (each with the alternative you rejected), the file list, logs.
 
-A report that says "all checks pass" must name the checks. Name the skipped ones too; a reader trusts a report that admits gaps more than one that has none.
+A report that says "all checks pass" names the checks, and names the skipped ones too.
 
 ## Plan: "what will you do, and should I say yes?"
 
 The reader is approving. Make the decision easy and the scope impossible to misread.
 
-1. **h1 = the proposal in one sentence.** "Move auth to Clerk in three steps, starting with the web app."
-2. **What I need from you**, right under the summary: approve, choose between options, or answer specific questions. Number the questions so they can be answered by number.
-3. **The goal and the done-criteria.** What will be true when this is finished, stated so it can be checked.
-4. **The approach.** A diagram when order or dependencies matter (steps, phases, what blocks what). Each step says what it produces and how you will know it worked.
-5. **Options considered** (only if there was a real choice), including doing nothing: a table, the pick highlighted, then the reasoning as a short paragraph. Reasons are an argument, so they read better as prose than as bullets.
-6. **Scope and non-goals.** In and out, explicitly. Non-goals prevent the "I thought you were also…" conversation.
-7. **Risks**, found by a premortem: assume it shipped and failed, then list why. Each risk gets what you'll do about it. Open questions and assumptions are listed apart from decisions, so the reader can see what is settled.
-8. **Details** (folded): files you expect to touch, data or API changes, migration and rollback.
+1. **First screen.** h1 = the proposal ("Move auth to Clerk *in three steps*"). Stats or the flow of phases. Asks: approve, choose, or numbered questions they can answer by number.
+2. **Done when.** Two to four checkable lines.
+3. **The approach.** A `.flow` or `ol.steps`; each step is one line saying what it produces and how you'll know it worked.
+4. **Options** (only if there was a real choice, including doing nothing): a table with the pick row marked. The reasoning folds under it.
+5. **Scope.** In and out as a `.pair`. Non-goals prevent the "I thought you were also…" conversation.
+6. **Risks**, found by a premortem (assume it shipped and failed; list why). One `.note` each, with the response. Keep open questions apart from decisions.
+7. **Folded:** files you expect to touch, data or API changes, migration and rollback.
 
 ## Teach: "help me understand X"
 
-The reader wants a working mental model, not a reference manual. Build it in the order a good teacher would at a whiteboard.
+The reader wants a working mental model. Set `<main data-type="teach">`: the page may run past 350 words, but each section still opens with its point and keeps paragraphs to two sentences.
 
-1. **h1 = the one-sentence model.** "A rebase replays your commits on top of someone else's, which is why their hashes change."
-2. **Why it matters to them**: the concrete situation where they'll need this, preferably from their own project.
-3. **Terms first, briefly.** Define the 3-5 words the rest of the page depends on before using them (a short definition list), and give the mental model in a sentence or a picture. Learning the parts before the process keeps the main explanation from carrying two loads at once.
-4. **One concrete example, walked through.** Show the state before, each step, the state after. For anything that changes over time (git history, a request through a system, a data structure), draw each state rather than describing it.
-5. **Then the general rule**, now that the example gives it something to attach to. If an analogy helps, spell out the mapping ("the branch label is like a bookmark: moving it doesn't move the pages") and say where it breaks.
-6. **The common mistake.** State the misconception people actually have, say plainly that it's wrong, and explain why, all in one place. Correcting it head-on works; it doesn't entrench the mistake.
-7. **Check yourself**: two to four questions at the end of each major section, in `<details class="check">` with the answer and its reason inside. Ask questions that need the model ("what happens to commit C if…"), not recall of a definition. Answering from memory, then seeing the answer, is what makes it stick.
-8. **When to use what** (if the topic has alternatives): a small decision table or "if X, use Y" list.
-9. **Go deeper** (folded or at the end): edge cases, links to the primary docs.
+1. **First screen.** h1 = the model in a phrase ("Rebase *replays your commits*"), the dek gives the full sentence, then one picture of it.
+2. **Why it matters to them**: the situation where they'll need this, from their own project if you can. One or two lines.
+3. **Terms first.** The 3-5 words the rest depends on, defined briefly, before the walkthrough uses them.
+4. **One concrete example, walked through.** Draw the state before, each step, and after. For anything that changes over time, draw each state rather than describing it.
+5. **Then the rule**, now that the example gives it something to attach to. If an analogy helps, spell out the mapping and say where it breaks.
+6. **The common mistake**, refuted head-on in one place: what people believe, that it's wrong, and why.
+7. **Check yourself**: two to four questions per major section in `<details class="check">`, answer and reason inside. Ask questions that need the model ("what happens to commit C if…"), not recall.
+8. **When to use what** (if there are alternatives): a small table.
+9. **Folded:** edge cases, links to the primary docs.
 
-Match depth to the reader. Worked examples and definitions help a newcomer and slow down an expert, so when the reader knows the basics, skip to the part they're missing, or add a "skip to the rule" link.
+When the reader knows the basics, skip to the part they're missing.
 
 ## Compare: "which one should I pick?"
 
-For frameworks, services, approaches, costs.
-
-1. **h1 = the recommendation and its condition.** "Use Convex unless you need SQL joins across tenants."
-2. **The criteria that matter for this decision**, stated up front, a few at most. Ten criteria means you haven't decided what matters.
-3. **One table**: at most five options, the same criteria for each, the recommended option highlighted, numbers right-aligned with units in the header. Every cell holds a value or a short judgement ("$25/mo at 1M calls"), not a bare checkmark or "Good". Options as rows keeps the table narrow enough for a phone.
-4. **Cost** gets its own small table or chart when money is a criterion: the same usage scenario priced for each option, with the assumptions written down and the date the prices were checked.
-5. **When the answer flips**: the situations where a different option wins.
-6. **Sources**, with dates. Prices and limits go stale.
+1. **First screen.** h1 = the recommendation; the dek gives its condition ("Use Convex", then "unless you need SQL joins across tenants"). Stats only if a number decides it (cost at your usage).
+2. **One table**: at most five options as rows, a few criteria as columns, the pick row marked, numbers right-aligned with units in the header. Every cell holds a value or a short judgement ("$25/mo at 1M calls"), never a bare checkmark.
+3. **Cost** in its own small table when money is a criterion: the same scenario priced for each option. Assumptions and the date the prices were checked fold under it.
+4. **When the answer flips**: one `.note` line per situation where another option wins.
+5. **Sources** with dates, in the footer. Prices and limits go stale.
 
 ## Mixed pages
 
-A page can be a report followed by a plan ("here's what I found, here's what I propose"). Keep the order: what is true now, then what to do about it. Put the ask at the top regardless.
+A report followed by a plan ("here's what I found, here's what I propose"): what is true now, then what to do about it. The asks stay on the first screen regardless.
