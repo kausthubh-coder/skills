@@ -1,16 +1,26 @@
 #!/usr/bin/env node
-// Static checks for an HTML artifact. Catches what a rendered check can't see: too many words, headings that
-// say nothing, AI-slop phrasing and decoration, placeholders, colors borrowed from a host app, unpinned scripts.
-// Contrast, overflow and line length need a browser: run `critly check` on the file for those.
+// Every check for an HTML artifact, in one command.
+// 1. Static: what a browser can't see. Too many words, headings that say nothing, AI-slop phrasing and
+//    decoration, placeholders, colors borrowed from a host app, unpinned scripts.
+// 2. Rendered: `critly check` (contrast in both schemes, sideways scroll at 390px, tap targets, line length),
+//    `critly taste` in light and dark (squint and overlay images of the first screen), and full-page
+//    screenshots of a dark phone and a light desktop. Then it lists the images to open.
 //
-//   node check.mjs page.html [more.html ...]
+//   node check.mjs page.html [more.html ...]     all checks
+//   node check.mjs --static page.html            static checks only, for a quick pass while writing
 //
-// Exit 1 when any file has an error. Warnings are judgement calls: fix them or know why not.
+// Exit 1 when any file has an error or critly check fails. Warnings are judgement calls: fix them or know why not.
 import fs from "node:fs";
+import os from "node:os";
+import path from "node:path";
+import { spawnSync } from "node:child_process";
+import { pathToFileURL } from "node:url";
 
-const files = process.argv.slice(2);
+const args = process.argv.slice(2);
+const staticOnly = args.includes("--static");
+const files = args.filter((a) => !a.startsWith("--"));
 if (!files.length) {
-  console.error("usage: node check.mjs page.html [more.html ...]");
+  console.error("usage: node check.mjs [--static] page.html [more.html ...]");
   process.exit(2);
 }
 
@@ -183,6 +193,42 @@ for (const file of files) {
   for (const e of errors) console.log(`  error: ${e}`);
   for (const w of warnings) console.log(`  warn:  ${w}`);
   if (errors.length) failed = true;
+  if (!staticOnly && !render(file)) failed = true;
 }
 
 process.exit(failed ? 1 : 0);
+
+// Runs the browser checks on the saved file and returns false when critly check fails or can't run.
+function render(file) {
+  const url = pathToFileURL(path.resolve(file)).href;
+  const out = path.join(os.tmpdir(), "html-artifacts", path.basename(file, path.extname(file)));
+  fs.rmSync(out, { recursive: true, force: true });
+  fs.mkdirSync(out, { recursive: true });
+  const run = (cmd) => spawnSync(cmd, { shell: true, encoding: "utf8", timeout: 180_000 });
+  const tail = (r, n) => `${r.stdout ?? ""}${r.stderr ?? ""}`.trim().split("\n").slice(-n).join("\n");
+
+  console.log("\n  critly check (390 and 1440 wide, light and dark):");
+  const check = run(`bunx @kausthubh/critly@0.2 check "${url}"`);
+  const report = `${check.stdout ?? ""}`.trim().split("\n").filter((l) => !/^Checking |^file:\/\//.test(l)).join("\n");
+  console.log(report.replace(/^/gm, "    ") || tail(check, 5));
+
+  for (const scheme of ["light", "dark"]) {
+    const taste = run(`bunx @kausthubh/critly@0.2 taste "${url}" --out "${path.join(out, `taste-${scheme}`)}" --scheme ${scheme}`);
+    // Light gets every look; dark only says what leads, since boxes and edges don't change with the scheme.
+    const keep = scheme === "light" ? /^\s+(lead|boxes|look)\s/ : /^\s+lead\s/;
+    const looks = tail(taste, 60).split("\n").flatMap((l) => {
+      const viewport = l.match(/ · (\d+x\d+)$/);
+      return viewport ? [`${viewport[1]}:`] : keep.test(l) ? [`  ${l.trim()}`] : [];
+    });
+    console.log(`\n  critly taste, ${scheme}:\n${looks.map((l) => `    ${l}`).join("\n") || "    " + tail(taste, 3)}`);
+  }
+
+  for (const [name, size, scheme] of [["phone-dark", "390,844", "dark"], ["desktop-light", "1280,800", "light"]])
+    run(`bunx playwright@1 screenshot --full-page --viewport-size=${size} --color-scheme=${scheme} "${url}" "${path.join(out, `${name}.png`)}"`);
+
+  const images = fs.readdirSync(out, { recursive: true }).filter((f) => f.endsWith(".png") && !/-1440\./.test(f)).sort();
+  console.log(`\n  Open these and look (screenshot missing: run \`bunx playwright@1 install chromium\` once):`);
+  for (const img of images) console.log(`    ${path.join(out, img)}`);
+  console.log("  Squint images: does the focal point you chose lead? Screenshots: readable in both schemes, nothing cut off?");
+  return check.status === 0;
+}
