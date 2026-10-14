@@ -37,7 +37,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | AGENTS.md about 100 lines, deep material in `docs/` | See philosophy §3 |
 | A short "load this skill when…" block (`global/skills.md`) in my global CLAUDE.md and Codex AGENTS.md | Trigger tests: process skills went from 0/3 to 3/3 with it; descriptions alone weren't enough |
 | Every project gets `worktree-<app>` and `ship-<app>` skills (`create-project-flows`) | I start each task in a fresh T3 worktree; shipping should also update `main` and the main checkout |
-| krida's optimize branch stays unmerged until I've tested it | I don't want to risk production. Not a skills problem |
+| An unmerged branch I'm holding back is my call, not a skills failure | krida's optimize branch waited until I'd tested it (merged 2026-10-13) |
 | Anything I read (plans, reports, audits, comparisons) is an HTML page from `html-artifacts`; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
 | HyperFrames and Clerk skills parked in `~/.skills-parked/`, reached through `global/skills.md` | They filled the `/` and `$` menus in every project. If `npx skills update` reinstalls them globally, park them again |
 | Skills only agents load (principles, benchmark, maintain-verification, writing-for-agents, codebase-design) have `user-invocable: false` | Hidden from my `/` menu; agents still load them |
