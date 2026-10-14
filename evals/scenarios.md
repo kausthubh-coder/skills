@@ -52,6 +52,9 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with (scratch):** `html page comparing convex vs supabase vs neon for a small app, mainly cost`
 - **Good run:** h1 is a recommendation with its condition; one table with real numbers, the assumptions and the date prices were checked; sources linked; no invented prices.
 
+### Every html-artifacts run
+- **Good run, on top of the above:** no template look and none of the listed tells; a look you can explain from the content (the generic test passes: the three scenario pages don't look alike); body text 16px or more; `check.mjs` clean, `critly check` passing in both schemes, the taste images opened; readable in light and dark, on a phone and printed with folds open.
+
 ## create-project-flows
 
 ### repo with flows, new worktree

@@ -39,6 +39,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | Every project gets `worktree-<app>` and `ship-<app>` skills (`create-project-flows`) | I start each task in a fresh T3 worktree; shipping should also update `main` and the main checkout |
 | An unmerged branch I'm holding back is my call, not a skills failure | krida's optimize branch waited until I'd tested it (merged 2026-10-13) |
 | Anything I read (plans, reports, audits, comparisons) is an HTML page from `html-artifacts`; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
+| `html-artifacts` has no template (2026-10-14): each page's look comes from its content, held up by the slop list, `check.mjs` and `critly check`/`taste` | Both templates (editorial, then dark "Instrument") made every page look the same, and their signatures are on published lists of AI-design tells |
 | HyperFrames and Clerk skills parked in `~/.skills-parked/`, reached through `global/skills.md` | They filled the `/` and `$` menus in every project. If `npx skills update` reinstalls them globally, park them again |
 | Skills only agents load (principles, benchmark, maintain-verification, writing-for-agents, codebase-design) have `user-invocable: false` | Hidden from my `/` menu; agents still load them |
 | `/no-comments` copied from pstack | I want a comment-stripping pass on a diff |
