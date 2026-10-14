@@ -8,6 +8,23 @@ disable-model-invocation: true
 
 Create a new project with me, end to end. Interview first, build second. Nothing gets created until the interview is done and I've confirmed the summary.
 
+## 0. Where you're starting from
+
+My code lives in OneDrive:
+
+```
+C:\Users\kaust\OneDrive\Documents\dev\
+  <name>\          personal and public projects, one git repo each
+  sandbox\         experiments; sandbox\AGENTS.md has its rules and how promotion works
+    <name>\
+```
+
+I almost never have a folder yet when I run this. I start thinking or researching an idea in a T3 "No project" thread (its folder is a throwaway `C:\Users\kaust\.t3\scratch\<date-slug>\`) or in the sandbox project (`dev\sandbox`), and run `/init-project` in that same thread once the idea firms up.
+
+- The folder you're in is not the project. Never scaffold into `.t3\scratch`, `.t3\projects` or the sandbox root. The project goes where its tier says (step 1), and you create that folder in step 3.
+- Read the thread so far and the current folder first. Research, notes, a name idea or decisions already made are interview answers; don't ask them again. Copy notes worth keeping into the new project's `docs/`.
+- If the idea already has a folder in `dev\sandbox\`, build on it: keep it there for an experiment, or promote it to `dev\` (steps in `sandbox\AGENTS.md`) for personal and public. Don't start a second folder for the same idea.
+
 ## 1. Interview
 
 Use the `grilling` skill's format: rounds of numbered questions, each with your recommended answer, worded so "yes" accepts it. Ask only what changes what you build. Look up facts yourself (folders, GitHub, npm).
@@ -60,4 +77,5 @@ Once the app runs and shows its first real screen, run `create-verification-skil
 
 - `git init` and make the first commit on `main`. Ask before creating the GitHub repo; after that, follow the tier's git flow.
 - Experiments: add the folder to "What's here now" in `dev\sandbox\AGENTS.md`.
+- This thread is still bound to the folder it started in, so use absolute paths into the new project. For personal and public, tell me to open new threads in its T3 project from now on.
 - Reply with: what exists, how to run it, my remaining checklist items, and the first three features you'd build next.

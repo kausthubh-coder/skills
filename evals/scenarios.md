@@ -24,6 +24,11 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Me:** vague at first; when pushed: for me and classmates, web, wants it to make cards from lecture PDFs.
 - **Good run:** interviews until the idea is concrete, with a recommendation each time; doesn't start building before my yes on the summary.
 
+### after research in a No project thread
+- **Open with (scratch):** first `look into apps that let a study group share one pomodoro timer, what exists and what's missing`, let it answer, then `/init-project lets build this`.
+- **Me:** for me and my study group, web, sign in yes.
+- **Good run:** uses the research as answers and doesn't re-ask what's settled; personal tier, so the project goes to `dev\<name>` and not the scratch folder (with the eval constraints, it says where it would have gone); copies useful research into `docs/`; at the end, says to open new threads in the new project.
+
 ## optimize
 
 ### krida, quick

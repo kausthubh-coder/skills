@@ -19,7 +19,7 @@ A skill is only as good as what an agent actually does with it. Reading `SKILL.m
 
 ### Eval constraints (paste into every `/init-project` eval)
 
-> This is a test run of a skill. Do everything the skill says, except: create the project in your current folder instead of `dev\` or `dev\sandbox\`; don't create GitHub repos, T3 projects, Vercel projects or anything in the cloud; when you reach a step only I can do (signing in, keys), list it as the skill says and carry on with everything you can do without it.
+> This is a test run of a skill. Do everything the skill says, except: create the project in your current folder instead of `dev\` or `dev\sandbox\` (this overrides the skill's rule against scaffolding in `.t3\scratch`); don't create GitHub repos, T3 projects, Vercel projects or anything in the cloud; when you reach a step only I can do (signing in, keys), list it as the skill says and carry on with everything you can do without it.
 
 ## Trigger tests
 
