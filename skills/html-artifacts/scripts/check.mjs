@@ -227,8 +227,10 @@ function render(file) {
     run(`bunx playwright@1 screenshot --full-page --viewport-size=${size} --color-scheme=${scheme} "${url}" "${path.join(out, `${name}.png`)}"`);
 
   const images = fs.readdirSync(out, { recursive: true }).filter((f) => f.endsWith(".png") && !/-1440\./.test(f)).sort();
-  console.log(`\n  Open these and look (screenshot missing: run \`bunx playwright@1 install chromium\` once):`);
+  console.log("\n  Open these and look:");
   for (const img of images) console.log(`    ${path.join(out, img)}`);
+  const missing = ["phone-dark.png", "desktop-light.png"].filter((f) => !images.includes(f));
+  if (missing.length) console.log(`  Screenshots failed (${missing.join(", ")}): run \`bunx playwright@1 install chromium\` once, then rerun.`);
   console.log("  Squint images: does the focal point you chose lead? Screenshots: readable in both schemes, nothing cut off?");
   return check.status === 0;
 }
