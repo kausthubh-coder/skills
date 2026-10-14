@@ -58,8 +58,9 @@ for (const file of files) {
   if (hostVars.length)
     errors.push(`uses a host app's theme variables (${hostVars.join(", ")}), which exist only inside T3's html_render; define the page's own colors (start from the template)`);
   for (const m of css.matchAll(/(--[\w-]+)\s*:\s*var\(\1\b/g)) errors.push(`${m[1]} refers to itself, so it is invalid`);
-  if (/color-scheme\s*:[^;]*dark/.test(css) && !/prefers-color-scheme\s*:\s*dark|light-dark\(/.test(css))
-    errors.push("declares dark mode support but defines no dark colors: text will be unreadable in dark mode");
+  // Either scheme can be the default as long as the other one has its own colors.
+  if (/color-scheme\s*:[^;]*dark/.test(css) && !/prefers-color-scheme\s*:\s*(?:dark|light)|light-dark\(/.test(css))
+    errors.push("declares dark mode support but defines colors for one scheme only: text will be unreadable in the other");
 
   if (!/--fs-body/.test(css)) warnings.push("not built from assets/template.html: fine if the repo has its own format, otherwise start from the template");
 

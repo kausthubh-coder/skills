@@ -26,7 +26,7 @@ Then gather the material: the diff, the commands you ran and their output, the s
 
 Pages from agents usually fail the same way: too many words. Write the fewest that carry the answer.
 
-- **The first screen is the answer.** A serif h1 of at most 8 words that states the finding ("Process skills *got skipped*", not "Skills audit"), then a stats row or one visual, then what you need from the reader as a numbered list they can answer by number.
+- **The first screen is the answer.** An h1 of at most 8 words that states the finding ("Process skills got skipped", not "Skills audit"), then a stats row or one visual, then what you need from the reader as a numbered list they can answer by number.
 - **Headings state the point in 6 words or fewer.** Reading only the headings gives the whole argument.
 - **Paragraphs are one or two short sentences.** Anything longer is explanation and goes in a fold.
 - **A number, a table row or a visual beats a sentence.** "3 of 74 threads went badly" in a stat or a row, not a paragraph about it.
@@ -42,10 +42,10 @@ Use a visual when the reader must relate several parts at once. Each one makes o
 
 | Showing | Use |
 |---|---|
-| The few numbers that prove the answer | `.stats` |
+| The few numbers that prove the answer | `.stats` (a `.split` under a number shows its good/mixed/bad parts) |
 | Steps or a pipeline | `.flow` (the changed step `.hl`), or `ol.steps` for steps to follow |
 | What changed | `.pair` (before/after) |
-| Options against criteria, or many items with a value each | a table, the pick as `tr.pick`, magnitudes as a `.bar` in a cell |
+| Options against criteria, or many items with a value each | a table, the pick as `tr.pick`, magnitudes as a `.bar` in a cell, grades as a `.dot` before the word or a `.chip` |
 | Structure, dependencies, state over time | a diagram (inline SVG or Mermaid, per visuals.md) |
 | Numbers compared over time or across many series | a chart: use the `dataviz` skill |
 
@@ -59,15 +59,16 @@ If the repo already has a format for these pages, follow it. Otherwise copy the 
 cp <this skill's folder>/assets/template.html <destination>.html
 ```
 
-Then edit the copy. Everything after `</footer>` is an embedded font (about 58 KB of base64), so read the file only up to there and leave the rest as it is. Set `data-type` on `<main>` to the page type.
+Then edit the copy. Everything after the `<script>` under `</footer>` is the embedded Geist and Geist Mono fonts (about 66 KB of base64), so read the file only up to there and leave the rest as it is. Set `data-type` on `<main>` to the page type.
 
-The template is an editorial page: warm paper, Instrument Serif for the headline, section heads and numbers, a quiet sans for the rest, hairlines between things, and one orange-red accent. Its dark mode is a design of its own. Keep that look:
+The template is an instrument panel: dark, dense, numbers first. Near-black background, Geist for words, Geist Mono for labels and numbers, hairline rows, no cards. Light mode (and print) is the same design on near-white, with the lime accent turned dark olive so it stays readable. Keep that look:
 
-- The accent goes on one or two things per screen: the h1's italic phrase, the asks' numerals, the pick, the one stat that matters.
-- Space and hairlines do the grouping. The only label-like element is the one status word in the header.
+- The lime accent means "needs you" and nothing else: the status word in the header, the one action, the pick. Green, amber and red (`--ok`, `--warn`, `--bad`) only mean good, mixed and bad, as a `.dot` before a word, a `.chip`, or a `.split` bar. Color always sits next to a word.
+- Small mono caps (`.label`, table heads, fold summaries) replace sentences. Every number is mono. The asks get mono numerals and a priority dot (`li.p1` red, `li.p2` amber).
+- Hairlines do the grouping: stats split by vertical rules, rows by horizontal ones. No boxes, no pills except grade chips.
 - Stay within its tokens and components, and delete every block you don't use.
 
-The saved file is the artifact and stands alone: someone opens it next month, offline, in dark mode. Inline CSS, the embedded font, images inlined or beside the file, and any library pinned to an exact version. For type, spacing and hierarchy detail, the `critly` skill's Typography, Color and Layout concepts apply.
+The saved file is the artifact and stands alone: someone opens it next month, offline, in light mode or on paper. Inline CSS, the embedded fonts, images inlined or beside the file, and any library pinned to an exact version. For type, spacing and hierarchy detail, the `critly` skill's Typography, Color and Layout concepts apply.
 
 ## 5. Check it
 
