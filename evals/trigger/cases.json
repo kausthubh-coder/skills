@@ -10,6 +10,8 @@
   { "id": "ui-polish", "expect": "critly|critly-audit", "prompt": "the search results ui looks bad, make it better" },
   { "id": "bench-writeup", "expect": "benchmark-checklist", "prompt": "i measured the new trailer preload, it went from 1.2s to 0.45s. write that up as the result for the PR" },
   { "id": "no-verify", "expect": "create-verification-skill", "prompt": "you keep saying its done without testing it. set something up in this repo so you can actually use the app yourself and check" },
+  { "id": "parked-video", "expect": "hyperframes", "prompt": "make a 15 sec animated demo video of the krida home screen for my x post" },
+  { "id": "parked-clerk", "expect": "clerk-setup|clerk-nextjs-patterns|clerk-custom-ui", "prompt": "add clerk sign in to this app" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]

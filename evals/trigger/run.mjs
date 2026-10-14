@@ -74,7 +74,7 @@ async function runClaude(c, dir) {
       if (part.type !== "tool_use") continue;
       if (part.name === "Skill") used.push(String(part.input?.skill));
       // a skill read as a file, not invoked: the fixture keeps skills inside the repo, so Glob can find them
-      if (part.name === "Read") used.push(...skillsFrom(String(part.input?.file_path), /skills[\\/]+([^\\/]+)[\\/]+SKILL\.md/gi).map((s) => `read:${s}`));
+      if (part.name === "Read") used.push(...skillsFrom(String(part.input?.file_path), /skills(?:-parked)?[\\/]+([^\\/]+)[\\/]+SKILL\.md/gi).map((s) => `read:${s}`));
     }
   }
   return used;
@@ -87,7 +87,7 @@ async function runCodex(c, dir) {
     let j; try { j = JSON.parse(line); } catch { continue; }
     const item = j.item ?? j.msg ?? {};
     const command = [item.command, item.cmd].flat().filter(Boolean).join(" ");
-    used.push(...skillsFrom(command, /skills[\\/]+([^\\/"' ]+)[\\/]+SKILL\.md/gi));
+    used.push(...skillsFrom(command, /skills(?:-parked)?[\\/]+([^\\/"' ]+)[\\/]+SKILL\.md/gi));
   }
   return [...new Set(used)];
 }
