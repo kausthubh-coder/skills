@@ -26,6 +26,8 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `skills/create-project-flows/` | Writes a project's `worktree-<app>` and `ship-<app>` skills |
 | `global/skills.md` | The "load this skill when…" block that `link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md |
 | `evals/trigger/` | Trigger tests: does an agent pick the right skill on its own? |
+| `dashboard/` | The skills dashboard and its collector; read `dashboard/AGENTS.md` before changing it |
+| `.agents/skills/audit-skills/` | The 48-hour audit of my threads (T3 scheduled task "Skills audit"); `/audit-skills` runs it now |
 | `docs/evals.md` | How to test a skill with real threads, and the rubric |
 | `evals/scenarios.md` | The test scenarios |
 | `sources.json`, `CATALOG.md`, `licenses/` | Where copied skills came from, every upstream skill I looked at, upstream licenses |
