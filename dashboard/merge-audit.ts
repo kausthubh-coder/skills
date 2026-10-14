@@ -41,6 +41,7 @@ for (const b of batches) {
 const finalSuggestions = (meta.suggestions ?? suggestions).map((s: any) => ({ ...s, id: s.id ?? slug(s.title) }));
 const audit = {
   date, window: { from, to },
+  title: meta.title, dek: meta.dek,
   headline: meta.headline ?? `${threads.size} threads read`,
   summary: meta.summary ?? [],
   threads: [...threads.values()],

@@ -11,6 +11,8 @@
     "taste:ui": "node ../../critly/packages/critly/bin/critly.js taste http://localhost:4791"
   },
   "dependencies": {
+    "@fontsource-variable/geist": "^5.3.0",
+    "@fontsource/geist-mono": "^5.3.0",
     "react": "19",
     "react-dom": "19"
   },

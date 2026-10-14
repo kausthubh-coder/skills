@@ -29,7 +29,7 @@ export function App() {
   }, []);
   const recollect = async () => { setBusy(true); try { setData(await api.collect()); } finally { setBusy(false); } };
 
-  if (error) return <main className="main"><div className="empty"><b>Couldn't load the data</b><p>{error}. Check that the server is running (<code>bun dashboard/server.ts</code>).</p></div></main>;
+  if (error) return <main className="main"><div className="empty"><b>Couldn't load the data.</b>Is the server running? <code>bun dashboard/server.ts</code></div></main>;
   if (!data) return <main className="main" aria-busy="true"><div className="skeleton" /><div className="skeleton short" /></main>;
 
   const props: ViewProps = { data, audits, triggers, decisions, decide, go };
@@ -38,7 +38,7 @@ export function App() {
   return (
     <div className="shell">
       <aside className="side">
-        <div className="brand">Skills</div>
+        <div className="brand"><b>●</b> Skills</div>
         <nav aria-label="Views">
           {views.map((v) => {
             const n = v.count?.(props);
@@ -50,8 +50,8 @@ export function App() {
           })}
         </nav>
         <div className="side-foot">
-          <span className="muted">Data from {updated}</span>
-          <button className="btn ghost" onClick={recollect} disabled={busy}>{busy ? "Collecting…" : "Recollect"}</button>
+          <span className="label">Data {updated}</span>
+          <button className="btn" onClick={recollect} disabled={busy}>{busy ? "Collecting…" : "Recollect"}</button>
         </div>
       </aside>
       <main className="main" key={view}><Current {...props} /></main>

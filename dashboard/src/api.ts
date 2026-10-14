@@ -25,10 +25,12 @@ export type Data = {
 export type AuditSignal = { kind: SignalKind; threadId: string; project: string; date: string; quote: string; context: string; skill?: string | null };
 export type Suggestion = {
   id: string; kind: "add" | "retire" | "fix-skill" | "agents-md" | "routing" | "project" | "upstream";
+  short?: string; // at most 6 words; what the dashboard shows
   title: string; why: string; impact: "high" | "med" | "low"; evidence: { threadId: string; quote: string }[];
 };
 export type Audit = {
   file: string; date: string; window: { from: string; to: string };
+  title?: string; dek?: string; // at most 6 words, and one line: what the dashboard shows
   headline: string; summary: string[];
   threads: { threadId: string; project: string; title: string; agent: string; date: string; skills: string[]; verdict: "good" | "mixed" | "bad"; summary: string }[];
   signals: AuditSignal[];
