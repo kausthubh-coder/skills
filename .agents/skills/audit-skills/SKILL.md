@@ -9,7 +9,8 @@ Find out whether my skills did their job in my recent work, and what to change. 
 
 ## 1. Window and collector
 
-- Window: from the last audit's `window.to` (newest `reports/audits/<date>.json`) to now. With no audit, the last 3 days.
+- Window: from the last audit's `window.to` (newest `reports/audits/<date>.json`) to now. With no audit, the last 3 days. Write `window.to` as a UTC timestamp (`2026-10-15T23:25Z`), not a date, so the next run starts where this one stopped.
+- `<today>` below is today's date. If `reports/audits/<today>.json` already exists, use `<today>b` (then `c`): it sorts as the newest, and the earlier audit stays.
 - Run `bun dashboard/collect.ts`. It counts loads and flags candidate signals; it doesn't judge. Use its `reports/dashboard/data.json` to see which projects and threads were busy.
 
 ## 2. Read the threads
@@ -29,7 +30,7 @@ Only real signals: "this is stupid" about a bug isn't frustration at the agent. 
 ## 3. Judge and write
 
 1. Read every batch file yourself. Merge duplicate suggestions, drop weak ones, check the strongest claims against a thread, and rank them. Look at `reports/dashboard/decisions.json`: don't re-suggest what I skipped unless something new happened; carry out what I accepted since the last audit (each in its own commit, proven), and say what you did.
-2. Write `reports/audits/raw/_meta.json`: `{"title": "<the verdict, at most 6 words>", "dek": "<one line, at most 14 words>", "headline": "<the answer as a sentence>", "summary": ["3-5 lines"], "suggestions": [<final ranked list, at most 8, each with a kebab-case "id" and a "short" of at most 6 words>]}`. The dashboard shows only `title`, `dek` and `short`; I don't read paragraphs there.
+2. Write `reports/audits/raw/_meta.json`: `{"title": "<the verdict, at most 6 words>", "dek": "<one line, at most 14 words>", "headline": "<the answer as a sentence>", "summary": ["3-5 lines"], "suggestions": [<final ranked list, at most 8, each with a kebab-case "id" and a "short" of at most 6 words>]}`. The dashboard shows only `title`, `dek` and `short`; I don't read paragraphs there. Each evidence item is `{threadId, quote, context}`: a quote I can't place on its own needs the one-line context.
 3. `bun dashboard/merge-audit.ts <today>` writes `reports/audits/<today>.json`. Then move `raw/` to `reports/audits/raw-<today>/`.
 4. Write the report a person reads as an HTML page with `html-artifacts` (Report type): `reports/audits/<today>.html`.
 

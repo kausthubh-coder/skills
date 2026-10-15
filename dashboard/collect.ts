@@ -93,6 +93,8 @@ function projectFromCwd(cwd: string) {
   const l = cwd.toLowerCase().replace(/\//g, "\\");
   if (l.includes("\\.t3\\scratch")) return "scratch";
   if (/\\appdata\\local\\temp\\/.test(l)) return "eval";
+  // the claude-keepalive ping (dev/claude-keepalive) runs from system32 on a schedule; it isn't my work
+  if (/\\windows\\system32$/.test(l)) return "eval";
   const m = l.match(/\\\.t3\\worktrees\\([^\\]+)/) ?? l.match(/\\dev\\(?:sandbox\\)?([^\\]+)/) ?? l.match(/\\documents\\chatgpt\\([^\\]+)/);
   return m ? projectName(m[1]) : "other";
 }
@@ -257,7 +259,7 @@ export function collect() {
       if (!s || s.start.slice(0, 10) < SINCE) continue;
       const thread = t3.byNative.get(s.id) ?? (s.cwd ? t3.byCwd.get(norm(s.cwd)) : undefined);
       const project = thread?.project ?? projectFromCwd(s.cwd || f);
-      // trigger tests and other headless eval runs aren't my work; leave them out of every number
+      // trigger tests, keepalive pings and other headless runs aren't my work; leave them out of every number
       if (project === "eval" || /^eval: /.test(thread?.title ?? "")) continue;
       const mine = !thread?.byAgent;
       sessions.push({ ...s, signals: mine ? s.signals : [], userMsgs: mine ? s.userMsgs : 0, threadId: thread?.threadId, threadTitle: thread?.title, project });

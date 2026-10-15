@@ -26,7 +26,7 @@ export type AuditSignal = { kind: SignalKind; threadId: string; project: string;
 export type Suggestion = {
   id: string; kind: "add" | "retire" | "fix-skill" | "agents-md" | "routing" | "project" | "upstream";
   short?: string; // at most 6 words; what the dashboard shows
-  title: string; why: string; impact: "high" | "med" | "low"; evidence: { threadId: string; quote: string }[];
+  title: string; why: string; impact: "high" | "med" | "low"; evidence: { threadId: string; quote: string; context?: string }[]; // context: what the quote was about, one line
 };
 export type Audit = {
   file: string; date: string; window: { from: string; to: string };

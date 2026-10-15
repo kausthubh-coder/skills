@@ -38,7 +38,7 @@ export function FixRow({ s, decisions, decide }: { s: Suggestion; decisions: Dec
         <div style={{ flexBasis: "100%", paddingLeft: 18, paddingBottom: 6, color: "var(--text-2)" }}>
           <p style={{ margin: "4px 0", maxWidth: "64ch" }}>{s.why}</p>
           {s.evidence?.slice(0, 3).map((e, i) => (
-            <div key={i} className="sub"><ThreadLink id={e.threadId}><q>{e.quote}</q></ThreadLink></div>
+            <div key={i} className="sub"><ThreadLink id={e.threadId}><q>{e.quote}</q></ThreadLink>{e.context && ` · ${e.context}`}</div>
           ))}
         </div>
       )}
