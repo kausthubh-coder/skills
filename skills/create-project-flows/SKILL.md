@@ -102,11 +102,11 @@ I also run tasks in cloud threads (megha: Claude Code on the web or Codex Cloud)
 
 - **`scripts/cloud.mjs`:** exits at once unless `CLAUDE_CODE_REMOTE=true`, `CODEX_CI` or `CLOUD=1` is set, so local sessions don't notice it. Otherwise:
   1. Runs `curl -fsSL https://raw.githubusercontent.com/kausthubh-coder/skills/main/cloud/session.sh | bash` with stdout passed through: that's how the session gets my global skills and rules.
-  2. Runs the repo's setup with its output on stderr, so it doesn't flood the context. Setup must work on Linux, including the `.claude/skills` symlink and the per-checkout backend.
+  2. Runs the repo's setup with its output on stderr, so it doesn't flood the context. Setup must work on Linux, including the `.claude/skills` symlink and the per-checkout backend, and must not import a dependency at load time: it runs before the install.
   3. Installs the browser the repo's Playwright version wants, if it uses Playwright.
   4. Prints one line: ready, or what failed.
 - **`.claude/settings.json`:** a SessionStart hook running `node scripts/cloud.mjs`, with `"timeout": 600`. Codex: the repo's Codex environment setup script is `CLOUD=1 node scripts/cloud.mjs`.
-- **Browsers:** the VM has Playwright's Chromium, not Google Chrome. Code that launches `channel: "chrome"` falls back to the bundled Chromium in the cloud.
+- **Browsers:** the VM has Playwright's Chromium under `$PLAYWRIGHT_BROWSERS_PATH`, not Google Chrome, and its build may not match the repo's Playwright. One launcher module picks Chrome when installed, else that Chromium's `executablePath`; every script and the doctor use it. Dev servers that scripts start run in their own process group, so stopping the group stops them on Linux.
 - **AGENTS.md** gets a `## Cloud sessions` section: what works there (setup, checks, headless verify, ship), what only works on my machine, and the names of any env vars the cloud environment needs. Never values.
 - **Prove it** from a new cloud thread on the pushed commit. Ask it to list its skills, run setup and the full check, drive one feature headless, and say what it couldn't do.
 
