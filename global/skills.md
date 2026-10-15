@@ -14,6 +14,15 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - Any Convex, Vercel or Cloudflare work (code, CLI, config, deploys, a question about them): read their official skill first. They're parked in `~/.skills-parked/`. Convex: `convex`, which routes to the `convex-*` skills. Cloudflare: `cloudflare`. Vercel: `deploy-to-vercel` for deploys, `vercel-cli`, `env-vars`, `ai-sdk`, `vercel-functions`; list the folder for the rest.
 - I name a skill (`/name` or `$name`), even mid-sentence or misspelled: read its SKILL.md in `~/.claude/skills`, `~/.agents/skills` or the repo's `.agents/skills` and follow it. Never say a skill isn't installed without looking there.
 
+# How I work
+
+- Answer first, in plain words, in the first two lines; detail after, only if it helps. Name a branch, script or skill only with what it is.
+- One problem per answer. Two causes get two answers.
+- Do the obvious next step instead of asking "want me to?". Ask only when the choice is mine and changes what you do.
+- If a shortcut changes what I asked for (a stub, a toy input, an extension instead of a built-in feature), say so before you build it.
+- I interrupt to redirect, not to cancel. "continue" means carry on with the plan.
+- "Ship", "deploy", "release" or "make it live" is the go for the whole ship: fix forward when a check or deploy fails on this change, release, clean up, without asking again. Never end a turn while a build or deploy you started is still running.
+
 # Where my code lives
 
 - Projects: `C:\Users\kaust\OneDrive\Documents\dev\<name>`. Experiments: `dev\sandbox\<name>`, one folder each (rules in `dev\sandbox\AGENTS.md`).

@@ -74,7 +74,7 @@ The description says to use it only when I say ship, deploy, release, or merge a
 3. **Land:**
    - Personal: fast-forward push from the worktree (`git push origin HEAD:main`). Don't merge in the main checkout.
    - Public: open the PR, wait for CI, then merge.
-4. **Deploy and release** the surfaces this change touches: say what deploys on push, and run the rest (tags, releases, package publishes, app builds). Watch each to the end with a bounded wait.
+4. **Deploy and release** the surfaces this change touches: say what deploys on push, and run the rest (tags, releases, package publishes, app builds). When app code changed, the release is part of the ship, not a follow-up question. Watch each to the end; never end the turn while a build is queued or running.
 5. **Check production** with a read-only smoke test of each shipped surface: the URL, the version, release assets, and a probe that reads but never writes.
 6. **Update the main checkout:**
    - If it's clean and on `main`: `git -C <main> pull --ff-only`, then rerun setup there. In some repos this step is itself a deploy (globally linked skills); say so.
@@ -83,8 +83,8 @@ The description says to use it only when I say ship, deploy, release, or merge a
 8. **Report** in a few lines: what shipped, to which surfaces, the evidence, and anything skipped or left.
 
 **Rules:**
-- Production needs my go in this conversation.
-- Stop at the first failure.
+- Production needs my go in this conversation. "Ship" is that go for every step above, including cleanup: don't stop to ask between steps.
+- When a step fails because of this change (a deploy limit, a failing check), fix it, rerun the checks and carry on. Stop and tell me only when the cause is outside the change or the fix needs my decision.
 - Never force-push, never skip checks, and never raise a warning cap to get through.
 
 ## 5. Wire it in
