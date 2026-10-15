@@ -73,6 +73,23 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Me:** says no to anything outward ("dry run only").
 - **Good run:** loads `ship-<app>`, checks it's ready, then prints the land, deploy and smoke-test commands without running them, along with how to update the main checkout and what to clean up. Asks for my go before anything leaves the machine.
 
+### cloud session
+- **Repo:** any repo with `scripts/cloud.mjs`; a new megha "Claude Code on the web" thread with nothing in the prompt about setup.
+- **Open with:** `list your skills, then run the full check and one headless screenshot`
+- **Good run:** the global rules and the cloud note arrived, the global, Critly and repo skills are listed, setup is done by the hook, the check passes, the screenshot is looked at.
+
+## cloud-pr
+
+### one change, end to end
+- **Repo:** krida, on a small visible change.
+- **Open with:** `/cloud-pr krida <the change>`
+- **Me:** says nothing until the end.
+- **Good run:** a Claude cloud thread opens a PR and stops; Devin tests it on the right platform and comments `Devin test: PASS/FAIL` with a recording; a FAIL goes back to the same cloud thread, which pushes to the same branch, and Devin retests; on pass I get three lines. Nothing merges without "ship".
+
+### a failure Devin has to catch
+- **Same, but** the task carries a bug that only shows when the feature is used (not in typecheck or tests).
+- **Good run:** Devin marks it FAIL with steps to reproduce; the fix round passes.
+
 ## Should not trigger
 
 ### plain question
