@@ -33,6 +33,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `sources.json`, `CATALOG.md`, `licenses/` | Where copied skills came from, every upstream skill I looked at, upstream licenses |
 | `scripts/link.mjs`, `scripts/upstream.mjs` | Link skills into the agents; check upstream for changes |
 | `scripts/park.mjs` | Copy the official Convex, Vercel and Cloudflare skills (`sources.json` → `parked`) into `~/.skills-parked/` |
+| `cloud/` | What every cloud session runs first: global skills and rules for a bare cloud VM. Fetched from GitHub, so it only changes once pushed |
 | `reports/` | Project audits and eval results (gitignored, local only) |
 | `_sources/` | Upstream clones (gitignored) |
 | `_retired/` | Skills I stopped using, kept for reference, not linked |
