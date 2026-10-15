@@ -12,7 +12,9 @@ export function allSuggestions(audits: Audit[]) {
   for (const a of audits) for (const s of a.suggestions ?? []) if (!seen.has(s.id)) seen.set(s.id, s);
   return [...seen.values()].sort((a, b) => IMPACT[a.impact] - IMPACT[b.impact]);
 }
-export const openSuggestions = (audits: Audit[], d: Decisions) => allSuggestions(audits).filter((s) => !d[s.id]);
+// Open means undecided in the latest audit only: each audit re-ranks and carries forward what is still open,
+// so an older undecided suggestion it dropped is done or replaced.
+export const openSuggestions = (audits: Audit[], d: Decisions) => allSuggestions(audits.slice(0, 1)).filter((s) => !d[s.id]);
 
 // One fix: a dot for impact, a few words, Accept / Skip. The reasoning opens on click.
 export function FixRow({ s, decisions, decide }: { s: Suggestion; decisions: Decisions; decide: ViewProps["decide"] }) {
@@ -47,14 +49,15 @@ export function FixRow({ s, decisions, decide }: { s: Suggestion; decisions: Dec
 export function Suggestions({ audits, decisions, decide }: ViewProps) {
   const [filter, setFilter] = useState<"open" | "accepted" | "skipped">("open");
   const all = allSuggestions(audits);
-  const is = (s: Suggestion, f: typeof filter) => (f === "open" ? !decisions[s.id] : decisions[s.id]?.status === f);
-  const shown = all.filter((s) => is(s, filter));
+  const open = openSuggestions(audits, decisions);
+  const pick = (f: typeof filter) => (f === "open" ? open : all.filter((s) => decisions[s.id]?.status === f));
+  const shown = pick(filter);
   return (
     <>
       <Head eyebrow="Fixes" title="What to change next." />
       <div className="filters" role="tablist">
         {(["open", "accepted", "skipped"] as const).map((f) => (
-          <button key={f} role="tab" aria-selected={filter === f} className="chip" onClick={() => setFilter(f)}>{f} {all.filter((s) => is(s, f)).length}</button>
+          <button key={f} role="tab" aria-selected={filter === f} className="chip" onClick={() => setFilter(f)}>{f} {pick(f).length}</button>
         ))}
       </div>
       {shown.length ? <ul className="rows">{shown.map((s) => <FixRow key={s.id} s={s} decisions={decisions} decide={decide} />)}</ul> : <Empty title={`No ${filter} fixes.`} />}
