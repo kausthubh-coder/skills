@@ -41,6 +41,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | Anything I read (plans, reports, audits, comparisons) is an HTML page from `html-artifacts`; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
 | `html-artifacts` has no template (2026-10-14): each page's look comes from its content, held up by the slop list, `check.mjs` and `critly check`/`taste` | Both templates (editorial, then dark "Instrument") made every page look the same, and their signatures are on published lists of AI-design tells |
 | HyperFrames and Clerk skills parked in `~/.skills-parked/`, reached through `global/skills.md` | They filled the `/` and `$` menus in every project. If `npx skills update` reinstalls them globally, park them again |
+| Official Convex, Vercel and Cloudflare skills parked too (2026-10-14), copied by `node scripts/park.mjs` from the repos under `parked` in `sources.json`; the Cloudflare Claude Code plugin is disabled | I want the vendors' own skills on hand without 89 descriptions in every session. Rerun the script to update them |
 | Skills only agents load (principles, benchmark, maintain-verification, writing-for-agents, codebase-design) have `user-invocable: false` | Hidden from my `/` menu; agents still load them |
 | `/no-comments` copied from pstack | I want a comment-stripping pass on a diff |
 | `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |

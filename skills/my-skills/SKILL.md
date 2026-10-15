@@ -35,6 +35,10 @@ When a fact changes or you add one, update `docs/me.md` first. Then search every
 
 Run `node scripts/upstream.mjs`. It pulls `_sources/` and lists the adopted skills whose upstream changed since the recorded commit. For each one, show me the diff, reapply our `changes` on top if I want the update, then bump the commit in `sources.json`.
 
+## Parked vendor skills
+
+Official vendor skills I want on hand but not in every session (Convex, Vercel, Cloudflare) are parked: `node scripts/park.mjs` copies the repos listed under `parked` in `sources.json` into `~/.skills-parked/`, which no agent lists. A line in `global/skills.md` tells agents when to read them. To add a vendor, add its repo there (with `skip` for skills you don't want), rerun the script and add the routing line. Never install them with `npx skills add -g` or as a plugin; that puts every description back in context.
+
 ## Keep it small
 
 Every global skill's description is in context in every session of every agent. Before adding one, ask whether I will really use it outside one project. Suggest removing skills I have not used.

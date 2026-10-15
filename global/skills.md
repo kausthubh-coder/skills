@@ -11,6 +11,7 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - I correct you for the same thing twice: `correct`.
 - Making a video, animation, motion graphic or product demo: the HyperFrames skills are parked so they don't crowd the menu. Read `~/.skills-parked/hyperframes/SKILL.md` first. When it says to load `/hyperframes-x` or another skill, read `~/.skills-parked/<that name>/SKILL.md`.
 - Adding or changing Clerk auth: the Clerk skills are parked in `~/.skills-parked/` (`clerk-setup`, `clerk-cli`, `clerk-orgs` and others). Read the one that fits.
+- Building on Convex, Vercel or Cloudflare: their official skills are parked in `~/.skills-parked/`. Convex: read `convex` first; it routes to the `convex-*` skills. Cloudflare: read `cloudflare` first. Vercel: list the folder and read the one that fits (`vercel-cli`, `deploy-to-vercel`, `env-vars`, `ai-sdk`, `vercel-functions` and others).
 - I name a skill (`/name` or `$name`), even mid-sentence or misspelled: read its SKILL.md in `~/.claude/skills`, `~/.agents/skills` or the repo's `.agents/skills` and follow it. Never say a skill isn't installed without looking there.
 
 # Where my code lives

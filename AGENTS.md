@@ -32,6 +32,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `evals/scenarios.md` | The test scenarios |
 | `sources.json`, `CATALOG.md`, `licenses/` | Where copied skills came from, every upstream skill I looked at, upstream licenses |
 | `scripts/link.mjs`, `scripts/upstream.mjs` | Link skills into the agents; check upstream for changes |
+| `scripts/park.mjs` | Copy the official Convex, Vercel and Cloudflare skills (`sources.json` → `parked`) into `~/.skills-parked/` |
 | `reports/` | Project audits and eval results (gitignored, local only) |
 | `_sources/` | Upstream clones (gitignored) |
 | `_retired/` | Skills I stopped using, kept for reference, not linked |
@@ -67,6 +68,7 @@ When a finding is about my philosophy rather than a skill (something I believe t
 node scripts/link.mjs --dry-run   # what would be linked
 node scripts/link.mjs             # link new skills, prune removed ones
 node scripts/upstream.mjs         # upstream changes to adopted skills
+node scripts/park.mjs             # update the parked vendor skills
 ```
 
 ## Working with me

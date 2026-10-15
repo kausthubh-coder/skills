@@ -208,5 +208,35 @@
       "commit": "4b72f46",
       "upstreamHash": "3b704d95f0f8abc8"
     }
+  },
+  "parked": {
+    "cloudflare/skills": {
+      "path": "skills",
+      "license": "Apache-2.0",
+      "commit": "be68fd8"
+    },
+    "get-convex/agent-skills": {
+      "path": "skills",
+      "license": "Apache-2.0",
+      "skip": {
+        "convex-improve-convex-plugin": "uploads the session transcript to Convex"
+      },
+      "commit": "191a5c3"
+    },
+    "vercel-labs/agent-skills": {
+      "path": "skills",
+      "license": "MIT (per skill metadata)",
+      "commit": "063bee9"
+    },
+    "vercel/vercel-plugin": {
+      "path": "skills",
+      "license": "Apache-2.0",
+      "skip": {
+        "react-best-practices": "vercel-labs/agent-skills has the full version under the same name",
+        "knowledge-update": "meant to be injected by the plugin at session start",
+        "verification": "verify-<app> skills do this"
+      },
+      "commit": "d874dac"
+    }
   }
 }

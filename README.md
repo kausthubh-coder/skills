@@ -25,6 +25,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
 | `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder |
 | `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
+| `scripts/park.mjs` | Copies the vendor skills under `parked` in `sources.json` (Convex, Vercel, Cloudflare) into `~/.skills-parked/`, where no agent lists them; `global/skills.md` routes to them |
 | `reports/` | Agent-native audits of my projects (local only, gitignored) |
 | `licenses/` | Upstream licenses (MIT requires keeping them) |
 | `_sources/` | Local clones of the upstream repos (gitignored) |
@@ -53,6 +54,7 @@ node scripts/link.mjs --dry-run   # see what would be linked
 node scripts/link.mjs             # link new skills, prune deleted ones, sync global/skills.md
 node scripts/link.mjs --unlink    # remove every link to this library
 node scripts/upstream.mjs         # check upstream for changes
+node scripts/park.mjs             # update the parked vendor skills
 ```
 
 Links are junctions on Windows (no admin needed). The script never overwrites an existing folder; it reports a conflict instead.
