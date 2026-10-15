@@ -15,7 +15,6 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `skills/optimize/` | `/optimize`: audit an existing project and plan agent-native improvements at a chosen depth |
 | `skills/init-project/references/AGENTS.base.md` | The base AGENTS.md every project starts from |
 | `skills/create-project-flows/` | Writes a project's own `worktree-<app>` and `ship-<app>` skills |
-| `skills/cloud-pr/` | `/cloud-pr`: a Claude cloud thread builds and opens a PR, Devin tests it on real devices, a local T3 thread loops fixes. Devin's prompt is `cloud/devin-test.md` |
 | `dashboard/` | Skills dashboard: a small React site over my Claude Code, Codex and T3 history (T3 action "Dashboard", port 4791). Data stays in `reports/` |
 | `.agents/skills/audit-skills/` | The audit that reads my threads every 48 hours (T3 scheduled task) and feeds the dashboard |
 | `global/skills.md` | Short "load this skill when…" list, plus where my code lives, that `link.mjs` writes into `~/.claude/CLAUDE.md` and `~/.codex/AGENTS.md`. Agents skip skills they only see in the skill list (`reports/evals/2026-10-13-trigger.md`) |
@@ -27,7 +26,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder |
 | `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
 | `scripts/park.mjs` | Copies the vendor skills under `parked` in `sources.json` (Convex, Vercel, Cloudflare) into `~/.skills-parked/`, where no agent lists them; `global/skills.md` routes to them |
-| `cloud/` | What a cloud session (megha: Claude Code on the web, Codex Cloud) runs first: `session.sh` clones this library and Critly, links their skills and writes my global rules; `CLOUD.md` is the cloud note added to those rules. Each repo calls it from `scripts/cloud.mjs` (`create-project-flows` §6) |
+| `cloud/` | What a cloud session (megha: Claude Code on the web, Codex Cloud) runs first: `session.sh` clones this library and Critly, links their skills and writes my global rules; `CLOUD.md` is the cloud note added to those rules, including how a cloud thread asks Devin to test its PR (`devin-test.md`). Each repo calls it from `scripts/cloud.mjs` (`create-project-flows` §6) |
 | `reports/` | Agent-native audits of my projects (local only, gitignored) |
 | `licenses/` | Upstream licenses (MIT requires keeping them) |
 | `_sources/` | Local clones of the upstream repos (gitignored) |

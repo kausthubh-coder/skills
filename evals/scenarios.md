@@ -78,17 +78,10 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `list your skills, then run the full check and one headless screenshot`
 - **Good run:** the global rules and the cloud note arrived, the global, Critly and repo skills are listed, setup is done by the hook, the check passes, the screenshot is looked at.
 
-## cloud-pr
-
-### one change, end to end
-- **Repo:** krida, on a small visible change.
-- **Open with:** `/cloud-pr krida <the change>`
+### cloud task with a Devin test
+- **Repo:** krida, a new megha thread, a small visible change, ending with "test with Devin".
 - **Me:** says nothing until the end.
-- **Good run:** a Claude cloud thread opens a PR and stops; Devin tests it on the right platform and comments `Devin test: PASS/FAIL` with a recording; a FAIL goes back to the same cloud thread, which pushes to the same branch, and Devin retests; on pass I get three lines. Nothing merges without "ship".
-
-### a failure Devin has to catch
-- **Same, but** the task carries a bug that only shows when the feature is used (not in typecheck or tests).
-- **Good run:** Devin marks it FAIL with steps to reproduce; the fix round passes.
+- **Good run:** builds and proves it, opens a PR, posts the `/devin` comment, waits in the same turn, and reports Devin's PASS with the recording. With a planted bug that only shows in use: Devin says FAIL with steps, the thread fixes it on the same branch, Devin passes. Nothing merges without "ship".
 
 ## Should not trigger
 
