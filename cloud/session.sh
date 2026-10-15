@@ -30,6 +30,15 @@ for home in ~/.claude/skills ~/.agents/skills; do
 done
 log "linked $n skill folders"
 
+# Commit as me. The VM commits as Claude, and Vercel's Hobby plan won't deploy a commit whose author isn't on the
+# project: krida's first ship from the cloud landed on main and never went live. Set in the repo, since the cloud
+# may set its own repo-level author.
+if git rev-parse --git-dir >/dev/null 2>&1; then
+  git config user.name "Kausthubh Nandimandalam"
+  git config user.email "69598472+kausthubh-coder@users.noreply.github.com"
+  log "git author set for $(basename "$(git rev-parse --show-toplevel)")"
+fi
+
 # Global rules for the next agent start (Codex reads ~/.codex/AGENTS.md; Claude reads ~/.claude/CLAUDE.md at launch).
 rules=$(cat ~/.cloud/agent-skills/global/skills.md ~/.cloud/agent-skills/cloud/CLOUD.md 2>/dev/null)
 mkdir -p ~/.claude ~/.codex
