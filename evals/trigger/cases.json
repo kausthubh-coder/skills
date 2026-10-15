@@ -12,6 +12,9 @@
   { "id": "no-verify", "expect": "create-verification-skill", "prompt": "you keep saying its done without testing it. set something up in this repo so you can actually use the app yourself and check" },
   { "id": "parked-video", "expect": "hyperframes", "prompt": "make a 15 sec animated demo video of the krida home screen for my x post" },
   { "id": "parked-clerk", "expect": "clerk-setup|clerk-nextjs-patterns|clerk-custom-ui", "prompt": "add clerk sign in to this app" },
+  { "id": "parked-convex", "expect": "convex|convex-crons|convex-design|convex-expert", "prompt": "add a cron in convex that clears old sessions every night" },
+  { "id": "parked-vercel", "expect": "deploy-to-vercel|vercel-cli|deployments-cicd|vercel-cli-with-tokens", "prompt": "deploy this to vercel as a preview" },
+  { "id": "parked-cloudflare", "expect": "cloudflare|workers-best-practices|wrangler|cf-cli|durable-objects", "prompt": "i want to put a tiny api on cloudflare workers with a durable object for rate limiting, how do i set it up" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]
