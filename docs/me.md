@@ -65,6 +65,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 - Counted an unmerged branch I kept back on purpose as a skills failure.
 - Proposed per-skill workarounds before testing why skills don't trigger. Test first.
 - Wrote a plan and reports for me as Markdown files. Anything I read is HTML (`html-artifacts`).
+- Sent a local-only build (a skills viewer just for me) to a cloud thread I never asked for, then piled up workarounds to get it back. Work runs locally unless I say cloud.
 
 ## Projects the skills have been tested on
 
