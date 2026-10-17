@@ -15,7 +15,7 @@ Find out whether my skills did their job in my recent work, and what to change. 
 
 ## 2. Read the threads
 
-Every T3 thread with activity in the window, in every project (`t3_project_list`, then `t3_thread_list` with `settled` true and false). Skip `eval: …` threads and the thread running this audit. Split them across parallel reader agents by project. Each reader reads all my messages, the agent's final answers, and the activity view for Skill calls, SKILL.md reads, checks run and whether the app was driven, then writes `reports/audits/raw/<batch>.json`:
+Every T3 thread with activity in the window, in every project (`t3_project_list`, then `t3_thread_list` with `settled` true and false). Also the Codex Desktop sessions T3 never sees (school work runs there): in `data.json` they're the `codex` sessions with no `threadId`; the reader opens their rollouts in `~/.codex/sessions` by `cwd` and judges only messages inside the window. Skip `eval: …` threads and the thread running this audit. Split them across parallel reader agents by project. Each reader reads all my messages, the agent's final answers, and the activity view for Skill calls, SKILL.md reads, checks run and whether the app was driven, then writes `reports/audits/raw/<batch>.json`:
 
 ```json
 {"batch":"","window":{"from":"","to":""},
