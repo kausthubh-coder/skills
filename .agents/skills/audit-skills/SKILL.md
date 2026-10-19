@@ -36,10 +36,10 @@ Only real signals: "this is stupid" about a bug isn't frustration at the agent. 
 
 ## 4. The dashboard
 
-- Open it in T3's preview (`bun dashboard/server.ts`, port 4791) and look at Overview and anything you changed.
+- Open it in T3's preview (port 4791) and look at Overview and anything you changed. If it isn't already up, start the server detached so it outlives your turn: my accept and skip buttons live there, and a background command dies at the 2-hour limit (`Start-Process bun -ArgumentList server.ts -WorkingDirectory dashboard -WindowStyle Hidden`).
 - You may change the site when something you found deserves a place (a view, a column, a chart). At most one addition per run, and remove a view nobody needs before adding one. Read `dashboard/AGENTS.md` first. `bun run typecheck` and a Critly check (`bun run lint:ui` in `dashboard/`) must pass, then commit.
 - Never put quotes or data in committed files; they stay in `reports/`.
 
 ## 5. Report
 
-End with a few lines: the headline, the top suggestions, what you changed, and anything you couldn't read.
+End with a few lines: the headline, the top suggestions numbered (so I can also reply "accept 1 3, skip 2" in the thread; record those in `reports/dashboard/decisions.json`), what you changed, and anything you couldn't read.
