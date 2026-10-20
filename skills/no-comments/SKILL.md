@@ -24,7 +24,7 @@ Use the files or diff I name. Otherwise use the current diff against the base br
    - a misstated `MUST KILL` reason
    - flags that treat intentional code we keep as guilty
 
-   Reshape flags on our own code's surprises stay actionable; don't restore those comments. A keep survives only with proof it's about something we can't change.
+   Reshape flags on our own code's surprises stay actionable; don't restore those comments. A keep survives only with proof it's about something we can't change. Restore a deletion only when an exact exception covers it and you can prove it in scope.
 
    Audit scoped lint and TypeScript suppressions it missed; suppressions guarding correctness or safety are `MUST KILL`. Before accepting a thin `IMPORTANT` or `do not remove` kill or keep, read the code around the symbol and its history (`git log -L` or `git blame`) to learn why it's there. An ambiguous kill stays deleted. A refuted or still-ambiguous keep gets deleted.
 
@@ -33,8 +33,8 @@ Use the files or diff I name. Otherwise use the current diff against the base br
 4. Implement the smallest root-cause fix in scope and remove every named workaround. If the root cause is out of scope, land the smallest in-scope fix and report the rest as open. Never bolt on symptom guards.
 5. Constraint comments ("do not remove", "do not change wording", "talk to X before changing"):
    - Keep the ones about things we can't change.
-   - For the rest, offer the cheapest in-scope type, runtime check, test or lint that enforces it, and wait for my OK. If I approve, encode it, then delete the comment.
-   - Otherwise delete the comment and report the constraint as open.
+   - For the rest, offer the cheapest in-scope type, runtime check, test or lint that enforces it, and wait for my OK. In an unattended run or an eval, encode only what I approved up front. If I approve, encode it, then delete the comment.
+   - Otherwise delete the comment, report the constraint as open, and sketch the out-of-scope work.
 6. Report in a few lines:
    - comments deleted, and any restored
    - reruns

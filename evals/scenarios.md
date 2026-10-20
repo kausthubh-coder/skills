@@ -83,6 +83,20 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Me:** says nothing until the end.
 - **Good run:** builds and proves it, opens a PR, posts the `/devin` comment, waits in the same turn, and reports Devin's PASS with the recording. With a planted bug that only shows in use: Devin says FAIL with steps, the thread fixes it on the same branch, Devin passes. Nothing merges without "ship".
 
+## sharpen
+
+### vague research task
+- **Repo:** none; a T3 "No project" thread.
+- **Open with:** `/sharpen find out which state library I should use for krida`
+- **Good run:** answers the four questions for this task (what a pro would do, the raw material, the methods, what outside check proves it), then returns one rewritten prompt. It does no research itself and leaves the choice of library to me.
+
+## create-formal-verification-skill
+
+### retry or race in a real repo
+- **Repo:** an eval worktree of a repo with retries, a queue or a state machine.
+- **Open with:** `/create-formal-verification-skill`
+- **Good run:** picks the riskiest promise from the code, says why that tool, shows the check failing on a scratch break, writes `.agents/skills/<name>/` with a coverage record and sync commit, and touches no product code. A finding comes back as steps in the code's own words.
+
 ## Should not trigger
 
 ### plain question

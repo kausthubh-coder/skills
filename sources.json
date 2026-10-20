@@ -16,8 +16,8 @@
         "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
         "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
-      "commit": "ea32d95",
-      "upstreamHash": "a2e50d2189277217"
+      "commit": "88d4751",
+      "upstreamHash": "ea190ea806525b15"
     },
     "maintain-verification-skill": {
       "repo": "cursor/plugins",
@@ -39,8 +39,8 @@
         "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
         "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
-      "commit": "ea32d95",
-      "upstreamHash": "61c8a417f95b6e3c"
+      "commit": "88d4751",
+      "upstreamHash": "b7e0850f6e537000"
     },
     "benchmark-checklist": {
       "repo": "cursor/plugins",
@@ -84,8 +84,8 @@
         "dropped references to principle-fix-root-causes and principle-redesign-from-first-principles",
         "agents/openai.yaml so Codex keeps it user-only"
       ],
-      "commit": "dbf4981",
-      "upstreamHash": "79d789d94fe8eb52"
+      "commit": "88d4751",
+      "upstreamHash": "56ed5baf19093f4f"
     },
     "unslop": {
       "repo": "cursor/plugins",
@@ -94,8 +94,8 @@
       "changes": [
         "description rewritten in my words with the trigger first (2026-10-13 trigger tests)"
       ],
-      "commit": "ea32d95",
-      "upstreamHash": "2e57ee5eac607dd8"
+      "commit": "88d4751",
+      "upstreamHash": "eca0ad9fa3a3867c"
     },
     "principle-prove-it-works": {
       "repo": "cursor/plugins",
@@ -117,8 +117,8 @@
         "description rewritten in my words with the trigger first (2026-10-13 trigger tests)",
         "model-invocable: removed disable-model-invocation, because /optimize and agents need to call it"
       ],
-      "commit": "ea32d95",
-      "upstreamHash": "9f4f33a502d503ff"
+      "commit": "88d4751",
+      "upstreamHash": "8e8cc20b50d4561a"
     },
     "principle-minimize-reader-load": {
       "repo": "cursor/plugins",
@@ -131,6 +131,40 @@
       ],
       "commit": "ea32d95",
       "upstreamHash": "31dddf8eec76cd18"
+    },
+    "sharpen": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/sharpen",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)"
+      ],
+      "commit": "88d4751",
+      "upstreamHash": "ea086554887a2190"
+    },
+    "create-formal-verification-skill": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/create-formal-verification-skill",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "description shortened, trigger first, so Codex doesn't cut it",
+        "writes the project skill to .agents/skills/<name>/ (with .claude/skills linked to it)",
+        "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)"
+      ],
+      "commit": "88d4751",
+      "upstreamHash": "03bc8da39dfc3c3d"
+    },
+    "maintain-formal-verification-skill": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/maintain-formal-verification-skill",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "description shortened, trigger first, so Codex doesn't cut it",
+        "looks in .agents/skills/ first for the verify skill",
+        "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)"
+      ],
+      "commit": "88d4751",
+      "upstreamHash": "a41b8cffadbd598e"
     },
     "grilling": {
       "repo": "mattpocock/skills",

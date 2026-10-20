@@ -48,6 +48,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | Cloud threads run the whole task (2026-10-15): build, prove, PR, and when I ask, a `/devin` comment on the PR has Devin (GPT-6.1-Sol) test it on Linux, macOS or mobile emulators; the thread waits, fixes and retests. Windows checks stay on my machine | In T3 I pick the project, start a thread and choose the cloud; the thread does the rest. Cloud work goes through PRs, even in personal repos, because Devin tests PRs. Devin testing is manual for now; per-project automatic once a project has users |
 | Repos work in megha cloud threads (2026-10-15): `cloud/session.sh` gives the VM my skills and rules; each repo's `scripts/cloud.mjs` runs it from a SessionStart hook | I want to send whole tasks, ship included, to the cloud. A bare cloud clone has none of my skills, and Claude doesn't see the repo's skills either |
 | `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |
+| `sharpen`, `create-formal-verification-skill` and `maintain-formal-verification-skill` copied from pstack, user-only (2026-10-20) | I asked for pstack's new skills across my threads. User-only keeps their descriptions out of every session |
 
 ## Corrections I've given (don't repeat these mistakes)
 

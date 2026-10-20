@@ -1,7 +1,7 @@
 # Skill catalog
 
 Every skill I looked at from the four sources (plus prior art for HTML pages at the end), what it does, and whether it's in the library.
-Snapshot: 2026-10-11.
+Snapshot: 2026-10-11; pstack rechecked 2026-10-20 (v0.15.29).
 
 ✅ in the library · ➕ worth adding later, or per project · ✖ skip (reason given)
 
@@ -17,7 +17,10 @@ Built for Cursor. Many skills read model settings from `~/.cursor/rules/pstack-m
 | benchmark-checklist | Seven questions to vet a perf number before you trust it (did the work even happen, is the gap bigger than noise) | ✅ |
 | unslop | Cuts AI tells from writing | ✅ |
 | principle-prove-it-works | Check the real thing (run it, read the value), not a proxy like "it compiles" | ✅ |
-| principle-test-behavior-not-implementation | Tests call code like users do and assert exact results. Kills slop tests | ✅ |
+| principle-test-behavior-not-implementation | A test must fail when the behavior breaks and pass when only the internals change (rewritten upstream 2026-10-19) | ✅ |
+| sharpen | Makes a task deeper, not bigger: what a top professional would do, from what raw material, checked by what, then rewrites the prompt (added upstream 2026-10-19). Only I can run it | ✅ |
+| create-formal-verification-skill | Formally verifies the riskiest code tests can't reach (TLA+, a code verifier or a prover) and leaves a project skill to recheck it (added upstream 2026-10-19). Only I can run it | ✅ |
+| maintain-formal-verification-skill | Brings that verification back in line after code changes and tells drift from real bugs (added upstream 2026-10-19). Only I can run it | ✅ |
 | principle-minimize-reader-load | Count layers and hidden state a reader must track; inline one-caller wrappers | ✅ |
 | architect | Sketch types and module structure before code, then supervise the build | ➕ |
 | arena | N agents attempt the same task; pick the best and graft in the good parts of the rest | ➕ needs model config adapted |
