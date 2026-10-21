@@ -15,6 +15,8 @@ for rc in ~/.profile ~/.bashrc; do
   grep -q '.bun/bin' "$rc" 2>/dev/null || echo 'export PATH="$HOME/.local/bin:$HOME/.bun/bin:$PATH"' >> "$rc"
 done
 command -v bun >/dev/null || { curl -fsSL https://bun.sh/install | bash >&2 && log "installed bun"; }
+# Vercel's CLI globally; Convex and Clerk run from each project (bunx convex, bunx clerk@latest).
+command -v vercel >/dev/null || { bun add -g vercel >/dev/null 2>&1 && log "installed vercel"; }
 
 # My laptop's identity, so Vercel deploys these commits too.
 git config --global user.name "Kausthubh Nandimandalam"
@@ -39,6 +41,9 @@ for repo in krida kriyan likh loka megha critly portfolio inky amy; do
   if [ -d "$dir/.agents/skills" ] && [ ! -e "$dir/.claude/skills" ]; then
     mkdir -p "$dir/.claude" && ln -s ../.agents/skills "$dir/.claude/skills"
   fi
+  # A T3 project titled as on my laptop, so T3 shows one project with both machines. Fails quietly if added.
+  case $repo in loka) title=Loka ;; portfolio) title=kausthubh-portfolio ;; inky) title=studi-2 ;; *) title=$repo ;; esac
+  command -v t3 >/dev/null && t3 project add "$dir" --title "$title" >/dev/null 2>&1 && log "added $title to T3"
 done
 [ ${#skipped[@]} -gt 0 ] && log "not cloned (sign in with gh auth login, then rerun): ${skipped[*]}"
 log "done"
