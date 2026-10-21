@@ -6,11 +6,11 @@ You run in T3 Code on my InstaBox machine: Debian Linux, 4 vCPU, 8 GB, not my Wi
 - Every thread on this machine shares the 8 GB. Stop the dev servers, backends and browsers you start before you end your turn. A Linux server you start through a shell outlives a plain kill, so start it in its own process group and stop the group.
 - The machine pauses after 30 minutes with no agent working, no terminal use and little CPU. A paused machine keeps its memory and processes. Never end a turn to wait for CI, a deploy or Devin: wait inside the turn, or the work stops reaching my thread.
 - **Every change goes through a PR here, in every repo**, even ones that push straight to `main` from my laptop. Open it with `gh`, which is signed in as me and works normally. Don't merge until I say ship; then follow `ship-<app>`.
-- **Devin tests the PR when the change touches what a user sees or does.** Skip it only for docs, comments, CI and tooling changes. Post the comment in `~/.cloud/agent-skills/cloud/devin-test.md` and pick the platform that fits:
-  - web apps: `a browser`;
+- **Test everything you can here first**, with the repo's `verify-<app>` skill: web apps in T3's browser tabs or Playwright, CLIs, backends, tests. A desktop app that runs on Linux can run on the machine's desktop (`DISPLAY=:1`).
+- **Devin tests only what this machine can't**, when the change touches what a user sees or does. There's no KVM here, so that means:
   - mobile apps: `the Android emulator` and `the iOS Simulator`;
-  - desktop apps (likh, krida desktop, Studi): `macOS`.
+  - desktop apps that don't run on Linux (likh, krida desktop): `macOS`.
 
-  Wait in this turn for `Devin test: PASS` or `FAIL`: poll the PR's comments every minute or two, for up to 45 minutes. On FAIL, fix it, push to the same branch and ask again, at most three rounds. Report the verdict and the recording link. If Devin never answers, say so; don't merge on silence.
+  Post the comment in `~/.cloud/agent-skills/cloud/devin-test.md` with that platform. Wait in this turn for `Devin test: PASS` or `FAIL`: poll the PR's comments every minute or two, for up to 45 minutes. On FAIL, fix it, push to the same branch and ask again, at most three rounds. Report the verdict and the recording link. If Devin never answers, say so; don't merge on silence.
 - **Review bots may comment on the PR too** (Codex, Devin Review). Read their comments while you wait. Fix the findings that are real and say why you skipped the rest.
 - Windows is the last check, not the first. When a change needs Windows (the likh app, krida's desktop player, Studi's nightly profile, the Loka browser build, my Pixel), finish everything else, then list that step in your report for me to run on my laptop.
