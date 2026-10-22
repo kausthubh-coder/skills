@@ -26,8 +26,9 @@ gh auth status >/dev/null 2>&1 && gh auth setup-git >&2
 # Global skills and rules. stdout is only for a Claude hook, so drop it here.
 curl -fsSL https://raw.githubusercontent.com/kausthubh-coder/skills/main/cloud/session.sh | CLOUD_RULES=BOX.md bash >/dev/null
 
-# Repos: ~/dev/<repo>, named as on GitHub.
+# Repos: ~/dev/<repo>, named as on GitHub. `t3 project add` fails while T3's service is still starting.
 mkdir -p ~/dev
+for _ in $(seq 30); do systemctl --user is-active -q t3code 2>/dev/null && break; sleep 2; done
 skipped=()
 for repo in krida kriyan likh loka megha critly portfolio inky amy; do
   dir=~/dev/$repo
