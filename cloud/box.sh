@@ -1,7 +1,10 @@
 #!/bin/bash
 # Sets up my InstaBox machine as a T3 machine: bun, my git identity, my global skills and rules (with BOX.md
 # instead of CLOUD.md), and my repos in ~/dev with their .claude/skills links. T3's own server is installed
-# separately (t3.codes/install.sh, then `t3 service install`).
+# separately (t3.codes/install.sh, then `t3 service install`). T3 Connect: `t3 connect --headless` (I approve the
+# code), then `systemctl --user restart t3code`, or the server never opens its tunnel; `t3 connect status` checks.
+# A machine cloned from a snapshot needs its own T3 identity (stop the service, delete environment-id,
+# server-owner.sqlite*, statev2.sqlite* and secrets under ~/.t3/userdata) and its own `claude` login.
 #
 #   instabox ssh t3 -- 'curl -fsSL https://raw.githubusercontent.com/kausthubh-coder/skills/main/cloud/box.sh | bash'
 #
