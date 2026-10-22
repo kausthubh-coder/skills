@@ -12,5 +12,4 @@ You run in T3 Code on my InstaBox machine: Debian Linux, 4 vCPU, 8 GB, not my Wi
   - desktop apps that don't run on Linux (likh, krida desktop): `macOS`.
 
   Post the comment in `~/.cloud/agent-skills/cloud/devin-test.md` with that platform. Wait in this turn for `Devin test: PASS` or `FAIL`: poll the PR's comments every minute or two, for up to 45 minutes. On FAIL, fix it, push to the same branch and ask again, at most three rounds. Report the verdict and the recording link. If Devin never answers, say so; don't merge on silence.
-- **Review bots may comment on the PR too** (Codex, Devin Review). Read their comments while you wait. Fix the findings that are real and say why you skipped the rest.
 - Windows is the last check, not the first. When a change needs Windows (the likh app, krida's desktop player, Studi's nightly profile, the Loka browser build, my Pixel), finish everything else, then list that step in your report for me to run on my laptop.
