@@ -27,7 +27,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder, and installs `global/hooks/` into `~/.claude/settings.json` and `~/.codex/hooks.json` |
 | `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
 | `scripts/park.mjs` | Copies the vendor skills under `parked` in `sources.json` (Convex, Vercel, Cloudflare) into `~/.skills-parked/`, where no agent lists them; `global/skills.md` routes to them |
-| `cloud/` | What a cloud session (megha: Claude Code on the web, Codex Cloud) runs first: `session.sh` clones this library and Critly, links their skills and writes my global rules; `CLOUD.md` is the cloud note added to those rules, including how a cloud thread asks Devin to test its PR (`devin-test.md`). Each repo calls it from `scripts/cloud.mjs` (`create-project-flows` §6) |
+| `cloud/` | What a cloud session (megha: Claude Code on the web, Codex Cloud) runs first: `session.sh` clones this library and Critly, links their skills and writes my global rules; `CLOUD.md` is the cloud note added to those rules, including how a cloud thread asks Devin to test its PR (`devin-test.md`). Each repo calls it from `scripts/cloud.mjs` (`create-project-flows` §6). My InstaBox machines run `box.sh` instead, which uses `BOX.md` for the cloud note; the `cloud` skill starts and steers threads on them |
 | `reports/` | Agent-native audits of my projects (local only, gitignored) |
 | `licenses/` | Upstream licenses (MIT requires keeping them) |
 | `_sources/` | Local clones of the upstream repos (gitignored) |

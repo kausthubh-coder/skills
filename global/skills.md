@@ -7,8 +7,9 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - You're about to say done: check the real result with the repo's `verify-<app>` skill. If there's none and you can't check your own work, use `create-verification-skill`.
 - You measured a number (speed, load time, size, latency) or are reporting one: `benchmark-checklist`.
 - First task in a new worktree, or install, env, port or backend look wrong: the repo's `worktree-<app>` skill. I say ship, deploy or release: the repo's `ship-<app>` skill. If the repo has neither, use `create-project-flows`.
-- Anything I'll read beyond a chat reply (a plan, report, audit, comparison, write-up or explainer): an HTML page with `html-artifacts`. Never a Markdown file for me. Markdown is only for files agents read (AGENTS.md, skills).
+- Anything I'll read beyond a chat reply (a plan, report, audit, comparison, write-up or explainer): an HTML page with `html-artifacts`. Never a Markdown file for me. Markdown is only for files agents read (AGENTS.md, skills); write those for an agent opening the folder cold, not for a person.
 - I correct you for the same thing twice: `correct`.
+- You're about to start a subagent, a T3 thread, a cloud thread or a Devin test: `delegating`.
 - Making a video, animation, motion graphic or product demo: the HyperFrames skills are parked so they don't crowd the menu. Read `~/.skills-parked/hyperframes/SKILL.md` first. When it says to load `/hyperframes-x` or another skill, read `~/.skills-parked/<that name>/SKILL.md`. When it says to run `npx hyperframes skills update <name>`, don't: that reinstalls them globally. Read `~/.skills-parked/<name>/SKILL.md` instead.
 - Adding or changing Clerk auth: the Clerk skills are parked in `~/.skills-parked/` (`clerk-setup`, `clerk-cli`, `clerk-orgs` and others). Read the one that fits.
 - Any Convex, Vercel or Cloudflare work (code, CLI, config, deploys, a question about them): read their official skill first. They're parked in `~/.skills-parked/`. Convex: `convex`, which routes to the `convex-*` skills. Cloudflare: `cloudflare`. Vercel: `deploy-to-vercel` for deploys, `vercel-cli`, `env-vars`, `ai-sdk`, `vercel-functions`; list the folder for the rest.
@@ -20,6 +21,7 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - One problem per answer. Two causes get two answers.
 - Do the obvious next step instead of asking "want me to?". Ask only when the choice is mine and changes what you do.
 - If a shortcut changes what I asked for (a stub, a toy input, an extension instead of a built-in feature), say so before you build it.
+- No regressions. Every check that passes before your change still passes after it. When you move a path, command or flow, update the repo's skills that use it (`verify-`, `worktree-`, `ship-`) and run the ones you touched.
 - I interrupt to redirect, not to cancel. "continue" means carry on with the plan.
 - "Ship", "deploy", "release" or "make it live" is the go for the whole ship: fix forward when a check or deploy fails on this change, release, clean up, without asking again. Never end a turn while a build or deploy you started is still running.
 

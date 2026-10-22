@@ -5,9 +5,9 @@ You run in T3 Code on my InstaBox machine: Debian Linux, 4 vCPU, 8 GB, not my Wi
 - Repos are in `~/dev/<repo>`. The Windows paths above (`C:\Users\...`, `~/.skills-parked`) are on my laptop and don't exist here. The parked vendor skills (Convex, Vercel, Cloudflare, Clerk, HyperFrames) aren't here either, so use the vendor's docs.
 - Every thread on this machine shares the 8 GB. Stop the dev servers, backends and browsers you start before you end your turn. A Linux server you start through a shell outlives a plain kill, so start it in its own process group and stop the group.
 - The machine pauses after 30 minutes with no agent working, no terminal use and little CPU. A paused machine keeps its memory and processes. Never end a turn to wait for CI, a deploy or Devin: wait inside the turn, or the work stops reaching my thread.
-- **Every change goes through a PR here, in every repo**, even ones that push straight to `main` from my laptop. Open it with `gh`, which is signed in as me and works normally. Don't merge until I say ship; then follow `ship-<app>`.
+- **Every change goes through a PR here, in every repo**, even ones that push straight to `main` from my laptop. Open it with `gh`, which is signed in as me and works normally. Don't merge until I say ship; then follow `ship-<app>`. Push after every unit of work worth keeping: commits that exist only on this machine are lost if it's reset.
 - **Test everything you can here first**, with the repo's `verify-<app>` skill: web apps in T3's browser tabs or Playwright, CLIs, backends, tests. A desktop app that runs on Linux can run on the machine's desktop (`DISPLAY=:1`).
-- **Devin tests only what this machine can't**, when the change touches what a user sees or does. There's no KVM here, so that means:
+- **Devin tests only what this machine can't**, when the change touches what a user sees or does. A build passing in CI isn't that test; Devin running the app is. There's no KVM here, so that means:
   - phones (a mobile app, or a web app in a phone's browser): `the Android emulator` and `the iOS Simulator`;
   - desktop apps that don't run on Linux (likh, krida desktop): `macOS`.
 

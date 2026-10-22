@@ -15,6 +15,9 @@
   { "id": "parked-convex", "expect": "convex|convex-crons|convex-design|convex-expert", "prompt": "add a cron in convex that clears old sessions every night" },
   { "id": "parked-vercel", "expect": "deploy-to-vercel|vercel-cli|deployments-cicd|vercel-cli-with-tokens", "prompt": "deploy this to vercel as a preview" },
   { "id": "parked-cloudflare", "expect": "cloudflare|workers-best-practices|wrangler|cf-cli|durable-objects", "prompt": "i want to put a tiny api on cloudflare workers with a durable object for rate limiting, how do i set it up" },
+  { "id": "fan-out", "expect": "delegating", "prompt": "split this audit across subagents, one per project, and give me one report" },
+  { "id": "cloud-check", "expect": "cloud", "prompt": "how are the cloud threads doing? is devin testing working" },
+  { "id": "cloud-move", "expect": "cloud", "prompt": "continue this thread online on the instabox machine so it keeps going when i close my laptop" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]
