@@ -50,4 +50,19 @@ for repo in krida kriyan likh loka megha critly portfolio inky amy; do
   command -v t3 >/dev/null && t3 project add "$dir" --title "$title" >/dev/null 2>&1 && log "added $title to T3"
 done
 [ ${#skipped[@]} -gt 0 ] && log "not cloned (sign in with gh auth login, then rerun): ${skipped[*]}"
+
+# megha as a T3 provider here too, so Claude Code on the web threads start without my laptop. Takes effect at T3's
+# next start (systemctl --user restart t3code).
+if [ -f ~/dev/megha/packages/megha/index.mjs ]; then
+  (cd ~/dev/megha && bun install --silent >/dev/null 2>&1)
+  node -e '
+    const fs = require("fs"), f = process.env.HOME + "/.t3/userdata/settings.json";
+    const s = fs.existsSync(f) ? JSON.parse(fs.readFileSync(f, "utf8")) : {};
+    s.providerInstances = s.providerInstances || {};
+    s.providerInstances["megha-claude"] = { driver: "acpRegistry", displayName: "Claude Code on the web", config: {
+      source: "local", commandPath: process.execPath,
+      commandArgs: [process.env.HOME + "/dev/megha/packages/megha/index.mjs", "--backend", "claude",
+        "--default-mode", "bypassPermissions", "--default-model", "claude-opus-5-5"] } };
+    fs.writeFileSync(f, JSON.stringify(s, null, 2));' && log "megha-claude provider set"
+fi
 log "done"
