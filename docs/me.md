@@ -68,6 +68,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 - Proposed per-skill workarounds before testing why skills don't trigger. Test first.
 - Wrote a plan and reports for me as Markdown files. Anything I read is HTML (`html-artifacts`).
 - Sent a local-only build (a skills viewer just for me) to a cloud thread I never asked for, then piled up workarounds to get it back. Work runs locally unless I say cloud.
+- Filled an audit's suggestions with one project's bugs (krida, 2026-10-21). The audit ranks changes to the skills; a project's own problems get a line for a thread in that project.
 
 ## Projects the skills have been tested on
 

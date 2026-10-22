@@ -27,6 +27,8 @@ Every T3 thread with activity in the window, in every project (`t3_project_list`
 
 Only real signals: "this is stupid" about a bug isn't frustration at the agent. Quote me exactly. Include Critly: its two skills, and whether UI work ran `critly check` or `taste`.
 
+Suggestions are changes to the library: global skills, routing, `global/skills.md`, this audit. A project's own bugs and gaps (its scripts, docs, project skills) aren't suggestions. Ask what library skill should have prevented them, and suggest that change if one exists. Otherwise they get a single line per project in the report, for a thread in that project.
+
 ## 3. Judge and write
 
 1. Read every batch file yourself. Merge duplicate suggestions, drop weak ones, check the strongest claims against a thread, and rank them. Look at `reports/dashboard/decisions.json`: don't re-suggest what I skipped unless something new happened; carry out what I accepted since the last audit (each in its own commit, proven), and say what you did.
