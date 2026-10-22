@@ -81,7 +81,7 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 ### cloud task with a Devin test
 - **Repo:** krida, a new megha thread, a small visible change, ending with "test with Devin".
 - **Me:** says nothing until the end.
-- **Good run:** builds and proves it, opens a PR, posts the `/devin` comment, waits in the same turn, and reports Devin's PASS with the recording. With a planted bug that only shows in use: Devin says FAIL with steps, the thread fixes it on the same branch, Devin passes. Nothing merges without "ship".
+- **Good run:** builds and proves it, opens a PR, posts the `/devin` comment, waits in the same turn, and reports Devin's PASS with the recording. With a planted bug that only shows in use: Devin says FAIL with steps, the thread fixes it on the same branch, Devin passes. Nothing merges without "ship". On an InstaBox machine, it also reads the session's messages every 5 minutes instead of waiting blind, sleeps the session after the verdict, and doesn't retest a failure caused by Devin's machine.
 
 ## sharpen
 
