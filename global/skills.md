@@ -26,5 +26,6 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 # Where my code lives
 
 - Projects: `C:\Users\kaust\OneDrive\Documents\dev\<name>`. Experiments: `dev\sandbox\<name>`, one folder each (rules in `dev\sandbox\AGENTS.md`).
-- Search a repo with the Grep tool, `rg` or `git grep`, never `grep -r`, `find` or `du` over it. My repos hold up to 200k untracked files (node_modules, prototypes): `grep -r` took 2 minutes in critly, `git grep` 0.14s.
+- Search a repo with the Grep tool, `rg` or `git grep`, never `grep -r`, `find` or `du` over it. My repos hold up to 200k untracked files (node_modules, prototypes): `grep -r` took 2 minutes in critly, `git grep` 0.14s. A hook blocks `grep -r`.
+- Run anything that takes over a minute (builds, test suites, dev servers) with `run_in_background` and wait for it to finish. If a server or job hasn't answered within a minute, check that its process is alive and read its log; never poll it for minutes. Agents lost 11 hours in two weeks to commands that sat until the 10-minute limit.
 - A T3 "No project" thread runs in a throwaway folder in `C:\Users\kaust\.t3\scratch\`. I research and think through ideas there or in the sandbox, so never build a project in the scratch folder or the sandbox root. When an idea turns into a project, suggest `/init-project`.

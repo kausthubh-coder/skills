@@ -25,6 +25,7 @@ The library lives at `C:\Users\kaust\OneDrive\Documents\dev\agent-skills`, a pub
 Where my code lives, my stack, my tools and my GitHub are repeated in several files, because agents in other repos never see the library's docs. `docs/me.md` is the source. The copies are in:
 
 - `global/skills.md`, which `node scripts/link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md
+- `global/hooks/*.mjs`, PreToolUse hooks that `link.mjs` installs for Claude Code and Codex. A rule agents keep breaking goes here as a hook, not as more words in `global/skills.md`
 - the skills that act on them: `init-project` and its `references/`, `optimize`, `create-project-flows`, this skill
 - `docs/evals.md`, `evals/scenarios.md`, the library's `AGENTS.md` and `README.md`
 - `C:\Users\kaust\OneDrive\Documents\dev\sandbox\AGENTS.md`, outside the repo and not in git

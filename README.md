@@ -23,7 +23,8 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `evals/scenarios.md` | Scenarios for testing skills in real threads |
 | `sources.json` | Where each copied skill came from, its license, upstream commit, and what I changed. `local` lists my own repos whose skills are linked from their checkout |
 | `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
-| `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder |
+| `global/hooks/` | PreToolUse hooks for every agent. `search-guard.mjs` blocks `grep -r`, which read 200k untracked files in critly (`reports/2026-10-21-tool-timing.html`) |
+| `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder, and installs `global/hooks/` into `~/.claude/settings.json` and `~/.codex/hooks.json` |
 | `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
 | `scripts/park.mjs` | Copies the vendor skills under `parked` in `sources.json` (Convex, Vercel, Cloudflare) into `~/.skills-parked/`, where no agent lists them; `global/skills.md` routes to them |
 | `cloud/` | What a cloud session (megha: Claude Code on the web, Codex Cloud) runs first: `session.sh` clones this library and Critly, links their skills and writes my global rules; `CLOUD.md` is the cloud note added to those rules, including how a cloud thread asks Devin to test its PR (`devin-test.md`). Each repo calls it from `scripts/cloud.mjs` (`create-project-flows` §6) |

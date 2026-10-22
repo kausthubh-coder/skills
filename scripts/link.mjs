@@ -127,6 +127,35 @@ for (const file of [path.join(home, ".claude", "CLAUDE.md"), path.join(home, ".c
   console.log(`- ${tag}updated the skills block in ${file}`);
 }
 
+// Hooks in global/hooks/ go into each agent's hook settings as PreToolUse commands. An entry is ours
+// when its command names a file in global/hooks/; everything else in those files is left alone.
+const hooksDir = path.join(root, "global", "hooks");
+const hookFiles = fs.existsSync(hooksDir) ? fs.readdirSync(hooksDir).filter((f) => f.endsWith(".mjs")) : [];
+const hookCommand = (f) => `node "${path.join(hooksDir, f).replace(/\\/g, "/")}"`;
+const isOurs = (h) => typeof h?.command === "string" && h.command.replace(/\\/g, "/").includes("/global/hooks/");
+// Claude Code: only shell calls. Codex: every call, since its shell tool names differ by surface.
+for (const { file, matcher } of [
+  { file: path.join(home, ".claude", "settings.json"), matcher: "Bash|PowerShell" },
+  { file: path.join(home, ".codex", "hooks.json"), matcher: undefined },
+]) {
+  if (!fs.existsSync(path.dirname(file))) continue;
+  const raw = fs.existsSync(file) ? fs.readFileSync(file, "utf8") : "{}";
+  const settings = JSON.parse(raw);
+  const pre = (settings.hooks?.PreToolUse ?? [])
+    .map((g) => ({ ...g, hooks: (g.hooks ?? []).filter((h) => !isOurs(h)) }))
+    .filter((g) => g.hooks.length);
+  if (!unlinkAll && hookFiles.length) {
+    pre.push({ ...(matcher ? { matcher } : {}), hooks: hookFiles.map((f) => ({ type: "command", command: hookCommand(f), timeout: 10 })) });
+  }
+  settings.hooks = { ...settings.hooks, PreToolUse: pre };
+  if (!pre.length) delete settings.hooks.PreToolUse;
+  if (!Object.keys(settings.hooks).length) delete settings.hooks;
+  const after = JSON.stringify(settings, null, 2) + "\n";
+  if (JSON.stringify(JSON.parse(raw)) === JSON.stringify(settings)) continue;
+  if (!dryRun) fs.writeFileSync(file, after);
+  console.log(`- ${tag}updated PreToolUse hooks in ${file}`);
+}
+
 if (conflicts) {
   console.log(`\n${conflicts} conflict(s). Remove or rename the existing folder, then run again.`);
   process.exitCode = 1;
