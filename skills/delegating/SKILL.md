@@ -36,8 +36,9 @@ If you're writing the same instruction into a second brief, it belongs in the ru
 - Split work into slices that don't share a writer. Two agents on one branch, file or state record overwrite each other.
 - Wait inside your turn, in the background, and keep answering me. A manager blocked 57 minutes on a thread wait answered my 19:28 question at 20:24. Never end your turn on work that's still running; its result won't reach me.
 - If it's quiet longer than the job should take, check it's alive (its process, its last message) instead of waiting longer. Check through what it leaves behind (pushed commits, the PR, `t3_thread_read`, `task_status`); don't message a working agent just to ask how it's going.
-- Work on a cloud machine is pushed after every unit worth keeping. Commits that exist only on one machine are lost if it dies.
-- A machine's 8 GB is shared by every thread on it. Two heavy builds at once is about the limit; send the next thread to the other machine.
+- Work on a cloud machine is pushed after every unit worth keeping; say so in the first brief, not after the first loss. Commits that exist only on one machine are lost if it dies.
+- A cloud machine gives all its threads about 4 GB together, and pauses when no turn is running, which freezes subagents mid-task. One heavy build or dev server per machine; send the next thread to the other machine (`cloud.mjs peek` shows memory and load).
+- My laptop and both machines share one Claude account. A big fan-out here stalls every cloud thread at the usage limit: on Oct 22, six max-effort agents in fast mode took a session from 20% to 100% in 16 minutes. Check what's running on the machines before you fan out, and use fast mode only when I ask.
 
 ## When it finishes
 

@@ -33,7 +33,7 @@ curl -fsSL https://raw.githubusercontent.com/kausthubh-coder/skills/main/cloud/s
 mkdir -p ~/dev
 for _ in $(seq 30); do systemctl --user is-active -q t3code 2>/dev/null && break; sleep 2; done
 skipped=()
-for repo in krida kriyan likh loka megha critly portfolio inky amy; do
+for repo in krida kriyan likh loka megha critly portfolio inky amy potli taru; do
   dir=~/dev/$repo
   if [ ! -d "$dir/.git" ]; then
     gh repo clone "kausthubh-coder/$repo" "$dir" -- -q >&2 2>/dev/null \
@@ -46,7 +46,7 @@ for repo in krida kriyan likh loka megha critly portfolio inky amy; do
     mkdir -p "$dir/.claude" && ln -s ../.agents/skills "$dir/.claude/skills"
   fi
   # A T3 project titled as on my laptop, so T3 shows one project with both machines. Fails quietly if added.
-  case $repo in loka) title=Loka ;; portfolio) title=kausthubh-portfolio ;; inky) title=studi-2 ;; *) title=$repo ;; esac
+  case $repo in loka) title=Loka ;; portfolio) title=kausthubh-portfolio ;; inky) title=studi-2 ;; taru) title=Taru ;; *) title=$repo ;; esac
   command -v t3 >/dev/null && t3 project add "$dir" --title "$title" >/dev/null 2>&1 && log "added $title to T3"
 done
 [ ${#skipped[@]} -gt 0 ] && log "not cloned (sign in with gh auth login, then rerun): ${skipped[*]}"
@@ -65,4 +65,35 @@ if [ -f ~/dev/megha/packages/megha/index.mjs ]; then
         "--default-mode", "bypassPermissions", "--default-model", "claude-opus-5-5"] } };
     fs.writeFileSync(f, JSON.stringify(s, null, 2));' && log "megha-claude provider set"
 fi
+# Restart threads the Claude usage limit stopped. T3 retries on its own, but the machine pauses while a thread waits
+# out the limit, and on Oct 22 threads sat idle 11 to 78 minutes after the reset until I typed "continue".
+mkdir -p ~/.config/systemd/user
+cat > ~/.config/cloud-resume.sh <<'EOF'
+#!/bin/sh
+export PATH="$HOME/.local/bin:$HOME/.bun/bin:/usr/local/bin:/usr/bin:/bin"
+{ echo 'const JOB = { cmd: "resume", text: "The usage limit has reset. Check what your background jobs and helpers finished or lost, then carry on." };'
+  cat "$HOME/.cloud/agent-skills/skills/cloud/scripts/box.mjs"; } | node --no-warnings --input-type=module -
+EOF
+cat > ~/.config/systemd/user/cloud-resume.service <<'EOF'
+[Unit]
+Description=Restart T3 threads stopped at the Claude usage limit
+[Service]
+Type=oneshot
+ExecStart=/bin/sh %h/.config/cloud-resume.sh
+EOF
+cat > ~/.config/systemd/user/cloud-resume.timer <<'EOF'
+[Unit]
+Description=Check every 10 minutes for threads stopped at the usage limit
+[Timer]
+OnBootSec=5min
+OnUnitActiveSec=10min
+[Install]
+WantedBy=timers.target
+EOF
+systemctl --user daemon-reload && systemctl --user enable --now cloud-resume.timer >/dev/null 2>&1 && log "cloud-resume timer on"
+
+# A Linux browser for Playwright and page checks; Playwright's own download is often missing here.
+command -v chromium >/dev/null || log "no /usr/bin/chromium: install it (sudo apt-get install -y chromium)"
+grep -q CHROME_PATH ~/.profile 2>/dev/null || echo 'export CHROME_PATH=/usr/bin/chromium' >> ~/.profile
+python3 -c 'import PIL' 2>/dev/null || log "no Pillow: sudo apt-get install -y python3-pil"
 log "done"

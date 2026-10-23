@@ -5,6 +5,7 @@
 //   node cloud.mjs move --repo krida --branch t3/x --title "Krida: ..." --brief brief.md [--machine t3] [--model claude-opus-5-5] [--instance claudeAgent]
 //   node cloud.mjs send --machine t3 --thread <id> --text message.md
 //   node cloud.mjs peek --machine t3 [--thread <id>] [--n 12]
+//   node cloud.mjs resume [--machine t3]   # restart threads the usage limit stopped
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { homedir } from "node:os";
@@ -54,6 +55,10 @@ if (cmd === "move") {
 } else if (cmd === "send") {
   need("machine", "thread", "text");
   console.log(onBox(opt.machine, { cmd: "send", threadId: opt.thread, text: readFileSync(opt.text, "utf8") }));
+} else if (cmd === "resume") {
+  for (const m of opt.machine ? [opt.machine] : MACHINES) {
+    console.log(`${m}: ${onBox(m, { cmd: "resume", text: "The usage limit has reset. Check what your background jobs and helpers finished or lost, then carry on." })}`);
+  }
 } else if (cmd === "peek") {
   need("machine");
   console.log(onBox(opt.machine, { cmd: "peek", threadId: opt.thread, n: Number(opt.n ?? (opt.thread ? 12 : 15)) }));

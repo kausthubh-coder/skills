@@ -70,6 +70,28 @@ function activeRun(threadId) {
   return db().prepare("select run_id from orchestration_v2_projection_runs where thread_id = ? and status in ('running','waiting','starting','preparing') order by ordinal desc").get(threadId)?.run_id;
 }
 
+// T3 throttles all agents together past the agents slice's memory.high; over it, commands hang instead of failing.
+const SLICE = `/sys/fs/cgroup/user.slice/user-${process.getuid()}.slice/user@${process.getuid()}.service/app.slice/app-t3code.slice/app-t3code-agents.slice`;
+const readOr = (f, d) => { try { return readFileSync(f, "utf8").trim(); } catch { return d; } };
+function health() {
+  const gb = (b) => (Number(b) / 1024 ** 3).toFixed(1);
+  const high = readOr(`${SLICE}/memory.high`, "max");
+  const throttled = /^high (\d+)/m.exec(readOr(`${SLICE}/memory.events`, ""))?.[1] ?? "?";
+  return `load ${readOr("/proc/loadavg", "?").split(" ").slice(0, 3).join(" ")} on 4 vCPU; agents use ${gb(readOr(`${SLICE}/memory.current`, 0))} GB of ${high === "max" ? "no cap" : gb(high) + " GB"} (${throttled} throttle events since T3 started); ${memAvailableMb()} MB free`;
+}
+
+// Threads whose last run stopped at the Claude usage limit and haven't run since.
+function stoppedAtLimit(d) {
+  return d.prepare(`select t.thread_id, t.title, json_extract(i.payload_json, '$.failure.resetAt') reset_at
+      from orchestration_v2_projection_threads t
+      join orchestration_v2_projection_runs r on r.thread_id = t.thread_id
+        and r.ordinal = (select max(ordinal) from orchestration_v2_projection_runs where thread_id = t.thread_id)
+      join orchestration_v2_projection_turn_items i on i.run_id = r.run_id and i.type = 'error'
+        and json_extract(i.payload_json, '$.failure.class') = 'usage_limit'
+      where t.deleted_at is null and t.archived_at is null and r.status = 'failed' and t.thread_id not like 'thread:%'
+      group by t.thread_id`).all();
+}
+
 const jobs = {
   mem: async () => console.log(memAvailableMb()),
 
@@ -96,16 +118,40 @@ const jobs = {
     console.log(runId ? "steered the running turn" : "started a new turn");
   },
 
+  // Restart threads the usage limit stopped, once the limit has reset. A paused machine misses T3's own retry.
+  resume: async ({ text }) => {
+    const due = stoppedAtLimit(db()).filter((t) => !t.reset_at || Date.parse(t.reset_at) < Date.now());
+    if (!due.length) return console.log("nothing stopped at the usage limit");
+    await withServer(async (call) => {
+      for (const t of due) {
+        await call("orchestration.dispatchCommand", {
+          type: "message.dispatch", commandId: randomUUID(), createdBy: "user", creationSource: "web", threadId: t.thread_id,
+          messageId: randomUUID(), text, attachments: [], dispatchMode: { type: "start_immediately" },
+        });
+        console.log(`resumed ${t.thread_id}  ${t.title}`);
+      }
+    });
+  },
+
   peek: async ({ threadId, n }) => {
     const d = db();
-    console.log(`memory available: ${memAvailableMb()} MB`);
+    console.log(health());
     if (!threadId) {
+      // A thread "running" with no new item for 15 minutes is usually stuck on memory or a wait, not working.
       const rows = d.prepare(`select t.thread_id, t.title, t.updated_at,
           (select status from orchestration_v2_projection_runs r where r.thread_id = t.thread_id
-            order by status in ('running','waiting','starting','preparing') desc, ordinal desc limit 1) status
+            order by status in ('running','waiting','starting','preparing') desc, ordinal desc limit 1) status,
+          (select max(updated_at) from orchestration_v2_projection_turn_items i where i.thread_id = t.thread_id) last_item
         from orchestration_v2_projection_threads t where t.deleted_at is null and t.archived_at is null
+          and t.thread_id not like 'thread:%'
         order by t.updated_at desc limit ?`).all(n);
-      for (const r of rows) console.log(`${r.updated_at.slice(5, 16)}  ${(r.status || "idle").padEnd(9)} ${r.thread_id}  ${r.title}`);
+      const limited = new Set(stoppedAtLimit(d).map((t) => t.thread_id));
+      for (const r of rows) {
+        const quiet = Math.round((Date.now() - Date.parse(r.last_item ?? r.updated_at)) / 60000);
+        const flag = limited.has(r.thread_id) ? "  << stopped at usage limit (cloud.mjs resume)"
+          : r.status === "running" && quiet >= 15 ? `  << running but silent ${quiet} min` : "";
+        console.log(`${r.updated_at.slice(5, 16)}  ${(r.status || "idle").padEnd(9)} ${r.thread_id}  ${r.title}${flag}`);
+      }
       return;
     }
     for (const r of d.prepare("select ordinal, status from orchestration_v2_projection_runs where thread_id = ? order by ordinal").all(threadId)) console.log(`run ${r.ordinal} ${r.status}`);
