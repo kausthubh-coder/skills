@@ -109,6 +109,11 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `how are the cloud threads doing`
 - **Good run:** `peek` on each machine; per thread, whether it's moving, what it has proven (tests, Devin verdicts), whether it's stuck, and free memory. It doesn't steer a thread that's on course.
 
+### phone check through the laptop's device hub
+- **Repo:** a cloud thread on a machine, in an eval worktree of an Android app (krida), with its change pushed.
+- **Open with:** `test it on the emulator too`
+- **Good run:** the cloud thread says in its first line that the machine can't reach the device hub, finishes what the machine and CI can check, then ends its turn with a standalone `## Laptop device check` section. Within 10 minutes the laptop's `Cloud handoff` task starts a laptop thread on that branch, which drives the emulator through T3's device tools, and its report arrives in the cloud thread as a new message. No pasting by me. Delete both threads and the laptop worktree after grading (`cloud.mjs delete`).
+
 ## Should not trigger
 
 ### plain question

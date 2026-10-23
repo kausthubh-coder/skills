@@ -1,25 +1,31 @@
-// Runs on an InstaBox machine, piped in by cloud.mjs, which puts `const JOB = {...}` above this line.
-// Talks to the machine's own T3 server the way T3's web app does: a short-lived bearer session, a WebSocket
-// ticket, then orchestration RPCs over /ws. T3 has no CLI or MCP route for starting a thread from outside.
+// Runs next to a T3 server and talks to it: piped into an InstaBox machine by cloud.mjs (which puts
+// `const JOB = {...}` above this line), or run the same way on my laptop for the device-hub handoff.
+// It talks to T3 the way T3's web app does: a short-lived bearer session, a WebSocket ticket, then orchestration
+// RPCs over /ws. T3 has no CLI or MCP route for starting a thread from outside.
 import { execFileSync } from "node:child_process";
 import { DatabaseSync } from "node:sqlite";
 import { randomUUID } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync } from "node:fs";
+import { homedir } from "node:os";
 
-const HOME = process.env.HOME;
+const HOME = homedir();
+const WINDOWS = process.platform === "win32";
 const env = { ...process.env, PATH: `${HOME}/.local/bin:${HOME}/.bun/bin:${process.env.PATH}` };
 const run = (cmd, args, opts = {}) => execFileSync(cmd, args, { encoding: "utf8", env, ...opts }).trim();
+// The desktop app's CLI on my laptop is a .cmd, which only runs through cmd.
+const t3 = (args) => (WINDOWS ? run("cmd", ["/c", `${HOME}\\.t3\\bin\\t3.cmd`, ...args]) : run("t3", args));
 const db = () => new DatabaseSync(`${HOME}/.t3/userdata/statev2.sqlite`, { readOnly: true });
 const memAvailableMb = () => Math.round(Number(/MemAvailable:\s+(\d+)/.exec(readFileSync("/proc/meminfo", "utf8"))[1]) / 1024);
+const SERVER = (() => { try { return JSON.parse(readFileSync(`${HOME}/.t3/userdata/server-runtime.json`, "utf8")).origin; } catch { return "http://localhost:3773"; } })();
 
 async function withServer(fn) {
   const label = `cloud-skill-${process.pid}`;
-  const token = run("t3", ["auth", "session", "issue", "--ttl", "10m", "--label", label, "--token-only"]);
+  const token = t3(["auth", "session", "issue", "--ttl", "10m", "--label", label, "--token-only"]);
   try {
-    const res = await fetch("http://localhost:3773/api/auth/websocket-ticket", { method: "POST", headers: { authorization: `Bearer ${token}` } });
+    const res = await fetch(`${SERVER}/api/auth/websocket-ticket`, { method: "POST", headers: { authorization: `Bearer ${token}` } });
     const { ticket } = await res.json();
     if (!ticket) throw new Error(`T3 gave no WebSocket ticket (HTTP ${res.status})`);
-    const ws = new WebSocket(`ws://localhost:3773/ws?orchestrationProtocol=2&wsTicket=${encodeURIComponent(ticket)}`);
+    const ws = new WebSocket(`${SERVER.replace(/^http/, "ws")}/ws?orchestrationProtocol=2&wsTicket=${encodeURIComponent(ticket)}`);
     await new Promise((ok, fail) => { ws.onopen = ok; ws.onerror = () => fail(new Error("T3 refused the WebSocket")); });
     let next = 1;
     const call = (tag, payload) => new Promise((ok, fail) => {
@@ -35,9 +41,9 @@ async function withServer(fn) {
     });
     try { return await fn(call); } finally { ws.close(); }
   } finally {
-    const block = run("t3", ["auth", "session", "list"]).split(/\n\s*\n/).find((b) => b.includes(`client: ${label}`));
+    const block = t3(["auth", "session", "list"]).split(/\r?\n\s*\r?\n/).find((b) => b.includes(`client: ${label}`));
     const id = block?.match(/[0-9a-f]{8}-[0-9a-f-]{27}/)?.[0];
-    if (id) run("t3", ["auth", "session", "revoke", id]);
+    if (id) t3(["auth", "session", "revoke", id]);
   }
 }
 
@@ -62,7 +68,7 @@ function worktreeFor(repo, branch) {
 
 function projectFor(dir, repo) {
   const find = () => db().prepare("select project_id from projection_projects where workspace_root = ? and deleted_at is null").get(dir)?.project_id;
-  if (!find()) run("t3", ["project", "add", dir, "--title", repo]);
+  if (!find()) t3(["project", "add", dir, "--title", repo]);
   return find();
 }
 
@@ -71,9 +77,9 @@ function activeRun(threadId) {
 }
 
 // T3 throttles all agents together past the agents slice's memory.high; over it, commands hang instead of failing.
-const SLICE = `/sys/fs/cgroup/user.slice/user-${process.getuid()}.slice/user@${process.getuid()}.service/app.slice/app-t3code.slice/app-t3code-agents.slice`;
 const readOr = (f, d) => { try { return readFileSync(f, "utf8").trim(); } catch { return d; } };
 function health() {
+  const SLICE = `/sys/fs/cgroup/user.slice/user-${process.getuid()}.slice/user@${process.getuid()}.service/app.slice/app-t3code.slice/app-t3code-agents.slice`;
   const gb = (b) => (Number(b) / 1024 ** 3).toFixed(1);
   const high = readOr(`${SLICE}/memory.high`, "max");
   const throttled = /^high (\d+)/m.exec(readOr(`${SLICE}/memory.events`, ""))?.[1] ?? "?";
@@ -131,6 +137,54 @@ const jobs = {
         console.log(`resumed ${t.thread_id}  ${t.title}`);
       }
     });
+  },
+
+  // Cloud side: idle threads whose last message ends with a "## Laptop device check" brief (BOX.md).
+  handoffs: async () => {
+    const d = db();
+    const rows = d.prepare(`select t.thread_id, t.title, t.payload_json, p.title project, p.workspace_root root,
+        (select payload_json from orchestration_v2_projection_messages m where m.thread_id = t.thread_id
+          order by created_at desc limit 1) last
+      from orchestration_v2_projection_threads t join projection_projects p on p.project_id = t.project_id
+      where t.deleted_at is null and t.archived_at is null and t.thread_id not like 'thread:%'`).all();
+    const out = [];
+    for (const r of rows) {
+      const last = r.last && JSON.parse(r.last);
+      const at = last?.role === "assistant" ? last.text?.search(/^#{1,3} Laptop device check\s*$/m) : -1;
+      if (at < 0 || activeRun(r.thread_id)) continue;
+      out.push({ threadId: r.thread_id, title: r.title, messageId: last.id, project: r.project,
+        repo: r.root.split("/").pop(), branch: JSON.parse(r.payload_json).branch ?? null, brief: last.text.slice(at) });
+    }
+    console.log(JSON.stringify(out));
+  },
+
+  // Laptop side: a thread in the project with this title (or repo folder), in a new worktree from origin/<branch>.
+  launchHere: async ({ project, repo, branch, title, text, instance, model }) => {
+    const projects = db().prepare("select project_id, title, workspace_root from projection_projects where deleted_at is null").all();
+    const p = projects.find((x) => x.title.toLowerCase() === project.toLowerCase())
+      ?? projects.find((x) => x.workspace_root.split(/[\\/]/).pop().toLowerCase() === repo.toLowerCase());
+    if (!p) throw new Error(`no T3 project here for ${project} (${repo})`);
+    const threadId = randomUUID();
+    await withServer((call) => call("orchestration.launchThread", {
+      commandId: randomUUID(), creationSource: "web", threadId, projectId: p.project_id, title, generateTitle: false,
+      modelSelection: { instanceId: instance, model }, runtimeMode: "full-access", interactionMode: "default",
+      workspaceStrategy: branch ? { type: "worktree", baseRef: branch, startFromOrigin: true } : { type: "root" },
+      initialMessage: { messageId: randomUUID(), text, attachments: [] },
+    }));
+    console.log(JSON.stringify({ threadId }));
+  },
+
+  delete: async ({ threadId }) => {
+    await withServer((call) => call("orchestration.dispatchCommand", { type: "thread.delete", commandId: randomUUID(), threadId }));
+    console.log(`deleted ${threadId}`);
+  },
+
+  // A thread's latest run status and last assistant message.
+  result: async ({ threadId }) => {
+    const d = db();
+    const runStatus = d.prepare("select status from orchestration_v2_projection_runs where thread_id = ? order by ordinal desc limit 1").get(threadId)?.status ?? null;
+    const last = d.prepare("select payload_json from orchestration_v2_projection_messages where thread_id = ? and role = 'assistant' order by created_at desc limit 1").get(threadId);
+    console.log(JSON.stringify({ runStatus, active: Boolean(activeRun(threadId)), text: last ? JSON.parse(last.payload_json).text : null }));
   },
 
   peek: async ({ threadId, n }) => {

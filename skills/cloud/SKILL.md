@@ -28,7 +28,7 @@ Already on a machine? Use T3's own tools there (`t3_thread_launch`, `t3_thread_s
 
 - `cloud.mjs peek --machine t3` lists the threads and their status, plus the machine's load and how much of the agents' memory cap (about 4 GB) is used. It flags threads stopped at the usage limit and threads "running" but silent for 15 minutes. Add `--thread <id>` for one thread's runs and recent messages.
 - `cloud.mjs send --machine t3 --thread <id> --text <file>` steers the running turn, or starts a new turn if the thread is idle. Use it for my instructions; don't nudge a thread that's on course.
-- A cloud thread that ends with a brief for the laptop's device hub is waiting on it. On my laptop, start that thread with `t3_thread_launch` in the repo, on a new worktree from the PR's branch (`startFromOrigin: true`), with the brief as the message. When it reports, send the result back to the cloud thread with `cloud.mjs send`.
+- `cloud.mjs handoff` runs every 10 minutes on my laptop (Task Scheduler, set up by `scripts/handoff-task.ps1`; log in `~/.t3/cloud-handoff.log`). A cloud thread whose last message has a `## Laptop device check` section gets a laptop thread in the same project, on a new worktree from its branch, to run those checks with the device hub. When that thread completes, its last message goes back to the cloud thread. `--dry-run` shows what it would do; state is in `~/.t3/cloud-handoffs.json`.
 - `cloud.mjs resume` restarts threads on both machines that the usage limit stopped, once it has reset. Each machine also runs it every 10 minutes while awake.
 
 When I ask how the cloud threads are doing, answer for each thread:
