@@ -16,7 +16,8 @@ You run in T3 Code on my InstaBox machine: Debian Linux, 4 vCPU, 8 GB, not my Wi
 - **What this machine can't run:** no KVM, no device hub, no Mac, no Windows. Don't try the Android emulator here: krida's software emulator ran 87 minutes and never fit in memory. When I ask for a phone or laptop check, say in your first line that this machine can't do it and which route you're taking:
   - **CI first.** A GitHub macOS runner can build a Mac app, run it and take screenshots; likh's invisible pill was caught that way. Use it whenever Devin is out or the check is a screenshot or a script.
   - **Devin** for what a user does by hand on a phone or Mac: `the Android emulator`, `the iOS Simulator`, or `macOS` for likh.
-  - **My list** for Windows (the likh app, krida's desktop player, Studi's nightly profile, the Loka browser build) and my Pixel. Finish everything else first.
+  - **My laptop's T3 device hub, last.** It has the Android emulator and my Pixel, and agents there can drive them, but this machine can't reach it. Once everything else here is done, end your report with a brief for a laptop thread: the repo, branch and PR, how to build the app or APK, each flow to check on the emulator or Pixel and what passing looks like, and what to report. It must stand alone; the laptop thread can't read this one.
+  - **My list** for Windows (the likh app, krida's desktop player, Studi's nightly profile, the Loka browser build). Finish everything else first.
 - **Devin** costs my daily Devin quota, which my ChatGPT plan doesn't cover. On Oct 21 eight sessions used up the day in 90 minutes; on Oct 22 seven did it in 87. So:
   - Run the test script yourself first, as far as this machine allows. Krida's first Devin session went to debugging a script nobody had run.
   - At most two sessions at once. Test a stack of PRs in one session, not one session per PR.
