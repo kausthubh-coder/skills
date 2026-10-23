@@ -159,12 +159,11 @@ const jobs = {
   },
 
   // Laptop side: a thread in the project with this title (or repo folder), in a new worktree from origin/<branch>.
-  launchHere: async ({ project, repo, branch, title, text, instance, model }) => {
+  launchHere: async ({ threadId = randomUUID(), project, repo, branch, title, text, instance, model }) => {
     const projects = db().prepare("select project_id, title, workspace_root from projection_projects where deleted_at is null").all();
     const p = projects.find((x) => x.title.toLowerCase() === project.toLowerCase())
       ?? projects.find((x) => x.workspace_root.split(/[\\/]/).pop().toLowerCase() === repo.toLowerCase());
     if (!p) throw new Error(`no T3 project here for ${project} (${repo})`);
-    const threadId = randomUUID();
     await withServer((call) => call("orchestration.launchThread", {
       commandId: randomUUID(), creationSource: "web", threadId, projectId: p.project_id, title, generateTitle: false,
       modelSelection: { instanceId: instance, model }, runtimeMode: "full-access", interactionMode: "default",
@@ -179,12 +178,13 @@ const jobs = {
     console.log(`deleted ${threadId}`);
   },
 
-  // A thread's latest run status and last assistant message.
+  // Whether a thread exists, its latest run status and last assistant message.
   result: async ({ threadId }) => {
     const d = db();
+    const exists = Boolean(d.prepare("select 1 from orchestration_v2_projection_threads where thread_id = ? and deleted_at is null").get(threadId));
     const runStatus = d.prepare("select status from orchestration_v2_projection_runs where thread_id = ? order by ordinal desc limit 1").get(threadId)?.status ?? null;
     const last = d.prepare("select payload_json from orchestration_v2_projection_messages where thread_id = ? and role = 'assistant' order by created_at desc limit 1").get(threadId);
-    console.log(JSON.stringify({ runStatus, active: Boolean(activeRun(threadId)), text: last ? JSON.parse(last.payload_json).text : null }));
+    console.log(JSON.stringify({ exists, runStatus, active: Boolean(activeRun(threadId)), text: last ? JSON.parse(last.payload_json).text : null }));
   },
 
   peek: async ({ threadId, n }) => {

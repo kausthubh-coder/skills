@@ -9,6 +9,7 @@
 //   node cloud.mjs handoff [--dry-run] [--log <file>]   # laptop device-hub checks the cloud threads asked for (see below)
 //   node cloud.mjs delete --machine t3|t3-2|laptop --thread <id>   # e.g. eval and test threads
 import { spawnSync } from "node:child_process";
+import { randomUUID } from "node:crypto";
 import { appendFileSync, existsSync, readFileSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
@@ -67,17 +68,27 @@ function handoff(dryRun) {
       }
       if (dryRun) { log(`would start a laptop check for ${machine} "${a.title}" (${a.project}, ${a.branch})`); continue; }
       const text = `${a.brief}\n\n---\nYou're the laptop half of cloud thread "${a.title}" on my InstaBox machine ${machine}, which can't reach this laptop's device hub. Do the checks above with T3's device tools (the Android emulator or my Pixel). Don't push or merge. Your last message goes back to that thread as is, so end with the verdict, the evidence and what you couldn't check.`;
+      // Record the thread before launching it: the launch waits for the worktree and its setup, which can outlast
+      // the timeout after the thread already exists. On Oct 23 that started the same check twice.
+      const threadId = randomUUID();
+      state[a.messageId] = { machine, cloudThread: a.threadId, laptopThread: threadId, status: "running", started: new Date().toISOString() };
+      save();
       try {
-        const { threadId } = JSON.parse(onLaptop({ cmd: "launchHere", project: a.project, repo: a.repo, branch: a.branch,
-          title: `${a.title.slice(0, 60)}: device check`, text, instance: "claudeAgent", model: "claude-opus-5-5" }));
-        state[a.messageId] = { machine, cloudThread: a.threadId, laptopThread: threadId, status: "running", started: new Date().toISOString() };
+        onLaptop({ cmd: "launchHere", threadId, project: a.project, repo: a.repo, branch: a.branch,
+          title: `${a.title.slice(0, 60)}: device check`, text, instance: "claudeAgent", model: "claude-opus-5-5" });
         log(`started laptop thread ${threadId} for ${machine} "${a.title}"`);
       } catch (e) {
+        if (JSON.parse(onLaptop({ cmd: "result", threadId })).exists) {
+          log(`started laptop thread ${threadId} for ${machine} "${a.title}" (its launch didn't answer: ${e.message.split("\n").pop()})`);
+          continue;
+        }
         state[a.messageId] = { machine, cloudThread: a.threadId, status: "failed", error: e.message };
-        onBox(machine, { cmd: "send", threadId: a.threadId, text: `My laptop couldn't start the device check: ${e.message.split("\n").pop()}. Put it on my list.` });
+        save();
         log(`couldn't start a laptop check for ${machine} "${a.title}": ${e.message}`);
+        try {
+          onBox(machine, { cmd: "send", threadId: a.threadId, text: `My laptop couldn't start the device check: ${e.message.split("\n").pop()}. Put it on my list.` });
+        } catch (e2) { log(`${machine} unreachable, couldn't say so: ${e2.message.split("\n").pop()}`); }
       }
-      save();
     }
   }
 
