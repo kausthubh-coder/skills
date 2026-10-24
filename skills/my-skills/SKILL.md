@@ -28,6 +28,7 @@ Where my code lives, my stack, my tools and my GitHub are repeated in several fi
 - `global/hooks/*.mjs`, PreToolUse hooks that `link.mjs` installs for Claude Code and Codex. A rule agents keep breaking goes here as a hook, not as more words in `global/skills.md`
 - the skills that act on them: `init-project` and its `references/`, `optimize`, `create-project-flows`, this skill
 - `docs/evals.md`, `evals/scenarios.md`, the library's `AGENTS.md` and `README.md`
+- `skills/threads/scripts/threads.mjs`: each machine's Tailscale address and home folder
 - `C:\Users\kaust\OneDrive\Documents\dev\sandbox\AGENTS.md`, outside the repo and not in git
 
 When a fact changes or you add one, update `docs/me.md` first. Then search every copy for the old wording (`rg -n "<old text>" skills global docs evals AGENTS.md README.md ..\sandbox\AGENTS.md`), fix each one, and run `node scripts/link.mjs`.

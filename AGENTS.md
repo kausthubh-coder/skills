@@ -24,6 +24,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `skills/optimize/` | `/optimize`, including the checklist of gaps all my projects had |
 | `skills/my-skills/` | How any agent, in any repo, adds or edits skills here. Keep it in sync with this file |
 | `skills/create-project-flows/` | Writes a project's `worktree-<app>` and `ship-<app>` skills |
+| `skills/threads/` | Threads on the laptop and Mac mini reach each other: `threads.mjs` plus a bridge on each machine's Tailscale address (`threads.mjs install`) |
 | `global/skills.md` | The "load this skill when…" block, plus where my code lives, that `link.mjs` writes into my global CLAUDE.md and Codex AGENTS.md |
 | `global/hooks/` | PreToolUse hooks `link.mjs` installs into Claude Code and Codex settings. `search-guard.mjs` blocks `grep -r`; `--test` runs its cases |
 | `evals/trigger/` | Trigger tests: does an agent pick the right skill on its own? |
