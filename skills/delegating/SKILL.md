@@ -38,7 +38,7 @@ If you're writing the same instruction into a second brief, it belongs in the ru
 - If it's quiet longer than the job should take, check it's alive (its process, its last message) instead of waiting longer. Check through what it leaves behind (pushed commits, the PR, `t3_thread_read`, `task_status`); don't message a working agent just to ask how it's going.
 - Work on another machine is pushed after every unit worth keeping; say so in the first brief, not after the first loss. Commits that exist only on one machine are lost if it dies.
 - Every thread, dev server and agent browser on the Mac mini shares its 16 GB. If it's slow, run `memory_pressure` there before starting more.
-- My laptop and the Mac mini share one Claude account. A big fan-out stalls every thread at the usage limit: on Oct 22, six max-effort agents in fast mode took a session from 20% to 100% in 16 minutes. Prefer GPT subagents, and use fast mode only when I ask.
+- My laptop and the Mac mini share one Claude account. A big fan-out stalls every thread at the usage limit: on Oct 22, six max-effort agents in fast mode took a session from 20% to 100% in 16 minutes. Prefer GPT subagents, and use fast mode only when I ask. Don't save usage by lowering effort: a Claude thread or subagent doing design or judgment runs at my default (high). On Oct 24 a manager launched a mockup thread at medium, and I called its designs bad.
 
 ## When it finishes
 
