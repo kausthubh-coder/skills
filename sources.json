@@ -247,7 +247,7 @@
     "cloudflare/skills": {
       "path": "skills",
       "license": "Apache-2.0",
-      "commit": "be68fd8"
+      "commit": "86505e4"
     },
     "get-convex/agent-skills": {
       "path": "skills",
@@ -270,7 +270,7 @@
         "knowledge-update": "meant to be injected by the plugin at session start",
         "verification": "verify-<app> skills do this"
       },
-      "commit": "d874dac"
+      "commit": "3c88cfc"
     }
   }
 }
