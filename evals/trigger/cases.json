@@ -16,6 +16,9 @@
   { "id": "parked-vercel", "expect": "deploy-to-vercel|vercel-cli|deployments-cicd|vercel-cli-with-tokens", "prompt": "deploy this to vercel as a preview" },
   { "id": "parked-cloudflare", "expect": "cloudflare|workers-best-practices|wrangler|cf-cli|durable-objects", "prompt": "i want to put a tiny api on cloudflare workers with a durable object for rate limiting, how do i set it up" },
   { "id": "fan-out", "expect": "delegating", "prompt": "split this audit across subagents, one per project, and give me one report" },
+  { "id": "move-to-mac", "expect": "threads", "prompt": "ok move this to the mac and keep going there" },
+  { "id": "windows-check", "expect": "threads", "prompt": "this needs testing on windows before i ship, get the laptop to check it" },
+  { "id": "both-machines", "expect": "threads", "prompt": "whats running on the mac and laptop rn" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]
