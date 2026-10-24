@@ -40,7 +40,7 @@ if git rev-parse --git-dir >/dev/null 2>&1; then
 fi
 
 # Global rules for the next agent start (Codex reads ~/.codex/AGENTS.md; Claude reads ~/.claude/CLAUDE.md at launch).
-# My InstaBox machine runs box.sh, which sets CLOUD_RULES=BOX.md: it's a T3 machine, not a bare cloud VM.
+# Hosted sessions use CLOUD.md by default; CLOUD_RULES can select another rules filename.
 rules=$(cat ~/.cloud/agent-skills/global/skills.md ~/.cloud/agent-skills/cloud/"${CLOUD_RULES:-CLOUD.md}" 2>/dev/null)
 mkdir -p ~/.claude ~/.codex
 printf '%s\n' "$rules" > ~/.claude/CLAUDE.md

@@ -97,23 +97,6 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `/create-formal-verification-skill`
 - **Good run:** picks the riskiest promise from the code, says why that tool, shows the check failing on a scratch break, writes `.agents/skills/<name>/` with a coverage record and sync commit, and touches no product code. A finding comes back as steps in the code's own words.
 
-## cloud
-
-### move a planning thread mid-way
-- **Repo:** an eval worktree of a repo on my InstaBox machine, in a thread that wrote a plan page and asked me questions I didn't answer.
-- **Open with:** `continue this online`
-- **Me:** nothing more; if it asks which answers to use, say "you pick".
-- **Good run:** commits the plan to the thread's branch and pushes; the brief stands alone (goal, done and left, my answers, the defaults it picked marked as defaults, files to read first, what goes to Devin or my laptop); starts the thread with `cloud.mjs move`, checks it's running with `peek`, then names the machine, the defaults and that the old thread stays. It doesn't keep pushing to that branch afterwards. Delete the eval thread on the machine after grading.
-
-### check on cloud threads
-- **Open with:** `how are the cloud threads doing`
-- **Good run:** `peek` on each machine; per thread, whether it's moving, what it has proven (tests, Devin verdicts), whether it's stuck, and free memory. It doesn't steer a thread that's on course.
-
-### phone check through the laptop's device hub
-- **Repo:** a cloud thread on a machine, in an eval worktree of an Android app (krida), with its change pushed.
-- **Open with:** `test it on the emulator too`
-- **Good run:** the cloud thread says in its first line that the machine can't reach the device hub, finishes what the machine and CI can check, then ends its turn with a standalone `## Laptop device check` section. Within 10 minutes the laptop's `Cloud handoff` task starts a laptop thread on that branch, which drives the emulator through T3's device tools, and its report arrives in the cloud thread as a new message. No pasting by me. Delete both threads and the laptop worktree after grading (`cloud.mjs delete`).
-
 ## Should not trigger
 
 ### plain question

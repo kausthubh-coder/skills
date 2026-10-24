@@ -34,8 +34,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `sources.json`, `CATALOG.md`, `licenses/` | Where copied skills came from, every upstream skill I looked at, upstream licenses |
 | `scripts/link.mjs`, `scripts/upstream.mjs` | Link skills into the agents; check upstream for changes |
 | `scripts/park.mjs` | Copy the official Convex, Vercel and Cloudflare skills (`sources.json` → `parked`) into `~/.skills-parked/` |
-| `cloud/` | What every cloud session runs first: global skills and rules for a bare cloud VM (`CLOUD.md`) or my InstaBox machines (`box.sh`, `BOX.md`). Fetched from GitHub, so it only changes once pushed |
-| `skills/cloud/` | `/cloud`: moves a thread to an InstaBox machine, or steers and checks threads there (`scripts/cloud.mjs`, which pipes `box.mjs` to the machine's T3 server) |
+| `cloud/` | What hosted cloud sessions (megha, Claude Code on the web, Codex Cloud) run first (`session.sh`, `CLOUD.md`), plus the Devin test prompt. The retired InstaBox setup is in `_retired/cloud/`. Fetched from GitHub, so it only changes once pushed |
 | `reports/` | Project audits and eval results (gitignored, local only) |
 | `_sources/` | Upstream clones (gitignored) |
 | `_retired/` | Skills I stopped using, kept for reference, not linked |
