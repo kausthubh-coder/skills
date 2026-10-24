@@ -14,7 +14,7 @@ Don't split work you can finish yourself in this session. Fan out only across re
 
 - **A piece of your own task whose answer comes back to you** (research, reading across many files, one slice of a check): a subagent. Mechanical work with no taste in it (moves, renames, bulk edits, conversions) goes to a GPT subagent through T3 `delegate_task`, which saves my Claude usage. Judgment (design, grading, anything I'll read) stays on Claude.
 - **Independent work I'll follow on its own** (its own feature or PR): a new T3 thread in its own worktree, only when I ask for separate threads.
-- **Coding threads run on my Mac mini** (always on; T3 environment "dabot's Mac mini", repos in `~/dev`). My laptop runs a Windows check only for a large change to an app, or when I ask. Hosted cloud threads (megha) only when I say so: agents twice sent work there that I never asked for.
+- **Coding threads run on my Mac mini** (always on; T3 environment "dabot's Mac mini", repos in `~/dev`). My laptop runs a Windows check only for a large change to an app, or when I ask. A thread on either machine starts, steers and reads threads on the other with `threads`. Hosted cloud threads (megha) only when I say so: agents twice sent work there that I never asked for.
 - **What only a phone or a Mac app can show** (the Android emulator, the iOS Simulator, macOS desktop apps): run it on the Mac mini first. Devin only for what the Mac can't run. A build passing in CI isn't that test; running the app is.
 
 ## The brief

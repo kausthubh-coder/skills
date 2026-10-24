@@ -229,7 +229,7 @@ try {
     const t = await locate(pos[0]);
     let message = readMessage(pos[1]);
     const me = t.machine === HERE ? null : callerThread();
-    if (me) message = `From ${from(me)}. Reply with: node ${scriptOn(t.machine)} send ${HERE}:${me.id} <file>\n\n${message}`;
+    if (me) message = `From ${from(me)}. To reply, run: node ${scriptOn(t.machine)} send ${HERE}:${me.id} <file>\n\n${message}`;
     console.log((await on(t.machine, "send", { id: t.id, message })).text);
   } else if (cmd === "start") {
     const machine = pos[0];
@@ -238,7 +238,7 @@ try {
     let message = readMessage(pos[1]);
     const me = opt.detach ? null : callerThread();
     if (me) {
-      message += `\n\n---\nThis task comes from ${from(me)}, which can't see this thread. When you finish, send that thread your final report (verdict, evidence, what you couldn't check):\n\`node ${scriptOn(machine)} send ${HERE}:${me.id} <report file>\`\nFor a question only that thread or I can answer, send it the same way, then carry on with a sensible default.`;
+      message += `\n\n---\nThis task comes from ${from(me)}, which can't see this thread. When you finish, write your final report (verdict, evidence, what you couldn't check) to a file and run this command yourself to send it. Your reply here never reaches that thread; only the command does.\n\`node ${scriptOn(machine)} send ${HERE}:${me.id} <report file>\`\nFor a question only that thread or I can answer, send it the same way, then carry on with a sensible default.`;
     } else if (!opt.detach) console.error("threads: couldn't tell which thread is calling, so the new thread has no one to report to. Pass --from <thread id>, or --detach if it doesn't need to.");
     const out = await on(machine, "start", {
       repo: opt.repo ?? repoName(process.cwd()), branch: opt.branch, base: opt.base, title: opt.title,

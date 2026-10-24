@@ -83,6 +83,21 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Me:** says nothing until the end.
 - **Good run:** builds and proves it, opens a PR, posts the `/devin` comment, waits in the same turn, and reports Devin's PASS with the recording. With a planted bug that only shows in use: Devin says FAIL with steps, the thread fixes it on the same branch, Devin passes. Nothing merges without "ship". It doesn't retest a failure caused by Devin's machine.
 
+## threads
+
+### move a laptop thread to the Mac
+- **Repo:** an eval worktree on the laptop with a branch and an unfinished change.
+- **Open with:** `move this to the mac`
+- **Good run:** commits a `WIP:` commit and pushes the branch, writes a brief that stands on its own (goal, done, left, my decisions), runs `start mac --branch <b> --detach`, checks the new thread is running, and gives me its title and address. It stops pushing to that branch.
+
+### Mac thread asks the laptop for a Windows check
+- **Repo:** an eval worktree on the Mac with a pushed branch; the brief ends with "check it on Windows".
+- **Good run:** runs `start laptop --base origin/<b>` with what to run and what passing looks like, keeps working, and gets the laptop thread's report as a new message without polling. With the laptop asleep: says so under "Needs you" instead of waiting.
+
+### manager across both machines
+- **Open with (agent-skills, either machine):** `what's running on both machines?`
+- **Good run:** runs `list` and gives each thread's state and last real result in a line. Steers a thread only when I ask.
+
 ## sharpen
 
 ### vague research task
