@@ -19,8 +19,11 @@ import { appendFileSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { createServer } from "node:http";
 import { homedir } from "node:os";
 import { join, resolve } from "node:path";
-import { DatabaseSync } from "node:sqlite";
 import { fileURLToPath } from "node:url";
+
+// Node 22 on the Mac warns that SQLite is experimental on every run; agents read that as an error.
+process.removeAllListeners("warning");
+const { DatabaseSync } = await import("node:sqlite");
 
 const PORT = 4799;
 // Tailscale addresses are fixed per device. The bridge listens only there, so the Mac's home network can't reach it.
@@ -199,8 +202,7 @@ function install() {
   // Same pattern as scripts/sync-task.ps1: conhost --headless runs node without a window. The task fires every 5
   // minutes and IgnoreNew skips it while the bridge runs, so it comes back after a crash or a reboot.
   const log = join(homedir(), ".t3", "threads-bridge.log");
-  const ps = `$q = '"'
-$action = New-ScheduledTaskAction -Execute "conhost.exe" -Argument "--headless $q${process.execPath}$q $q${SELF}$q serve --log $q${log}$q"
+  const ps = `$action = New-ScheduledTaskAction -Execute "conhost.exe" -Argument '--headless "${process.execPath}" "${SELF}" serve --log "${log}"'
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date) -RepetitionInterval (New-TimeSpan -Minutes 5)
 $settings = New-ScheduledTaskSettingsSet -AllowStartIfOnBatteries -DontStopIfGoingOnBatteries -StartWhenAvailable -MultipleInstances IgnoreNew -ExecutionTimeLimit ([TimeSpan]::Zero)
 Register-ScheduledTask -TaskName "Threads bridge" -Action $action -Trigger $trigger -Settings $settings -Force | Out-Null
