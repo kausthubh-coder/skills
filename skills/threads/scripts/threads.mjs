@@ -129,10 +129,11 @@ async function on(machine, op, body) {
 async function locate(address) {
   const m = /^(laptop|mac):(.+)$/.exec(address);
   if (m) return { machine: m[1], id: m[2] };
+  let unreachable = "";
   for (const machine of [HERE, OTHER]) {
-    try { if ((await on(machine, "has", { id: address })).found) return { machine, id: address }; } catch {}
+    try { if ((await on(machine, "has", { id: address })).found) return { machine, id: address }; } catch (e) { unreachable = ` (${e.message})`; }
   }
-  throw new Error(`no thread ${address} on the ${MACHINES[HERE].name} or the reachable ${MACHINES[OTHER].name}`);
+  throw new Error(`no thread ${address} on either machine${unreachable}`);
 }
 
 const readMessage = (src) => {
