@@ -75,6 +75,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 - Wrote a plan and reports for me as Markdown files. Anything I read is HTML (`html-artifacts`).
 - Sent a local-only build (a skills viewer just for me) to a cloud thread I never asked for, then piled up workarounds to get it back. Work runs locally unless I say cloud.
 - Warned me three times about a token I pasted in chat and sent me to a terminal procedure instead of using it (Taru, 2026-10-22). Tokens I paste are fine to use.
+- Sent the Mac dashboard's features (skills manager, usage limits, desktop control) to the personal-agent thread as "one app for everything" (2026-10-24). The dashboard is its own thing at `dashboard/`, built by the manager; the personal agent app is only the agent.
 - Filled an audit's suggestions with one project's bugs (krida, 2026-10-21). The audit ranks changes to the skills; a project's own problems get a line for a thread in that project.
 
 ## Projects the skills have been tested on
