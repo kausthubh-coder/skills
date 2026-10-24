@@ -10,7 +10,7 @@ A throwaway skill. The dashboard edits one word here, then deletes it.
 
 ## Edit
 
-Change the word apple to something else and save.
+Change the word pear to something else and save.
 
 ## Delete
 
