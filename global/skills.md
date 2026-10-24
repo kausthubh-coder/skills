@@ -9,7 +9,7 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - First task in a new worktree, or install, env, port or backend look wrong: the repo's `worktree-<app>` skill. I say ship, deploy or release: the repo's `ship-<app>` skill. If the repo has neither, use `create-project-flows`.
 - Anything I'll read beyond a chat reply (a plan, report, audit, comparison, write-up or explainer): an HTML page with `html-artifacts`. Never a Markdown file for me. Markdown is only for files agents read (AGENTS.md, skills); write those for an agent opening the folder cold, not for a person.
 - I correct you for the same thing twice: `correct`.
-- You're about to start a subagent, a T3 thread, a cloud thread or a Devin test: `delegating`.
+- You're about to start a subagent, a T3 thread or a Devin test: `delegating`.
 - Making a video, animation, motion graphic or product demo: the HyperFrames skills are parked so they don't crowd the menu. Read `~/.skills-parked/hyperframes/SKILL.md` first. When it says to load `/hyperframes-x` or another skill, read `~/.skills-parked/<that name>/SKILL.md`. When it says to run `npx hyperframes skills update <name>`, don't: that reinstalls them globally. Read `~/.skills-parked/<name>/SKILL.md` instead.
 - Adding or changing Clerk auth: the Clerk skills are parked in `~/.skills-parked/` (`clerk-setup`, `clerk-cli`, `clerk-orgs` and others). Read the one that fits.
 - Any Convex, Vercel or Cloudflare work (code, CLI, config, deploys, a question about them): read their official skill first. They're parked in `~/.skills-parked/`. Convex: `convex`, which routes to the `convex-*` skills. Cloudflare: `cloudflare`. Vercel: `deploy-to-vercel` for deploys, `vercel-cli`, `env-vars`, `ai-sdk`, `vercel-functions`; list the folder for the rest.
@@ -27,8 +27,8 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 
 # Where my code lives
 
-- Projects: `C:\Users\kaust\OneDrive\Documents\dev\<name>`. Experiments: `dev\sandbox\<name>`, one folder each (rules in `dev\sandbox\AGENTS.md`).
+- Two machines. My Windows laptop (`kaust-pc`): projects in `C:\Users\kaust\OneDrive\Documents\dev\<name>`, experiments in `dev\sandbox\<name>`, one folder each (rules in `dev\sandbox\AGENTS.md`). My always-on Mac mini (`mac-mini`, user `dabot`): projects in `~/dev/<name>`, its own rules in `~/box/AGENTS.md`. Coding threads run on the Mac; the laptop does Windows checks for large app changes. GitHub keeps the two in sync.
 - Search a repo with the Grep tool, `rg` or `git grep`, never `grep -r`, `find` or `du` over it. My repos hold up to 200k untracked files (node_modules, prototypes): `grep -r` took 2 minutes in critly, `git grep` 0.14s. A hook blocks `grep -r`.
 - Run anything that takes over a minute (builds, test suites, dev servers) with `run_in_background` and wait for it to finish. If a server or job hasn't answered within a minute, check that its process is alive and read its log; never poll it for minutes. Agents lost 11 hours in two weeks to commands that sat until the 10-minute limit.
 - Stop a server by the PID you started, never by port. On Oct 12 an agent freed critly's port with `Stop-Process`, killing a dev server five other agents used; they polled it for two hours.
-- A T3 "No project" thread runs in a throwaway folder in `C:\Users\kaust\.t3\scratch\`. I research and think through ideas there or in the sandbox, so never build a project in the scratch folder or the sandbox root. When an idea turns into a project, suggest `/init-project`.
+- A T3 "No project" thread runs in a throwaway folder in `~/.t3/scratch/`. I research and think through ideas there or in the sandbox, so never build a project in the scratch folder or the sandbox root. When an idea turns into a project, suggest `/init-project`.
