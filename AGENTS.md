@@ -32,7 +32,7 @@ This repo is my personal skill library: global skills linked into Claude Code an
 | `docs/evals.md` | How to test a skill with real threads, and the rubric |
 | `evals/scenarios.md` | The test scenarios |
 | `sources.json`, `CATALOG.md`, `licenses/` | Where copied skills came from, every upstream skill I looked at, upstream licenses |
-| `scripts/link.mjs`, `scripts/upstream.mjs` | Link skills into the agents; check upstream for changes |
+| `scripts/link.mjs`, `scripts/upstream.mjs`, `scripts/sync.mjs` | Link skills into the agents; check upstream for changes; pull and relink every 5 minutes on each machine |
 | `scripts/park.mjs` | Copy the official Convex, Vercel and Cloudflare skills (`sources.json` → `parked`) into `~/.skills-parked/` |
 | `cloud/` | What hosted cloud sessions (megha, Claude Code on the web, Codex Cloud) run first (`session.sh`, `CLOUD.md`), plus the Devin test prompt. The retired InstaBox setup is in `_retired/cloud/`. Fetched from GitHub, so it only changes once pushed |
 | `reports/` | Project audits and eval results (gitignored, local only) |
@@ -71,6 +71,7 @@ node scripts/link.mjs --dry-run   # what would be linked
 node scripts/link.mjs             # link new skills, prune removed ones
 node scripts/upstream.mjs         # upstream changes to adopted skills
 node scripts/park.mjs             # update the parked vendor skills
+node scripts/sync.mjs             # pull this repo and Critly, relink if they moved (runs every 5 min)
 ```
 
 ## Working with me
@@ -87,4 +88,4 @@ node scripts/park.mjs             # update the parked vendor skills
 - Don't create GitHub repos, Vercel or Convex projects, or publish anything during evals.
 - Never touch my Studi nightly profile (`C:\Users\kaust\.studi\nightly\profile`).
 - Clean up eval folders, worktrees and branches you made. Stop only processes you started.
-- Git: commit each change to `main`. Push only when I ask (the repo is public). Keep private notes in `reports/`.
+- Git: commit each change to `main` and push it, so the laptop and the Mac mini pick it up (`scripts/sync.mjs` pulls every 5 minutes on both). The repo is public: private notes go in `reports/`, which is gitignored.
