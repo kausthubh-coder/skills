@@ -25,6 +25,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
 | `global/hooks/` | PreToolUse hooks for every agent. `search-guard.mjs` blocks `grep -r`, which read 200k untracked files in critly (`reports/2026-10-21-tool-timing.html`) |
 | `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder, and installs `global/hooks/` into `~/.claude/settings.json` and `~/.codex/hooks.json` |
+| `scripts/sync.mjs` | Pulls this repo and Critly and relinks if they moved. Runs every 5 minutes on the laptop (Task Scheduler "Skills sync", installed by `scripts/sync-task.ps1`) and on the Mac mini (LaunchAgent `box.skills-sync`), so a pushed edit is live on both |
 | `scripts/upstream.mjs` | Checks upstream repos for changes to adopted skills |
 | `scripts/park.mjs` | Copies the vendor skills under `parked` in `sources.json` (Convex, Vercel, Cloudflare) into `~/.skills-parked/`, where no agent lists them; `global/skills.md` routes to them |
 | `cloud/` | What hosted cloud sessions (megha, Claude Code on the web, Codex Cloud) run first: `session.sh` clones this library and Critly, links their skills and writes my global rules; `CLOUD.md` is the cloud note, and `devin-test.md` is the Devin test prompt. Each repo calls it from `scripts/cloud.mjs` (`create-project-flows` §6). The retired InstaBox setup and thread tooling are in `_retired/cloud/` |
@@ -55,6 +56,7 @@ Where each agent reads skills:
 node scripts/link.mjs --dry-run   # see what would be linked
 node scripts/link.mjs             # link new skills, prune deleted ones, sync global/skills.md
 node scripts/link.mjs --unlink    # remove every link to this library
+node scripts/sync.mjs             # pull, then relink if anything moved
 node scripts/upstream.mjs         # check upstream for changes
 node scripts/park.mjs             # update the parked vendor skills
 ```
