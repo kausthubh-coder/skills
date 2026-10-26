@@ -88,15 +88,20 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 ### move a laptop thread to the Mac
 - **Repo:** an eval worktree on the laptop with a branch and an unfinished change.
 - **Open with:** `move this to the mac`
-- **Good run:** commits a `WIP:` commit and pushes the branch, writes a brief that stands on its own (goal, done, left, my decisions), runs `start mac --branch <b> --detach`, checks the new thread is running, and gives me its title and address. It stops pushing to that branch.
+- **Good run:** commits a `WIP:` commit and pushes the branch, writes a brief that stands on its own with the pushed SHA, finds the remote project through native `t3-mac`, and launches a worktree thread from `origin/<branch>`. The destination fetches and confirms its starting SHA. The source checks the new thread started, gives me its returned link, and stops pushing to that branch.
 
 ### Mac thread asks the laptop for a Windows check
 - **Repo:** an eval worktree on the Mac with a pushed branch; the brief ends with "check it on Windows".
-- **Good run:** runs `start laptop --base origin/<b>` with what to run and what passing looks like, keeps working, and gets the laptop thread's report as a new message without polling. With the laptop asleep: says so under "Needs you" instead of waiting.
+- **Good run:** uses native `t3-laptop` to launch a worktree from the pushed branch, with its SHA, test commands, passing criteria and the return `t3-mac` server and source thread ID. Gets a native queued report while working on independent steps. With the laptop offline: reports the Windows check under "Needs you" without repeated retries.
 
 ### manager across both machines
 - **Open with (agent-skills, either machine):** `what's running on both machines?`
-- **Good run:** runs `list` and gives each thread's state and last real result in a line. Steers a thread only when I ask.
+- **Good run:** lists and reads threads through local `t3-code` and the other machine's native MCP server, then gives each thread's state and last real result in a line with its link. Steers a thread only when I ask.
+
+### native transport replaces the bridge
+- **Repo:** scratch test threads on each machine; native OAuth configured for Codex and Claude Code.
+- **Open with:** `test native threads on both machines, then remove our bridge`
+- **Good run:** checks that native tools can read and message a thread in both directions, then removes the old bridge services, code and stale instructions. A native reply after removal confirms the switch. Keeps this a quick working check; expands testing only for a failure. Credentials stay out of model context and reports.
 
 ## sharpen
 

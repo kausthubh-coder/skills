@@ -5,43 +5,45 @@ description: Start, steer and read T3 threads on my laptop or Mac mini from eith
 
 # Threads across my laptop and Mac mini
 
-T3's thread tools only reach threads on their own machine. `threads.mjs` reaches both: each machine runs a small bridge on its Tailscale address, and the script calls the other machine's bridge, which runs T3's own `t3 thread` CLI there. Threads on this machine work too, so one command covers both.
+Use T3's native remote MCP connections. The local `t3-code` tools target the machine running the agent, even when the user views that thread from another device.
 
-The script, called `T` below: `node C:\Users\kaust\.claude\skills\threads\scripts\threads.mjs` on the laptop, `node ~/.claude/skills/threads/scripts/threads.mjs` on the Mac.
+| Agent runs on | Other machine's MCP server | Native URL |
+|---|---|---|
+| Mac mini | `t3-laptop` | `https://kaust-pc.taile36082.ts.net/mcp` |
+| Windows laptop | `t3-mac` | `https://t3.taile36082.ts.net/mcp` |
 
-```
-T list [laptop|mac] [--all]     # threads on both machines; the last column is each thread's address
-T show mac:<id> [--n 6]         # its state and latest messages
-T send mac:<id> <file>          # queued as its next turn; never interrupts
-T start mac <brief file> --branch <b>   # continue branch <b> in a new worktree there
-T start laptop <brief file> --base origin/<b>   # a new branch from <b>
-```
+Both Codex and Claude Code use their native MCP configuration and OAuth sign-in. New agent sessions load these connections. Confirm the target with its remote `t3_environment_read` before acting.
 
-A new thread only gets its brief, and a remote machine only sees what's on GitHub. Before `start`, push what it needs; after it, check `T show` reports a run within a minute.
+Use the selected server's `t3_project_list`, `t3_thread_list`, `t3_thread_read`, `t3_thread_send`, and `t3_thread_launch`. A project or thread ID belongs to its environment; look up the destination project rather than reusing the source project ID. Read a thread before steering it. Use `mode: "queue"` for a new turn, and `mode: "steer"` only for an intended mid-turn change.
 
-`start` tells the new thread who started it and how to send its final report back. Every `send` from a thread says which thread it came from and how to reply. Reports arrive in your thread as a new message, so don't poll; end your turn or carry on. `--detach` leaves the reply line off, for work that's now the other thread's. Run `start` and `send` from your thread's own checkout so the script can tell which thread you are; if it says it can't, pass `--from <your thread id>`.
+For a task that reports back, include the source machine, thread ID and link in its brief. Tell the target to send its final report through the return MCP server's `t3_thread_send` with `mode: "queue"`. Sending and replying need explicit instructions; T3 does not copy this conversation into a new thread. For an independent handoff, leave out the return task.
+
+Use native bounded waits when needed and follow the tool's `next`. A completion wake replaces polling. Keep working on independent steps while another machine runs.
 
 ## Move this thread to the other machine
 
 1. Commit what the new thread needs on this branch (plans, notes, unfinished work as a `WIP:` commit) and push. On `main`, make a branch first. This push isn't a ship.
-2. Write the brief to a temp file. It's all the new thread gets: the goal in my words and what I first asked; what's done (commits, PRs) and what's left; every decision I made, plus the defaults you picked and that they're defaults; the files to read first. Don't point at this thread's messages: the other machine can't read them.
-3. `T start mac <brief> --branch <branch> --detach --title "<project>: <task>"`.
-4. Tell me the new thread's title and address. From now on don't push to that branch from here; two threads pushing one branch collide.
+2. Write a self-contained brief: the goal in my words and what I first asked; what's done, the pushed SHA and PRs; what's left; my decisions and your stated defaults; the files to read first.
+3. Find the Mac project through `t3-mac`. Launch there with `workspaceStrategy: {type: "worktree", baseRef: "origin/<branch>", branch: "<branch>"}`. The target must fetch origin and confirm its starting commit matches the pushed SHA before editing.
+4. Read the destination thread to confirm it started. Give me its returned link. From then on, the Mac thread owns pushes to that branch.
 
 ## A Mac thread needs Windows
 
-The laptop does Windows checks for large app changes, or when I ask. Push the branch, then `T start laptop <brief> --base origin/<branch> --title "<project>: Windows check"`. The brief says what to run and what passing looks like, and that the laptop thread must not push or merge. Keep working on what doesn't depend on the result. If the laptop can't be reached, it's asleep: put the check under "Needs you" in your report instead of waiting.
+The laptop does Windows checks for large app changes, or when I ask. Push the branch, find the laptop project through `t3-laptop`, and launch a test thread with `workspaceStrategy: {type: "worktree", baseRef: "origin/<branch>"}`. Give it the pushed SHA, what to run, what passing looks like, and the return MCP server and source thread ID. It must fetch origin, check the starting SHA, and leave pushes and merges to the source thread. Keep working on independent steps.
 
 ## Manage threads on both machines
 
-`T list` shows what's running where. Read a thread with `T show` before you steer it, and send only what changes its course; don't message a working thread to ask how it's going. When I ask how things are going, give each thread's state and its last real result in a line, not its whole history.
+List projects and relevant threads through each machine's native MCP server. Read the latest messages before reporting state. Give each thread's state and last real result in one line, using its returned link. Message a working thread only to change its course.
 
 ## A message from the other machine
 
-It starts with `From my <machine> thread "<title>" (<address>)` and the reply command. Do what it asks if it's in scope, and answer with that command. A final report needs no answer.
+Read the named thread through its machine's native MCP server. Do the requested work if it is in scope, and send the answer through that server's `t3_thread_send`. A final report needs no answer.
 
 ## When it fails
 
-- `can't reach the Mac mini` or `the laptop`: that machine is asleep, off Tailscale, or its bridge is down. Nothing was sent.
-- Bridge down: `T install` on that machine starts it and keeps it running (LaunchAgent `box.threads`, log `~/box/logs/threads.log`; Task Scheduler "Threads bridge", log `~/.t3/threads-bridge.log`). The bridge restarts itself when skills sync pulls a new version of the script.
-- `no T3 project for <repo>`: that machine has no checkout of the repo registered in T3. `--repo` takes the GitHub name, which can differ from the folder.
+- Missing remote tools: start a fresh agent session after checking its native MCP configuration. Codex uses `codex mcp list`; Claude uses `claude mcp list`.
+- Sign-in required: use `codex mcp login <server>` or `claude mcp login <server>`. Add `--no-browser` on a headless machine. Approve through T3's native pairing flow. Pairing codes are one-time approval inputs, not MCP bearer tokens; keep credentials out of messages and reports.
+- Unreachable laptop: check Tailscale and the native HTTPS route once. If it is asleep or offline, report the Windows check under "Needs you" and continue independent work. A timeout alone does not prove it is asleep.
+- Missing project: check the destination's registered projects and checkout paths. Repository names can differ from folder names.
+
+Native setup is documented in [T3's outside-agent guide](https://github.com/pingdotgg/t3code/blob/main/docs/user/outside-agents.md). The old custom bridge is retired; use native connections for both directions.
