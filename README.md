@@ -6,6 +6,8 @@ Lives at `dev/agent-skills` locally and [kausthubh-coder/skills](https://github.
 
 A thread opened in this repo acts as the library's manager: `AGENTS.md` says how it tests skills in real threads and improves them. The thinking behind the skills is in `docs/philosophy.md`.
 
+[Open the skill map](docs/skills-map.html) for diagrams of the library, project workflows and the feedback loop, with a searchable skill index.
+
 ## Layout
 
 | Path | What |

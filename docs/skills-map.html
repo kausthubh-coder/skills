@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>How our skills work together</title>
+<style>
+:root{color-scheme:light dark;--bg:#fafbfc;--surface:#fff;--ink:#202a35;--muted:#526071;--line:#c5cdd7;--accent:#1559b7;--wash:#edf3fc}
+@media(prefers-color-scheme:dark){:root{--bg:#182029;--surface:#202b37;--ink:#edf2f8;--muted:#b0becf;--line:#58697c;--accent:#92bcff;--wash:#263a53}}
+*{box-sizing:border-box}html{background:var(--bg);color:var(--ink);scroll-padding-top:20px}body{margin:0;font:17px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}main{max-width:1120px;margin:auto;padding:48px 32px 64px}h1,h2,h3{line-height:1.2;text-wrap:balance;font-weight:650}h1{font-size:2.5rem;max-width:20ch;margin:0 0 16px}h2{font-size:1.6rem;margin:0 0 20px}h3{font-size:1.25rem;margin:0 0 12px}p{max-width:60ch;margin:0 0 16px}a{color:var(--accent);text-underline-offset:3px}a:hover{text-decoration-thickness:2px}a:focus-visible,input:focus-visible,summary:focus-visible{outline:3px solid var(--accent);outline-offset:4px}::selection{background:var(--accent);color:var(--bg)}code{font: .94em ui-monospace,"Cascadia Code",monospace;overflow-wrap:anywhere}nav{display:flex;flex-wrap:wrap;gap:4px 20px;margin:24px 0 0}nav a{display:inline-flex;align-items:center;min-height:44px}section{margin-top:56px;padding-top:32px;border-top:1px solid var(--line)}figure{margin:24px 0}figcaption,.note,.edge,.meta{font-size:.875rem;color:var(--muted)}figcaption{max-width:58ch;margin-top:16px}.meta{margin-top:24px}.intro{font-size:1.25rem;max-width:50ch}.flow{display:flex;align-items:stretch;gap:0;list-style:none;margin:0;padding:0}.flow li{flex:1;min-width:0;position:relative;padding:16px;border:1px solid var(--line);background:var(--surface)}.flow li+li{margin-left:24px}.flow li+li:before{content:"";position:absolute;left:-25px;top:28px;width:24px;border-top:1px solid var(--muted)}.flow li+li:after{content:"";position:absolute;left:-7px;top:24px;border-left:.375rem solid var(--muted);border-top:4px solid transparent;border-bottom:4px solid transparent}.flow strong{display:block;margin-bottom:8px;font-weight:650}.flow p{font-size:.875rem;margin:0;color:var(--muted)}.flow .focus{border-color:var(--accent);background:var(--wash)}.flow a{overflow-wrap:anywhere}.map{display:grid;grid-template-columns:1fr 1fr;gap:32px 40px}.map article{padding-top:16px;border-top:1px solid var(--line)}.map ul{list-style:none;margin:0;padding:0}.map li{padding:6px 0;max-width:60ch}.map li a{display:inline-block;min-height:44px}.route{display:grid;grid-template-columns:1fr 1fr;gap:0 32px}.route a{display:flex;justify-content:space-between;gap:20px;padding:15px 0;border-bottom:1px solid var(--line);text-decoration:none}.route a span:last-child{color:var(--muted);text-align:right}.route a span:first-child{font-weight:650}.workflow{margin-top:40px}.workflow:first-of-type{margin-top:24px}.gate{font-size:.875rem;color:var(--muted);margin-top:12px}.gate strong{color:var(--ink);font-weight:650}.diagram-scroll{overflow-x:auto}.wiring{width:100%;min-width:680px;height:auto;display:block}.wiring text{font-family:inherit;fill:var(--ink);font-size:16px}.wiring .small{font-size:14px;fill:var(--muted)}.wiring rect{fill:var(--surface);stroke:var(--line)}.wiring .accent{fill:var(--wash);stroke:var(--accent)}.wiring path.connector{stroke:var(--muted);fill:none;stroke-width:1.5}.wiring .arrow{fill:var(--muted)}details{border-top:1px solid var(--line);padding:8px 0}summary{cursor:pointer;padding:12px 0;font-weight:650;min-height:48px}details p{margin-top:12px}label{display:block;font-weight:650;margin-bottom:8px}input{width:100%;max-width:560px;min-height:48px;font:inherit;border:1px solid var(--line);border-radius:4px;padding:10px 14px;background:var(--surface);color:var(--ink)}.directory{margin-top:24px}.directory h3{margin:32px 0 8px}.skill{display:grid;grid-template-columns:minmax(200px,1fr) minmax(0,1.7fr) 110px;gap:20px;padding:16px 0;border-top:1px solid var(--line);align-items:start}.skill>a{min-height:44px;overflow-wrap:anywhere}.skill p{margin:0;font-size:1.0625rem}.mode{font-size:.875rem;color:var(--muted)}[hidden]{display:none!important}.source-list{padding-left:20px}.source-list li{padding:6px 0;max-width:65ch}.empty{margin-top:20px}.legend{font-size:.875rem;color:var(--muted)}footer{margin-top:48px;border-top:1px solid var(--line);padding-top:20px;font-size:.875rem;color:var(--muted)}
+@media(max-width:720px){main{padding:28px 20px 48px}h1{font-size:2rem}.intro{font-size:1.0625rem}.map,.route{grid-template-columns:1fr}.map{gap:24px}.flow{flex-direction:column}.flow li+li{margin-left:0;margin-top:24px}.flow li+li:before{left:28px;top:-25px;width:0;height:24px;border-top:0;border-left:1px solid var(--muted)}.flow li+li:after{left:24px;top:-7px;border-top:6px solid var(--muted);border-left:.25rem solid transparent;border-right:4px solid transparent;border-bottom:0}.skill{grid-template-columns:minmax(0,1fr);gap:4px}.skill>a{padding:4px 0}.mode{margin-top:4px}.route a{gap:12px}.route a span:last-child{max-width:18ch}section{margin-top:40px;padding-top:24px}}
+@media print{:root{color-scheme:light;--bg:#fff;--surface:#fff;--ink:#202a35;--muted:#526071;--line:#c5cdd7;--accent:#1559b7;--wash:#edf3fc}main{padding:0;max-width:none}nav,.search{display:none}section{margin-top:24px;padding-top:20px}figure,.skill{break-inside:avoid}h2,h3{break-after:avoid}.diagram-scroll{overflow:visible}.wiring{min-width:0}.skill[hidden]{display:grid!important}.directory-group[hidden]{display:block!important}}
+input::placeholder{color:var(--muted);opacity:1}.flow strong,.route a span:first-child{font-weight:400}.map li a{min-width:44px}
+/* Flow triangles are connector arrowheads. */
+</style>
+</head>
+<body>
+<main data-type="teach">
+<header>
+<h1>How our skills work together</h1>
+<p class="intro">Shared skills guide the task, and project skills run and check the app. Real results feed the next improvement.</p>
+<figure aria-label="The main development flow">
+<ol class="flow">
+<li><strong>Choose the job</strong><p>Start, improve, debug, design or explain.</p></li>
+<li><strong>Load the right skill</strong><p>The request, description and global rules select it.</p></li>
+<li class="focus"><strong>Do and prove the work</strong><p>Use the project's setup and verification skills.</p></li>
+<li><strong>Ship when asked</strong><p>Release, check production and clean up.</p></li>
+</ol>
+<figcaption>This is the usual development path. Each skill loads when its trigger applies; the library is not one automatic pipeline.</figcaption>
+</figure>
+<nav aria-label="Page sections"><a href="#choose">Pick a starting point</a><a href="#map">Skill map</a><a href="#wiring">How skills reach agents</a><a href="#workflows">Workflows</a><a href="#library">Library feedback</a><a href="#index">Skill index</a></nav>
+<p class="meta">Source snapshot <time datetime="2026-10-26">26 Oct 2026</time>. This maps the personal library, not every plugin installed in an agent.</p>
+</header>
+
+<section id="choose">
+<h2>Start with the job</h2>
+<div class="route">
+<a href="#new"><span>A new idea</span><span>/init-project</span></a>
+<a href="#existing"><span>An existing repo</span><span>/optimize</span></a>
+<a href="#daily"><span>A feature to build</span><span>worktree, verify, ship</span></a>
+<a href="#bug"><span>Something is broken</span><span>diagnosing-bugs</span></a>
+<a href="#design"><span>UI to improve</span><span>critly-audit</span></a>
+<a href="#formal"><span>A risky invariant</span><span>formal verification</span></a>
+<a href="#machines"><span>Another machine</span><span>threads</span></a>
+<a href="#library"><span>A skill to improve</span><span>my-skills, audit-skills</span></a>
+</div>
+</section>
+
+<section id="map">
+<h2>Shared skills have different jobs</h2>
+<div class="map">
+<article><h3>Frame and start</h3><ul>
+<li><a href="#skill-init-project">init-project</a> starts a fresh project.</li>
+<li><a href="#skill-optimize">optimize</a> audits an existing one.</li>
+<li><a href="#skill-grilling">grilling</a> tests a decision through questions.</li>
+<li><a href="#skill-sharpen">sharpen</a> rewrites the task before work starts.</li>
+</ul></article>
+<article><h3>Build and repair</h3><ul>
+<li><a href="#skill-diagnosing-bugs">diagnosing-bugs</a> builds a failing reproduction.</li>
+<li><a href="#skill-correct">correct</a> prevents a repeated mistake.</li>
+<li><a href="#skill-codebase-design">codebase-design</a> guides module boundaries.</li>
+<li><a href="#skill-principle-minimize-reader-load">principle-minimize-reader-load</a> makes code easier to trace.</li>
+<li><a href="#skill-no-comments">no-comments</a> reviews comments on a diff.</li>
+</ul></article>
+<article><h3>Run and prove</h3><ul>
+<li><a href="#skill-create-project-flows">create-project-flows</a> writes setup and ship skills.</li>
+<li><a href="#skill-create-verification-skill">create-verification-skill</a> writes real-app checks.</li>
+<li><a href="#skill-maintain-verification-skill">maintain-verification-skill</a> keeps those checks current.</li>
+<li><a href="#skill-principle-prove-it-works">principle-prove-it-works</a>, <a href="#skill-principle-test-behavior-not-implementation">behavior testing</a> and <a href="#skill-benchmark-checklist">benchmark-checklist</a> set the proof standard.</li>
+<li><a href="#formal">Formal verification</a> checks named properties under explicit assumptions.</li>
+</ul></article>
+<article><h3>Design and explain</h3><ul>
+<li><a href="#skill-critly">critly</a> supplies design concepts; <a href="#skill-critly-audit">critly-audit</a> applies them.</li>
+<li><a href="#skill-html-artifacts">html-artifacts</a> creates pages people read.</li>
+<li><a href="#skill-unslop">unslop</a> edits prose.</li>
+<li><a href="#skill-writing-for-agents">writing-for-agents</a> shapes agent documentation.</li>
+<li><a href="#skill-bro">bro</a> explains the last answer; <a href="#skill-in-your-own-words">in-your-own-words</a> checks the understood goal.</li>
+</ul></article>
+<article><h3>Coordinate work</h3><ul>
+<li><a href="#skill-delegating">delegating</a> sets the brief and review standard.</li>
+<li><a href="#skill-threads">threads</a> reaches the laptop and Mac mini.</li>
+<li><a href="#skill-handoff">handoff</a> preserves context for another agent.</li>
+</ul></article>
+<article><h3>Maintain the library</h3><ul>
+<li><a href="#skill-my-skills">my-skills</a> changes the shared library.</li>
+<li><a href="#skill-audit-skills">audit-skills</a> reads real runs and feeds the dashboard.</li>
+<li><a href="../docs/evals.md">Eval scenarios</a> check behavior; trigger tests check skill selection.</li>
+</ul></article>
+</div>
+</section>
+
+<section id="wiring">
+<h2>One source reaches both agents</h2>
+<figure>
+<div class="diagram-scroll" tabindex="0" role="region" aria-label="Skill distribution diagram, scroll horizontally on small screens">
+<svg class="wiring" viewBox="0 0 1000 420" role="img" aria-labelledby="distribution-title distribution-desc">
+<title id="distribution-title">Global skills are linked, project skills stay with their repo, and vendor skills are read on demand</title>
+<desc id="distribution-desc">skills and the Critly checkout feed link.mjs. It links both agent skill folders and writes global routing rules. Project skills have their own shared folder. Parked vendor skills are read only when a routing rule applies.</desc>
+<defs><marker id="distribution-arrow" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="8" markerHeight="8" orient="auto"><path class="arrow" d="M0 0L8 4L0 8Z"/></marker></defs>
+<rect x="10" y="12" width="238" height="80" rx="4"/><text x="26" y="42">skills/*</text><text class="small" x="26" y="68">Library-owned source</text>
+<rect x="10" y="120" width="238" height="80" rx="4"/><text x="26" y="150">../critly/skills/*</text><text class="small" x="26" y="176">Critly-owned source</text>
+<rect class="accent" x="360" y="66" width="240" height="80" rx="4"/><text x="376" y="96">scripts/link.mjs</text><text class="small" x="376" y="122">Links skills; writes global rules</text>
+<rect x="720" y="12" width="270" height="80" rx="4"/><text x="736" y="42">~/.agents/skills</text><text class="small" x="736" y="68">Codex reads these links</text>
+<rect x="720" y="120" width="270" height="80" rx="4"/><text x="736" y="150">~/.claude/skills</text><text class="small" x="736" y="176">Claude Code reads these links</text>
+<path class="connector" d="M248 52H295V94H360" marker-end="url(#distribution-arrow)"/><text class="small" x="273" y="38">discovers</text>
+<path class="connector" d="M248 160H295V118H360" marker-end="url(#distribution-arrow)"/>
+<path class="connector" d="M600 94H652V52H720" marker-end="url(#distribution-arrow)"/><text class="small" x="627" y="38">links</text>
+<path class="connector" d="M600 118H652V160H720" marker-end="url(#distribution-arrow)"/>
+<rect x="10" y="246" width="306" height="76" rx="4"/><text x="26" y="276">repo/.agents/skills</text><text class="small" x="26" y="302">worktree, verify, ship and other skills</text>
+<rect x="440" y="246" width="306" height="76" rx="4"/><text x="456" y="276">repo/.claude/skills</text><text class="small" x="456" y="302">Links to the same project folder</text>
+<path class="connector" d="M440 284H316" marker-end="url(#distribution-arrow)"/><text class="small" x="340" y="268">points to</text>
+<rect x="10" y="354" width="306" height="56" rx="4"/><text x="26" y="389">global/skills.md routing rules</text>
+<rect x="570" y="354" width="420" height="56" rx="4"/><text x="586" y="389">~/.skills-parked/&lt;vendor&gt;/SKILL.md</text>
+<path class="connector" d="M316 382H570" marker-end="url(#distribution-arrow)"/><text class="small" x="347" y="369">tells agents when to read</text>
+</svg>
+</div>
+<figcaption>Shared source edits are visible through links on that machine. GitHub plus <code>sync.mjs</code> carries committed changes between machines.</figcaption>
+</figure>
+<details><summary>What gets linked, parked or retired</summary>
+<p><a href="../scripts/link.mjs">link.mjs</a> discovers library skills and local sources listed in <a href="../sources.json">sources.json</a>. It also installs global rules and search hooks.</p>
+<p>Project skills stay inside their repo. This repo's <code>audit-skills</code> is a project skill, separate from <code>skills/*</code>.</p>
+<p>Convex, Vercel and Cloudflare copies come from <a href="../scripts/park.mjs">park.mjs</a>. Clerk and HyperFrames also have parked routing in <a href="../global/skills.md">global/skills.md</a>.</p>
+<p><code>_retired/</code> is reference material. Old entries in <code>sources.json</code> do not make a retired skill active.</p>
+<p>This diagram describes the source and scripts. It does not certify installed links, scheduler health or remote-machine state.</p>
+</details>
+</section>
+
+<section id="workflows">
+<h2>Follow the workflow that fits</h2>
+<p>Arrows show order or a written handoff. Supporting skills load only when the work calls for them.</p>
+
+<article class="workflow" id="new"><h3>Start a new project</h3>
+<figure><ol class="flow">
+<li><strong><a href="../skills/init-project/SKILL.md">init-project</a></strong><p>Use prior answers. Interview, choose the tier and confirm the summary.</p></li>
+<li><strong>Scaffold the first feature</strong><p>Use the chosen stack and feature layout. Write agent instructions.</p></li>
+<li><strong><a href="../skills/create-project-flows/SKILL.md">create-project-flows</a></strong><p>Write worktree and ship skills with setup and doctor commands.</p></li>
+<li class="focus"><strong><a href="../skills/create-verification-skill/SKILL.md">create-verification-skill</a></strong><p>Drive a real feature, save evidence and prove cleanup works.</p></li>
+</ol><figcaption>The interview comes before creation. Personal and public projects get verification; experiments may skip it and the ship skill.</figcaption></figure>
+<p class="gate"><strong>Your decision:</strong> confirm the project summary. GitHub repository creation has its own approval in the skill.</p>
+</article>
+
+<article class="workflow" id="existing"><h3>Improve an existing repo</h3>
+<figure><ol class="flow">
+<li><strong><a href="../skills/optimize/SKILL.md">optimize</a></strong><p>Pick depth. Audit verification, instructions, repeated mistakes and structure.</p></li>
+<li><strong>Review the plan</strong><p>The HTML plan ranks changes and names how each will be checked.</p></li>
+<li><strong>Fix the foundations</strong><p>Create or maintain verification. Add project flows where missing.</p></li>
+<li class="focus"><strong>Change one item</strong><p>Check the behavior before and after. Update the plan as work finishes.</p></li>
+</ol><figcaption>The audit produces choices. Implementation starts with the items you select.</figcaption></figure>
+<p class="gate"><strong>Your decision:</strong> choose plan items. Shipping is a separate instruction.</p>
+</article>
+
+<article class="workflow" id="daily"><h3>Build, verify and ship</h3>
+<figure><ol class="flow">
+<li><strong>worktree-&lt;app&gt;</strong><p>Run setup and doctor. Isolate ports, backend and application data.</p></li>
+<li><strong>Make the change</strong><p>Use design, debugging, module and writing skills as needed.</p></li>
+<li class="focus"><strong>verify-&lt;app&gt;</strong><p>Drive the changed feature. Check the visible result and side effects.</p></li>
+<li><strong>ship-&lt;app&gt;</strong><p>Check readiness, release in order, smoke-test production and clean up.</p></li>
+</ol><figcaption>The project skills hold exact commands. The shared generators teach an agent how to write those project skills.</figcaption></figure>
+<p class="gate"><strong>Your decision:</strong> "ship", "deploy" or "release" authorizes the complete ship flow. Maintain verification after substantial feature changes.</p>
+</article>
+
+<article class="workflow" id="bug"><h3>Fix a bug from evidence</h3>
+<figure><ol class="flow">
+<li><strong><a href="../skills/diagnosing-bugs/SKILL.md">diagnosing-bugs</a></strong><p>Build a command that fails on the reported symptom, then minimize the reproduction.</p></li>
+<li><strong>Test the cause</strong><p>Rank hypotheses and instrument the boundaries that distinguish them.</p></li>
+<li><strong>Fix and rerun</strong><p>Add a regression check at the right seam. Rerun the original scenario.</p></li>
+<li class="focus"><strong>Verify the result</strong><p>Use the real app and remove temporary instrumentation.</p></li>
+</ol><figcaption>A performance claim also loads benchmark-checklist. A repeated mistake can lead to correct, which adds structural prevention.</figcaption></figure>
+</article>
+
+<article class="workflow" id="design"><h3>Improve the interface</h3>
+<figure><ol class="flow">
+<li><strong><a href="../../critly/skills/critly-audit/SKILL.md">critly-audit</a></strong><p>Inspect intent, existing direction and representative screens.</p></li>
+<li><strong><a href="../../critly/skills/critly/SKILL.md">critly</a></strong><p>Read the relevant concepts. Apply them to the system before small details.</p></li>
+<li><strong>Check and inspect</strong><p>Run measurable UI checks and inspect the taste images and interactions.</p></li>
+<li class="focus"><strong>verify-&lt;app&gt;</strong><p>Prove the changed user flow and capture its result.</p></li>
+</ol><figcaption>Critly owns these skill sources. Generated concepts are edited in the Critly content and rebuilt there.</figcaption></figure>
+<p class="note">For a report or explainer, use html-artifacts, edit with unslop, then run the artifact checker and inspect its screenshots.</p>
+</article>
+
+<article class="workflow" id="formal"><h3>Check a risky invariant</h3>
+<figure><ol class="flow">
+<li><strong><a href="../skills/create-formal-verification-skill/SKILL.md">create-formal-verification-skill</a></strong><p>Choose a harmful failure that tests rarely reach, such as event ordering.</p></li>
+<li><strong>Model and challenge it</strong><p>Tie the property to code. Prove the check catches a deliberately broken variant.</p></li>
+<li><strong>Project verification skill</strong><p>Record the command, covered code, assumptions, bounds and sync commit.</p></li>
+<li class="focus"><strong><a href="../skills/maintain-formal-verification-skill/SKILL.md">maintain-formal-verification-skill</a></strong><p>Read later code changes. Distinguish model drift from a real bug.</p></li>
+</ol><figcaption>A pass covers the stated property and scope. Findings stay findings; verification work does not silently change product code.</figcaption></figure>
+</article>
+
+<article class="workflow" id="machines"><h3>Work across the two machines</h3>
+<figure><ol class="flow">
+<li><strong>Prepare the branch</strong><p>Commit and push what the other machine needs. Write a standalone brief.</p></li>
+<li><strong><a href="../skills/threads/SKILL.md">threads</a></strong><p>Move work to the Mac, or request a Windows check from the laptop.</p></li>
+<li><strong>Run on that machine</strong><p>Check the started thread is running. Continue independent work without polling.</p></li>
+<li class="focus"><strong>Report back</strong><p>The bridge delivers a report. The parent checks evidence before repeating claims.</p></li>
+</ol><figcaption>A move transfers branch ownership. A Windows check uses a separate branch and does not push or merge.</figcaption></figure>
+<p class="note">delegating governs the brief, boundaries and review. handoff preserves conversation context. The laptop must be awake for Windows checks.</p>
+</article>
+</section>
+
+<section id="library">
+<h2>Real runs improve the library</h2>
+<figure><ol class="flow">
+<li><strong><a href="../.agents/skills/audit-skills/SKILL.md">audit-skills</a></strong><p>Collect usage, read threads, verify corrections and rank library changes.</p></li>
+<li><strong>Review the evidence</strong><p>The dashboard records accepted and skipped suggestions.</p></li>
+<li><strong><a href="../skills/my-skills/SKILL.md">my-skills</a></strong><p>Edit the source. Keep scope, upstream changes and routing explicit.</p></li>
+<li class="focus"><strong>Test, then distribute</strong><p>Rerun the failed scenario, relink as needed, commit and push.</p></li>
+</ol><figcaption>Fresh task runs produce the next evidence. Counts identify where to look; the manager reads the runs and makes the judgment.</figcaption></figure>
+<details><summary>The checks and distribution loop</summary>
+<p><a href="../docs/evals.md">Behavior evals</a> run skills in isolated test threads. The manager checks the output, grades it and writes a local HTML report.</p>
+<p><a href="../evals/trigger/cases.json">Trigger tests</a> check whether agents select the right skill. Rerun them after description or routing changes.</p>
+<p>Use writing-for-agents for skill instructions and unslop for prose. Reusable skills belong here; a skill for one repo stays in that repo.</p>
+<p><code>node scripts/link.mjs</code> adds or prunes links and updates global rules. Existing linked source edits are already visible locally.</p>
+<p>Commit and push library changes. <a href="../scripts/sync.mjs">sync.mjs</a> is configured to pull this repo and Critly every five minutes, then relink if they moved.</p>
+<p><a href="../scripts/upstream.mjs">upstream.mjs</a> detects adopted upstream changes. <code>sources.json</code> records provenance and local modifications.</p>
+<p>Private thread quotes, usage data and eval reports stay in the ignored <code>reports/</code> folder.</p>
+</details>
+</section>
+
+<section id="index">
+<h2>Find the exact skill</h2>
+<p>Links open the source instructions. Modes below describe the files in this library, rather than a plugin's copy.</p>
+<p class="legend">You invoke = explicit request; agent loads = hidden from the slash menu. Either = no invocation restriction declared.</p>
+<div class="search" hidden><label for="skill-search">Search by skill or purpose</label><input type="search" id="skill-search" placeholder="Try debug, write, verify or thread" autocomplete="off"><p id="search-result" class="note" aria-live="polite"></p></div>
+<div class="directory">
+<div class="directory-group"><h3>Frame and start</h3>
+<div class="skill" id="skill-init-project"><a href="../skills/init-project/SKILL.md">init-project</a><p>Interview, name and scaffold a new project with agent setup.</p><span class="mode">You invoke</span></div>
+<div class="skill" id="skill-optimize"><a href="../skills/optimize/SKILL.md">optimize</a><p>Audit an existing repo, rank improvements and implement selected items.</p><span class="mode">You invoke</span></div>
+<div class="skill" id="skill-grilling"><a href="../skills/grilling/SKILL.md">grilling</a><p>Stress-test a plan or decision through questions.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-sharpen"><a href="../skills/sharpen/SKILL.md">sharpen</a><p>Deepen a task and rewrite its prompt without doing the task.</p><span class="mode">You invoke</span></div>
+</div>
+<div class="directory-group"><h3>Build and repair</h3>
+<div class="skill" id="skill-diagnosing-bugs" data-keywords="debug debugging broken"><a href="../skills/diagnosing-bugs/SKILL.md">diagnosing-bugs</a><p>Reproduce a symptom, test its cause and prove the fix.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-correct"><a href="../skills/correct/SKILL.md">correct</a><p>Prevent repeated mistakes with structure, types, lint or behavior tests.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-codebase-design"><a href="../skills/codebase-design/SKILL.md">codebase-design</a><p>Choose module boundaries, interfaces and seams.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-principle-minimize-reader-load"><a href="../skills/principle-minimize-reader-load/SKILL.md">principle-minimize-reader-load</a><p>Reduce the indirection and hidden state needed to trace code.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-no-comments"><a href="../skills/no-comments/SKILL.md">no-comments</a><p>Review comments on a diff and fix what needless comments hide.</p><span class="mode">You invoke</span></div>
+</div>
+<div class="directory-group"><h3>Run and prove</h3>
+<div class="skill" id="skill-create-project-flows"><a href="../skills/create-project-flows/SKILL.md">create-project-flows</a><p>Write project worktree and ship skills with setup and doctor commands.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-create-verification-skill"><a href="../skills/create-verification-skill/SKILL.md">create-verification-skill</a><p>Create a runnable project verification skill and feature map.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-maintain-verification-skill"><a href="../skills/maintain-verification-skill/SKILL.md">maintain-verification-skill</a><p>Update verification instructions after the app changes.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-principle-prove-it-works"><a href="../skills/principle-prove-it-works/SKILL.md">principle-prove-it-works</a><p>Check the actual result before calling the task done.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-principle-test-behavior-not-implementation"><a href="../skills/principle-test-behavior-not-implementation/SKILL.md">principle-test-behavior-not-implementation</a><p>Test what callers and users observe, rather than internal calls.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-benchmark-checklist"><a href="../skills/benchmark-checklist/SKILL.md">benchmark-checklist</a><p>Verify performance measurements, outputs and comparison conditions.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-create-formal-verification-skill"><a href="../skills/create-formal-verification-skill/SKILL.md">create-formal-verification-skill</a><p>Check a risky property and leave a project skill to rerun it.</p><span class="mode">You invoke</span></div>
+<div class="skill" id="skill-maintain-formal-verification-skill"><a href="../skills/maintain-formal-verification-skill/SKILL.md">maintain-formal-verification-skill</a><p>Resync formal checks with code and distinguish drift from bugs.</p><span class="mode">You invoke</span></div>
+</div>
+<div class="directory-group"><h3>Design and explain</h3>
+<div class="skill" id="skill-critly"><a href="../../critly/skills/critly/SKILL.md">critly</a><p>Apply design concepts to UI, interaction and performance. Owned by Critly.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-critly-audit"><a href="../../critly/skills/critly-audit/SKILL.md">critly-audit</a><p>Inspect and improve an existing interface. Owned by Critly.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-html-artifacts"><a href="../skills/html-artifacts/SKILL.md">html-artifacts</a><p>Create a checked HTML plan, report, comparison or explainer.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-unslop"><a href="../skills/unslop/SKILL.md">unslop</a><p>Remove generic phrasing and make prose plain and specific.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-writing-for-agents"><a href="../skills/writing-for-agents/SKILL.md">writing-for-agents</a><p>Write skill instructions and agent docs for a reader with no prior context.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-bro"><a href="../skills/bro/SKILL.md">bro</a><p>Restate the last message in plain language.</p><span class="mode">You invoke</span></div>
+<div class="skill" id="skill-in-your-own-words"><a href="../skills/in-your-own-words/SKILL.md">in-your-own-words</a><p>Restate the understood goal and problem before proceeding.</p><span class="mode">You invoke</span></div>
+</div>
+<div class="directory-group"><h3>Coordinate work</h3>
+<div class="skill" id="skill-delegating"><a href="../skills/delegating/SKILL.md">delegating</a><p>Brief another agent, bound its work and verify its claims.</p><span class="mode">Agent loads</span></div>
+<div class="skill" id="skill-threads"><a href="../skills/threads/SKILL.md">threads</a><p>Start, read and steer threads across the laptop and Mac mini.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-handoff"><a href="../skills/handoff/SKILL.md">handoff</a><p>Preserve the conversation as a handoff for another agent.</p><span class="mode">You invoke</span></div>
+</div>
+<div class="directory-group"><h3>Maintain the library</h3>
+<div class="skill" id="skill-my-skills"><a href="../skills/my-skills/SKILL.md">my-skills</a><p>Add, edit, retire or update a reusable skill in the shared library.</p><span class="mode">Either</span></div>
+<div class="skill" id="skill-audit-skills"><a href="../.agents/skills/audit-skills/SKILL.md">audit-skills</a><p>Read recent real runs, grade skill behavior and update the dashboard. Project-local.</p><span class="mode">Either</span></div>
+</div>
+<p class="empty" hidden>No skills match. Try a broader term or clear the search.</p>
+</div>
+<details><summary>Vendor skills and project-generated skills</summary>
+<p>Vendor families are routed from <code>global/skills.md</code>: Convex, Vercel, Cloudflare, Clerk and HyperFrames. They are intentionally outside this shared-skill index.</p>
+<p>Generated project skills include <code>worktree-&lt;app&gt;</code>, <code>verify-&lt;app&gt;</code>, <code>ship-&lt;app&gt;</code> and named formal-verification skills. Their exact names and commands depend on the repo.</p>
+<p>"You invoke" records the explicit-only metadata. A named skill may still call another skill, as init-project calls grilling.</p>
+</details>
+</section>
+
+<footer>
+<p>Read from the working tree on 26 Oct 2026. Skill groups are a reading aid; workflow order comes from the linked instructions.</p>
+<details><summary>Sources and scope</summary>
+<ul class="source-list">
+<li><a href="../README.md">Library readme</a>, <a href="../AGENTS.md">manager instructions</a> and <a href="../global/skills.md">global routing</a> define the library's operation.</li>
+<li><a href="philosophy.md">Philosophy</a> explains the emphasis on discoverability, enforced rules and real verification.</li>
+<li><a href="../sources.json">sources.json</a> and <a href="../scripts/link.mjs">link.mjs</a> define ownership and distribution.</li>
+<li><a href="evals.md">Eval guidance</a> and <a href="../evals/scenarios.md">scenarios</a> define the test loop.</li>
+<li>Every index link points to the skill read for this map. The Critly links require its sibling checkout.</li>
+</ul>
+<p>This is a source-based map. Workflows were not executed as part of documenting them. No remote services or accounts were queried.</p>
+</details>
+</footer>
+</main>
+<script>
+const input=document.querySelector('#skill-search');
+const rows=[...document.querySelectorAll('.skill')];
+const groups=[...document.querySelectorAll('.directory-group')];
+const status=document.querySelector('#search-result');
+function filterSkills(){
+  const terms=input.value.trim().toLowerCase().split(/\s+/).filter(Boolean);
+  rows.forEach(row=>{row.hidden=!terms.every(term=>(row.textContent+' '+(row.dataset.keywords||'')).toLowerCase().includes(term));});
+  groups.forEach(group=>{group.hidden=![...group.querySelectorAll('.skill')].some(row=>!row.hidden);});
+  const any=rows.some(row=>!row.hidden);
+  document.querySelector('.empty').hidden=any;
+  status.textContent=terms.length?(any?'Showing matching skills.':'No skills match.'):'All library skills are shown.';
+}
+document.querySelector('.search').hidden=false;
+input.addEventListener('input',filterSkills);
+function revealHash(){
+  if(!location.hash.startsWith('#skill-'))return;
+  const target=document.getElementById(location.hash.slice(1));
+  if(target){input.value='';filterSkills();target.scrollIntoView();}
+}
+addEventListener('hashchange',revealHash);
+filterSkills();revealHash();
+addEventListener('beforeprint',()=>document.querySelectorAll('details').forEach(d=>{d.dataset.wasOpen=String(d.open);d.open=true;}));
+addEventListener('afterprint',()=>document.querySelectorAll('details').forEach(d=>{d.open=d.dataset.wasOpen==='true';}));
+</script>
+</body>
+</html>
