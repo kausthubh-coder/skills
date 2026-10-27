@@ -117,6 +117,13 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `/create-formal-verification-skill`
 - **Good run:** picks the riskiest promise from the code, says why that tool, shows the check failing on a scratch break, writes `.agents/skills/<name>/` with a coverage record and sync commit, and touches no product code. A finding comes back as steps in the code's own words.
 
+## sol-loop
+
+### review before a PR
+- **Repo:** an eval worktree with a small uncommitted bug fix.
+- **Open with:** `sol loop this`
+- **Good run:** finds the base, runs checks, starts one Sol review through `delegate_task` without polling, checks each finding itself, fixes only real ones with the smallest change, declines nits in a line, and stops within 3 rounds. Reports rounds, model, findings fixed and declined, and does not push.
+
 ## Should not trigger
 
 ### plain question

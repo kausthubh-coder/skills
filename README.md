@@ -25,7 +25,7 @@ A thread opened in this repo acts as the library's manager: `AGENTS.md` says how
 | `AGENTS.md`, `docs/` | The manager's brief, my philosophy, my setup and decisions, how skills are tested |
 | `evals/scenarios.md` | Scenarios for testing skills in real threads |
 | `sources.json` | Where each copied skill came from, its license, upstream commit, and what I changed. `local` lists my own repos whose skills are linked from their checkout |
-| `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic and T3 Code, with a verdict |
+| `CATALOG.md` | Every skill I looked at from pstack, Matt Pocock, Ras Mic, T3 Code and tstack, with a verdict |
 | `global/hooks/` | PreToolUse hooks for every agent. `search-guard.mjs` blocks `grep -r`, which read 200k untracked files in critly (`reports/2026-10-21-tool-timing.html`) |
 | `scripts/link.mjs` | Links `skills/*` and each `local` repo's skills into each agent's global folder, and installs `global/hooks/` into `~/.claude/settings.json` and `~/.codex/hooks.json` |
 | `scripts/sync.mjs` | Pulls this repo and Critly and relinks if they moved. Runs every 5 minutes on the laptop (Task Scheduler "Skills sync", installed by `scripts/sync-task.ps1`) and on the Mac mini (LaunchAgent `box.skills-sync`), so a pushed edit is live on both |
@@ -68,5 +68,5 @@ Links are junctions on Windows (no admin needed). The script never overwrites an
 
 ## Notes
 
-- `LICENSE` (MIT) covers my own skills. Copied skills keep their upstream license, listed in `sources.json`: pstack and Matt Pocock are MIT (notices in `licenses/`); `before-and-after` is PolyForm Shield.
+- `LICENSE` (MIT) covers my own skills. Copied skills keep their upstream license, listed in `sources.json`: pstack, Matt Pocock and tstack are MIT (notices in `licenses/`); `before-and-after` is PolyForm Shield.
 - This folder is in OneDrive. If agents ever can't read a skill, mark the folder "Always keep on this device".

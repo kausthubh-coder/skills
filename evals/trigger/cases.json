@@ -19,6 +19,7 @@
   { "id": "move-to-mac", "expect": "threads", "prompt": "ok move this to the mac and keep going there" },
   { "id": "windows-check", "expect": "threads", "prompt": "this needs testing on windows before i ship, get the laptop to check it" },
   { "id": "both-machines", "expect": "threads", "prompt": "whats running on the mac and laptop rn" },
+  { "id": "sol-loop", "expect": "sol-loop", "prompt": "sol loop this before i file the pr" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]

@@ -1,7 +1,7 @@
 # Skill catalog
 
-Every skill I looked at from the four sources (plus prior art for HTML pages at the end), what it does, and whether it's in the library.
-Snapshot: 2026-10-11; pstack rechecked 2026-10-20 (v0.15.29).
+Every skill I looked at from the five sources (plus prior art for HTML pages at the end), what it does, and whether it's in the library.
+Snapshot: 2026-10-11; pstack rechecked 2026-10-20 (v0.15.29); tstack added 2026-10-27.
 
 ✅ in the library · ➕ worth adding later, or per project · ✖ skip (reason given)
 
@@ -129,6 +129,22 @@ Project-specific, so not installed.
 | contribution-triage | Enforces T3's contribution policy: closes ineligible PRs, sends eligible ones to Macroscope review | ✖ only for maintainers |
 
 Also worth reading: T3's `AGENTS.md` (glossary, "three ways to hurt yourself", "hit every surface") and its custom lint rules in `oxlint-plugin-t3code/`.
+
+## tstack (Theo Browne) · MIT · github.com/t3dotgg/tstack
+
+Built for T3 Code and Codex. Several skills call each other (`full-send` uses `sol-loop`, `file-pr` and `babysit-pr`). Checked 2026-10-27 (92e38e2).
+
+| Skill | What it does | |
+|---|---|---|
+| sol-loop | GPT Sol reviews a change in rounds until both agents agree; minimal fixes, pushback with evidence, a ledger, 3 rounds by default | ✅ |
+| council | Three models from different providers review until they agree | ➕ |
+| full-send | Takes a change to a merged PR unattended: prove, review, file, babysit, merge | ➕ needs file-pr and babysit-pr |
+| full-stop | `full-send`, stopping when the PR is ready for me to merge | ➕ |
+| file-pr | Short PR that leads with the problem | ➕ |
+| babysit-pr | Watches a PR through CI and review bots, fixes real findings | ➕ |
+| takeover | Finishes someone else's PR, branch or thread, keeping their credit | ➕ |
+| modernize | Rebases an old PR and decides whether it should still exist | ➕ |
+| leaving-pr-comments | Format for comments an agent posts for me | ➕ |
 
 ## HTML pages · researched for `html-artifacts` (2026-10-12, 2026-10-14)
 

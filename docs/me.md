@@ -57,6 +57,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | Skills sync between machines (2026-10-24): every change to this library is committed and pushed; `scripts/sync.mjs` pulls it and Critly every 5 minutes on the laptop (Task Scheduler "Skills sync") and the Mac mini (LaunchAgent `box.skills-sync`) and relinks. Mac services get short tailnet names (`http://dashboard/`, `t3`) through Tailscale Services | I edit skills from either machine, and soon from a web page; "push only when I ask" left the Mac stale. `dashboard.taile36082.ts.net` is too long to type |
 | `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |
 | `sharpen`, `create-formal-verification-skill` and `maintain-formal-verification-skill` copied from pstack, user-only (2026-10-20) | I asked for pstack's new skills across my threads. User-only keeps their descriptions out of every session |
+| `sol-loop` copied from Theo's tstack (2026-10-27), model-invocable so saying "sol loop" mid-sentence loads it | I asked for it. It reviews through `delegate_task` with the newest Sol T3 lists (GPT-6.1 Sol on the Mac) |
 
 ## Corrections I've given (don't repeat these mistakes)
 

@@ -241,6 +241,16 @@
       "changes": [],
       "commit": "4b72f46",
       "upstreamHash": "3b704d95f0f8abc8"
+    },
+    "sol-loop": {
+      "repo": "t3dotgg/tstack",
+      "path": "skills/sol-loop",
+      "license": "MIT (Theo Browne)",
+      "changes": [
+        "description says what it does before the trigger, in my words"
+      ],
+      "commit": "92e38e2",
+      "upstreamHash": "0b039bc755d387a5"
     }
   },
   "parked": {
