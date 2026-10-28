@@ -10,13 +10,14 @@ A study session follows files, not the chat. The plan and my progress live in th
 ## Find and sync the repo
 
 - Laptop: `C:\Users\kaust\OneDrive\Documents\dev\study`. Mac mini (and Chitti bots): `~/dev/study`. If it's missing, `git clone https://github.com/kausthubh-coder/study <path>`.
-- `git pull` before reading anything. After each session: commit `tutor/` with a message like `study: 316.bst session a`, then push. If the push is rejected, pull with rebase and push again; the files are append-mostly, so conflicts are rare.
+- Read and write only that checkout, on `main`, even when the thread opened somewhere else (a T3 worktree under `~/.t3/worktrees/`, another branch). Use its absolute path for every read, write and git command. On Oct 28 a session ran in a T3 worktree on branch `t3/study` and never pushed; the next tutor saw an empty ledger and restarted tree words from the beginning.
+- `git pull` before reading anything. Commit `tutor/` and push after every ledger line, not only at the end (message like `study: 316.bst session a`), so a session that stops halfway is still there for the next tutor. If the push is rejected, pull with rebase and push again; the files are append-mostly, so conflicts are rare.
 - Read `AGENTS.md` in the repo first: it maps the plan, research, materials and state files.
 
 ## Start of a session
 
 1. Read `tutor/today.md`, `tutor/learner.json`, and the last 10 lines of `tutor/errors.jsonl` for today's topics. If `today.md` is not for today's date, rebuild it first (below).
-2. Make `tutor/sessions/<date>-<letter>.md` with: interface (which app and machine), objective (one topic id from `tutor/topics.json`), 3 to 6 steps, a `parked:` list and a `ledger:` list. One objective per session; at most 50 minutes in chat.
+2. If today's newest session file has ledger lines but an empty `where we stopped:`, it was cut off: resume it at the step after its last ledger line instead of starting a new one. Otherwise make `tutor/sessions/<date>-<letter>.md` with: interface (which app and machine), objective (one topic id from `tutor/topics.json`), 3 to 6 steps, a `parked:` list and a `ledger:` list. One objective per session; at most 50 minutes in chat.
 3. A topic marked `not yet engaged` hasn't been studied: teach it from the start. Check first the earlier topics it depends on (its `prereqs`) that are `weak` or `shaky`, and repair those with one worked example each.
 
 ## Every turn
