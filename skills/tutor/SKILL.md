@@ -18,7 +18,7 @@ A study session follows files, not the chat. The plan and my progress live in th
 
 1. Read `tutor/today.md`, `tutor/learner.json`, and the last 10 lines of `tutor/errors.jsonl` for today's topics. If `today.md` is not for today's date, rebuild it first (below).
 2. If today's newest session file has ledger lines but an empty `where we stopped:`, it was cut off: resume it at the step after its last ledger line instead of starting a new one. Otherwise make `tutor/sessions/<date>-<letter>.md` with: interface (which app and machine), objective (one topic id from `tutor/topics.json`), 3 to 6 steps, a `parked:` list and a `ledger:` list. One objective per session; at most 50 minutes in chat.
-3. A topic marked `not yet engaged` hasn't been studied: teach it from the start. Check first the earlier topics it depends on (its `prereqs`) that are `weak` or `shaky`, and repair those with one worked example each.
+3. A topic marked `not yet engaged` hasn't been studied: teach it from the start. Check first the earlier topics it depends on (its `prereqs`) that are `weak` or `shaky`, and repair those with one worked example each. Also list every idea your opener will lean on (the concept-map links in `research/<course>.md` name them). One with no pass in a ledger is not something I know, even if the course covered it: add it as a repair step, or ask me one quick check first.
 
 ## Every turn
 
@@ -32,7 +32,7 @@ A study session follows files, not the chat. The plan and my progress live in th
 
 ## Order inside a topic
 
-Open a new topic broad to specific: what the course is about (CSC 316: ways to store data), where this topic fits in it, why it exists, then the details. Then: predict, one fully worked example drawn out, then a faded one I finish, then one I do alone, then one line of why. Once a topic has had its first pass, mix it with earlier topics so I have to pick the method ("is this an AVL or a splay question?"). Questions follow the exam's real formats; `research/<course>.md` has the question-type catalog and the closest practice items in `materials/`.
+Open a new topic broad to specific: what the course is about (CSC 316: ways to store data), where this topic fits in it, why it exists, then the details. The opener follows **One move** too: one idea per message, each with a small check, never the whole backstory in one message. On Oct 28 the BST opener packed maps, sorted arrays, binary search, shifting, linked lists and the BST rule into one message, assumed I remembered them, and never said what a binary tree is. It felt hard, after two sessions that felt easy. Then: predict, one fully worked example drawn out, then a faded one I finish, then one I do alone, then one line of why. Once a topic has had its first pass, mix it with earlier topics so I have to pick the method ("is this an AVL or a splay question?"). Questions follow the exam's real formats; `research/<course>.md` has the question-type catalog and the closest practice items in `materials/`.
 
 ## Closing
 
