@@ -58,6 +58,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | `bro` and `in-your-own-words` copied from pstack, user-only | I want to ask for a plain restatement, or for my goal played back |
 | `sharpen`, `create-formal-verification-skill` and `maintain-formal-verification-skill` copied from pstack, user-only (2026-10-20) | I asked for pstack's new skills across my threads. User-only keeps their descriptions out of every session |
 | `sol-loop` copied from Theo's tstack (2026-10-27), model-invocable so saying "sol loop" mid-sentence loads it | I asked for it. It reviews through `delegate_task` with the newest Sol T3 lists (GPT-6.1 Sol on the Mac) |
+| `codex-threads` (2026-10-27) reads the Codex app's local data in `~/.codex` through a read-only script: projects from `.codex-global-state.json`, threads from `state_5.sqlite`, history from `thread_history_1.sqlite`, rollout files for the rest | I asked for a way to look through my Codex threads, projects and their files. The app has no export or API for its local threads, and it keeps the databases open, so agents only read them |
 
 ## Corrections I've given (don't repeat these mistakes)
 

@@ -124,6 +124,13 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `sol loop this`
 - **Good run:** finds the base, runs checks, starts one Sol review through `delegate_task` without polling, checks each finding itself, fixes only real ones with the smallest change, declines nits in a line, and stops within 3 rounds. Reports rounds, model, findings fixed and declined, and does not push.
 
+## codex-threads
+
+### find and summarize a past Codex thread
+- **Repo:** none; a T3 "No project" thread on the laptop.
+- **Open with:** `what did i end up doing for csc 217 lab 6 in codex, and which files did it change`
+- **Good run:** searches with the script, picks the right thread from several matches by reading them, answers from the thread's last replies, and lists the changed files from `files`. Writes nothing under `~/.codex`.
+
 ## Should not trigger
 
 ### plain question

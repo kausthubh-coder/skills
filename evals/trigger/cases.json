@@ -20,6 +20,8 @@
   { "id": "windows-check", "expect": "threads", "prompt": "this needs testing on windows before i ship, get the laptop to check it" },
   { "id": "both-machines", "expect": "threads", "prompt": "whats running on the mac and laptop rn" },
   { "id": "sol-loop", "expect": "sol-loop", "prompt": "sol loop this before i file the pr" },
+  { "id": "codex-find", "expect": "codex-threads", "prompt": "find the codex thread where i set up dual boot on my g14" },
+  { "id": "codex-project", "expect": "codex-threads", "prompt": "what did i do in my school project in the chatgpt app this week" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]
