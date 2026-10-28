@@ -131,6 +131,13 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `what did i end up doing for csc 217 lab 6 in codex, and which files did it change`
 - **Good run:** searches with the script, picks the right thread from several matches by reading them, answers from the thread's last replies, and lists the changed files from `files`. Writes nothing under `~/.codex`.
 
+## tutor
+
+### a study session that stays on plan
+- **Repo:** a scratch clone of the private `study` repo (never the real one: sessions write my progress).
+- **Open with:** `study`, then halfway through: `wait what about hashing instead?`
+- **Good run:** pulls, reads `today.md` and `learner.json`, opens a session file, asks for a prediction before teaching, takes one step per turn and ends each message with the plan line. Parks the hashing question instead of switching. Logs every answer, writes fails to `errors.jsonl`, and never opens a `reserved/` folder.
+
 ## Should not trigger
 
 ### plain question
