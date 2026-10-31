@@ -118,12 +118,18 @@ function similar(a: Set<string>, b: Set<string>) {
   return both / (a.size + b.size - both) >= 0.6;
 }
 
+// A T3 quote-reply arrives as "[Assistant quote](t3-citation://…?text=…&comment=…)", URL-encoded.
+// Only the comment is mine; the quoted text is the agent's, and the long link would hide a short reply.
+function ownWords(text: string) {
+  return text.replace(/\[[^\]]*\]\(t3-citation:\/\/[^)\s]*\)/g, (link) => new URLSearchParams(link.slice(link.indexOf("?") + 1, -1)).get("comment") ?? "").trim();
+}
+
 function judgeTurns(s: Session, turns: { role: "user" | "assistant"; text: string; at: string }[], skillNames: Set<string>) {
   const seenUser: Set<string>[] = [];
   let lastAssistant = "";
   for (const t of turns) {
     if (t.role === "assistant") { lastAssistant = t.text; continue; }
-    const text = t.text;
+    const text = ownWords(t.text);
     // text the harness injects into the user turn, not something I typed
     if (/This session is being continued|^Update on pull request|<in-app-browser-context|^\[SYSTEM NOTIFICATION|^Delegated task |^<task-notification|^\[Historical user|^# Files mentioned|^Continue where you left off/.test(text)) continue;
     s.userMsgs++;
@@ -212,6 +218,8 @@ function parseCodex(file: string, skillNames: Set<string>): Session | null {
 }
 
 // --- walk, with a cache ----------------------------------------------------------------------
+// Bump when parsing or signal rules change, so cached sessions are parsed again with the new rules.
+const PARSER_VERSION = 2;
 
 function* files(dir: string, skipSubagents: boolean): Generator<string> {
   if (!fs.existsSync(dir)) return;
@@ -252,7 +260,7 @@ export function collect() {
     for (const f of files(dir, skipSub)) {
       const st = fs.statSync(f);
       if (st.mtime.toISOString().slice(0, 10) < SINCE) continue;
-      const key = `${st.size}:${st.mtimeMs}`;
+      const key = `${PARSER_VERSION}:${st.size}:${st.mtimeMs}`;
       let s = cache[f]?.key === key ? cache[f].s : undefined;
       if (s === undefined) { s = agent === "claude" ? parseClaude(f, skillNames) : parseCodex(f, skillNames); parsed++; }
       nextCache[f] = { key, s };
