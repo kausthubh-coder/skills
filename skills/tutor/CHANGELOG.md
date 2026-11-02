@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 2.2 (2026-11-02)
+
+Pages I work in. 2.0 had cut 1.9's "make it interactive" down to "use inline HTML", and even 1.9 only meant steppers, because nothing typed in a T3 page reached the tutor. A test showed a page rendered in a T3 thread can POST to 127.0.0.1. Added `tutor.mjs serve` (serves `tutor/kit/`, takes answers into a local inbox) and `inbox`, and the kit: a tree I build, edit and pick from, a frame stepper, a Send button that falls back to paste text.
+
 ## 2.1 (2026-11-02)
 
 From a cold first-turn test of 2.0: the one-writer check is asked inside the first question, so a thread switch costs no extra turn. "Answers I gave" means logged answers, not notes. `tutor.mjs`: `status` prints the open session's last line in full; `evidence` files a line under the topic of the question ids it mentions.

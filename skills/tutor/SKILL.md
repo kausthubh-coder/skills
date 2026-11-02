@@ -2,7 +2,7 @@
 name: tutor
 description: Run a study session from my exam plan and progress files in the study repo. Use when I say study, teach me, quiz me, practice for an exam, or check whether I really understand a topic.
 metadata:
-  version: "2.1"
+  version: "2.2"
 ---
 
 # Tutor
@@ -27,7 +27,7 @@ Run `node tutor/tutor.mjs status` first. It pulls, then prints:
 
 - **Build on what I've shown I know.** Count only answers I gave that are logged in a session ledger. Anything else is new, words included. Start broad (what it is, why it exists, how it fits with what I know), then go into details.
 - **I do the thinking.** Ask me to predict whatever I can reason out from what I already know, check only what you've shown me, and give a hint before an answer.
-- **Show it.** Draw the structure at each step I need to see. Use inline HTML when the interface can render it.
+- **Make pages I work in.** Inline HTML runs JavaScript, so let me do the operation myself: build the tree node by node, tap the node that gets splayed, split the overflowing node, drag a slider for a what-if, step through every frame. Use text boxes and multiple choice only when nothing better fits. Practice items can check themselves on the page and show the why. Graded answers are sent to you (see Record). `tutor/kit/kit.js` has a tree I can build and pick from, a frame stepper and a Send button, with its API in the header. Write whatever else the idea needs.
 - **Every message ends on something only I can answer.** A reply that can't change what you do next costs me focus.
 - **Check understanding, not just answers.** Before a topic counts as solid, have me teach it back from memory while you play a classmate who missed class. Probe words I didn't explain, steps without a why and ideas I skipped, then ask one what-if. Each gap is a mistake to log.
 - **Practice like the exam.** Use the exam's real question formats (`research/<course>.md`). Plan against the time left. When the plan won't fit, tell me what has to go and let me choose.
@@ -41,6 +41,8 @@ Every write goes through `tutor.mjs`, so the time, format, commit and push are r
 - `note`: record a complaint or a change of approach.
 - `save`: commit after you edit `learner.json`, `today.md` or other files.
 - `stop`: write where we stopped.
+
+Pages send answers to `node tutor/tutor.mjs serve`; start it in the background if status says it's down. After a page with a Send button, my next chat message may only say I sent it: run `tutor.mjs inbox`, then grade and `log` what it shows. The server must run on the machine I'm viewing from; when Send can't reach it, the page shows my answer for me to paste. The preview check can't reach the server either, so a preview shows the page without the kit.
 
 `learner.json` changes only from answers I gave, and its `states` field defines each level.
 
