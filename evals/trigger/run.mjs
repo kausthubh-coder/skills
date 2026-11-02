@@ -18,8 +18,9 @@ const out = path.join(repo, "reports", "evals", "trigger.jsonl");
 // global npm packages (scoop's nodejs-lts keeps them in <node dir>/bin/node_modules)
 const bin = [path.join(path.dirname(process.execPath), "bin", "node_modules"), path.join(path.dirname(process.execPath), "node_modules")]
   .find((d) => fs.existsSync(path.join(d, "@anthropic-ai")));
-const CLAUDE = path.join(bin, "@anthropic-ai/claude-code/bin/claude.exe");
-const CODEX = path.join(bin, "@openai/codex/bin/codex.js");
+// no global package folder on the Mac (Homebrew): use the claude on PATH
+const CLAUDE = bin ? path.join(bin, "@anthropic-ai/claude-code/bin/claude.exe") : "claude";
+const CODEX = bin && path.join(bin, "@openai/codex/bin/codex.js");
 const CONCURRENCY = 4;
 
 const [cmd, ...rest] = process.argv.slice(2);

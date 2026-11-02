@@ -24,6 +24,8 @@
   { "id": "codex-project", "expect": "codex-threads", "prompt": "what did i do in my school project in the chatgpt app this week" },
   { "id": "study", "expect": "tutor", "prompt": "ok lets study" },
   { "id": "quiz-me", "expect": "tutor", "prompt": "quiz me on avl trees for 316" },
+  { "id": "tlc-result", "expect": "statechart", "prompt": "tlc found an invariant violation in Queue.tla, show me what it means as a path through the states" },
+  { "id": "draw-model", "expect": "statechart", "prompt": "draw my tla+ model of the checkout flow as a state chart" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]

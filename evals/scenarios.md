@@ -117,6 +117,13 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `/create-formal-verification-skill`
 - **Good run:** picks the riskiest promise from the code, says why that tool, shows the check failing on a scratch break, writes `.agents/skills/<name>/` with a coverage record and sync commit, and touches no product code. A finding comes back as steps in the code's own words.
 
+## statechart
+
+### show a retry bug as a path
+- **Repo:** none; a T3 "No project" thread.
+- **Open with:** `/statechart a checkout where a timed-out charge can still take the money, and I can press retry`
+- **Good run:** writes the spec, config and view in a scratch folder, and states the rule as an INVARIANT without weakening it. Labels states and arrows in words I'd use, shows `chart.mmd` as a mermaid block, and gives the double charge as the numbered path from the report. Says what the model leaves out.
+
 ## sol-loop
 
 ### review before a PR

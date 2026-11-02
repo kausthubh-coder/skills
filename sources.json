@@ -150,10 +150,21 @@
         "description shortened, trigger first, so Codex doesn't cut it",
         "writes the project skill to .agents/skills/<name>/ (with .claude/skills linked to it)",
         "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)",
-        "left out upstream's paragraph telling generated skills to read TLA+ results with /statechart, because statechart is not in this library"
+        "dropped the word pstack from the /statechart pointer"
       ],
       "commit": "ae5650f",
       "upstreamHash": "ecccfa683447517b"
+    },
+    "statechart": {
+      "repo": "cursor/plugins",
+      "path": "pstack/skills/statechart",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "description shortened, trigger first, so Codex doesn't cut it",
+        "model-invocable: removed disable-model-invocation, because skills from create-formal-verification-skill tell agents to call it"
+      ],
+      "commit": "ae5650f",
+      "upstreamHash": "7e86390a3a5d924b"
     },
     "maintain-formal-verification-skill": {
       "repo": "cursor/plugins",
@@ -172,8 +183,8 @@
       "path": "skills/productivity/grilling",
       "license": "MIT (Matt Pocock)",
       "changes": [],
-      "commit": "49dd158",
-      "upstreamHash": "ef1641a2047b71b6"
+      "commit": "4ae2317",
+      "upstreamHash": "e40cc1d348f6d935"
     },
     "grill-me": {
       "repo": "mattpocock/skills",
@@ -215,9 +226,11 @@
       "repo": "mattpocock/skills",
       "path": "skills/engineering/codebase-design",
       "license": "MIT (Matt Pocock)",
-      "changes": [],
-      "commit": "49dd158",
-      "upstreamHash": "b2888e4f4e8c0af3"
+      "changes": [
+        "keeps user-invocable: false, which upstream dropped, because I'd never type it"
+      ],
+      "commit": "4ae2317",
+      "upstreamHash": "aa11a96c08451f4f"
     },
     "evidence-driven-testing": {
       "repo": "michaelshimeles/skills",
@@ -258,7 +271,7 @@
     "cloudflare/skills": {
       "path": "skills",
       "license": "Apache-2.0",
-      "commit": "86505e4"
+      "commit": "1a33048"
     },
     "get-convex/agent-skills": {
       "path": "skills",
@@ -266,12 +279,12 @@
       "skip": {
         "convex-improve-convex-plugin": "uploads the session transcript to Convex"
       },
-      "commit": "191a5c3"
+      "commit": "f60629d"
     },
     "vercel-labs/agent-skills": {
       "path": "skills",
       "license": "MIT (per skill metadata)",
-      "commit": "063bee9"
+      "commit": "1a2c79d"
     },
     "vercel/vercel-plugin": {
       "path": "skills",
@@ -281,7 +294,7 @@
         "knowledge-update": "meant to be injected by the plugin at session start",
         "verification": "verify-<app> skills do this"
       },
-      "commit": "3c88cfc"
+      "commit": "a1f890f"
     }
   }
 }

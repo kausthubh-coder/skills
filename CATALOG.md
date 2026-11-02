@@ -61,7 +61,7 @@ Built for Cursor. Many skills read model settings from `~/.cursor/rules/pstack-m
 | recall | Rebuild your recent context from Cursor chat history | ✖ Cursor-specific |
 | ketchup | Plain-words catch-up on the chat | ✖ |
 | ketchup-video | `ketchup` as a short subtitled slide video, with the decisions waiting on me as text under it (added upstream 2026-10-23). Only I can run it | ✖ needs `ketchup`, which I skipped |
-| statechart | Checks a TLA+ model with TLC, draws it as a Mermaid chart in plain words, and gives the shortest path to each broken rule (added upstream 2026-10-22). Only I can run it | ➕ only useful with `create-formal-verification-skill`, which no thread search found in use. Installs Java and TLC through mise and adds about 9,400 lines of TypeScript |
+| statechart | Checks a TLA+ model with TLC, draws it as a Mermaid chart in plain words, and gives the shortest path to each broken rule (added upstream 2026-10-22). Installs Java and TLC through mise | ✅ model-invocable, because skills from `create-formal-verification-skill` tell agents to call it |
 | bro | Restate the last message without jargon. Only I can run it (`/bro`) | ✅ |
 | in-your-own-words | Restate the user's goal and problem before working (added upstream 2026-10-13). Only I can run it | ✅ |
 | no-comments | Reviewer agent that strips needless comments | ✅ the agent's rules bundled as a reference, run as a plain subagent |
