@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 2.3 (2026-11-02)
+
+"Every message ends on something only I can answer" (from 1.8) was meant to stop the tutor from explaining a little, asking "got it?" and making me wait for the next piece. It was read as "every message needs a question", so on (2,4) trees, a new topic, lessons got shorter and I was asked to do operations before I understood them. Replaced with the intent: teach the whole idea in one message, ask when my answer would change what comes next.
+
 ## 2.2 (2026-11-02)
 
 Pages I work in. 2.0 had cut 1.9's "make it interactive" down to "use inline HTML", and even 1.9 only meant steppers, because nothing typed in a T3 page reached the tutor. A test showed a page rendered in a T3 thread can POST to 127.0.0.1. Added `tutor.mjs serve` (serves `tutor/kit/`, takes answers into a local inbox) and `inbox`, and the kit: a tree I build, edit and pick from, a frame stepper, a Send button that falls back to paste text.
