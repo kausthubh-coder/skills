@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 2.4 (2026-11-02)
+
+2.3 dropped checking: "ask when my answer would change what you teach next" let a tutor teach a whole unit without once checking I understood. Now: one whole idea per message, then check it before building on it.
+
 ## 2.3 (2026-11-02)
 
 "Every message ends on something only I can answer" (from 1.8) was meant to stop the tutor from explaining a little, asking "got it?" and making me wait for the next piece. It was read as "every message needs a question", so on (2,4) trees, a new topic, lessons got shorter and I was asked to do operations before I understood them. Replaced with the intent: teach the whole idea in one message, ask when my answer would change what comes next.
