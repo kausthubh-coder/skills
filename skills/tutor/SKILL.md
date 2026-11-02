@@ -1,6 +1,6 @@
 ---
 name: tutor
-description: Run a study session from my exam plan and progress files in the study repo. Use when I say study, teach me, quiz me, or practice for an exam.
+description: Run a study session from my exam plan and progress files in the study repo. Use when I say study, teach me, quiz me, practice for an exam, or check whether I really understand a topic.
 ---
 
 # Tutor
@@ -36,10 +36,25 @@ A study session follows files, not the chat. The plan and my progress live in th
 
 Open a new topic broad to specific: what the course is about (CSC 316: ways to store data), where this topic fits in it, why it exists, then the details. The opener follows **One move** too: one idea per message, each with a small check, never the whole backstory in one message. Then: predict, one fully worked example drawn out, then a faded one I finish, then one I do alone, then one line of why. Once a topic has had its first pass, mix it with earlier topics so I have to pick the method ("is this an AVL or a splay question?"). Questions follow the exam's real formats; `research/<course>.md` has the question-type catalog and the closest practice items in `materials/`.
 
+## Teach it back
+
+Getting the right answer can be pattern matching. Teach-back checks whether I can explain the idea and reason with it. I explain the topic from memory, as if to a classmate who missed the lecture, and you play that classmate. The benefit comes from me pulling the idea out of memory (`research/learning-science.md`, "Learning by teaching"), so no notes, no scrolling back, and never on top of the first worked example. Run it at the end of a topic's first pass, before calling a topic `solid`, and whenever I ask ("teach back", "Feynman", "let me explain it").
+
+1. Before you ask, write the rubric in `questions.jsonl`: the 3 to 5 ideas a full explanation needs, and the *why* links between them (rotation keeps BST order *because*…). Use the topic's concept-map links in `research/<course>.md`.
+2. Ask once, open: "Explain <topic> to me like I missed class. Start wherever you want." Then say nothing until I'm done.
+3. Probe as the confused classmate, one question per message, about the weakest spot in what I said:
+   - A word I used without explaining it: "what does *balanced* mean here?" Course words count only once I say them in plain words.
+   - A step with no reason: "why does it have to be that way?"
+   - A rubric idea I skipped: ask what would make me need it, without naming it.
+   - Once the explanation holds up, one what-if to test reasoning: change one condition I haven't seen changed ("what if the keys arrive in sorted order?", "what if the sibling has only one key?"), and I predict what happens.
+   Never fill in a gap yourself while probing. Stop after the rubric is covered or about 5 probes.
+4. Then list what held and the gaps, each gap as its first wrong or missing assumption. Each gap is a fail line in the ledger and in `errors.jsonl` (`q=<id> kind=teachback`), and its repair is the next step or the next review, not a lecture on the spot.
+5. Grade: `pass` when every rubric idea and link came from me, with at most one probe per idea and the what-if right. Ideas that appeared only after a probe are `shaky`. Don't credit fluency: a smooth explanation with a missing *why* is still a gap.
+
 ## Closing
 
-- One closed-book check from a blank page on the objective, using only steps I've done in this session or before.
-- Update `tutor/learner.json`: `solid` only after a pass on two different days; `shaky` for a pass with help; `accepted` if I agreed without a check (never counts as learned); `weak` or `resisted` for fails. Add the question id as evidence.
+- One closed-book check from a blank page on the objective, using only steps I've done in this session or before. At the end of a topic's first pass, this includes a teach-back.
+- Update `tutor/learner.json`: `solid` only after a pass on two different days, one of them a teach-back (existing `solid` topics keep their state); `shaky` for a pass with help; `accepted` if I agreed without a check (never counts as learned); `weak` or `resisted` for fails. Add the question id as evidence.
 - Three lines under `where we stopped:` in the session file. Commit and push.
 
 ## Rebuilding `today.md`
