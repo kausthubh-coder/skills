@@ -149,10 +149,11 @@
       "changes": [
         "description shortened, trigger first, so Codex doesn't cut it",
         "writes the project skill to .agents/skills/<name>/ (with .claude/skills linked to it)",
-        "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)"
+        "agents/openai.yaml so Codex also keeps it user-only (Codex ignores disable-model-invocation)",
+        "left out upstream's paragraph telling generated skills to read TLA+ results with /statechart, because statechart is not in this library"
       ],
-      "commit": "88d4751",
-      "upstreamHash": "03bc8da39dfc3c3d"
+      "commit": "ae5650f",
+      "upstreamHash": "ecccfa683447517b"
     },
     "maintain-formal-verification-skill": {
       "repo": "cursor/plugins",

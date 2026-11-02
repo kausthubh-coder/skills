@@ -1,7 +1,7 @@
 # Skill catalog
 
 Every skill I looked at from the five sources (plus prior art for HTML pages at the end), what it does, and whether it's in the library.
-Snapshot: 2026-10-11; pstack rechecked 2026-10-20 (v0.15.29); tstack added 2026-10-27.
+Snapshot: 2026-10-11; pstack rechecked 2026-11-02 (v0.15.36); tstack added 2026-10-27.
 
 ✅ in the library · ➕ worth adding later, or per project · ✖ skip (reason given)
 
@@ -60,6 +60,8 @@ Built for Cursor. Many skills read model settings from `~/.cursor/rules/pstack-m
 | automate-me | Turn your working style into a personal "-mode" skill | ✖ base AGENTS.md does this |
 | recall | Rebuild your recent context from Cursor chat history | ✖ Cursor-specific |
 | ketchup | Plain-words catch-up on the chat | ✖ |
+| ketchup-video | `ketchup` as a short subtitled slide video, with the decisions waiting on me as text under it (added upstream 2026-10-23). Only I can run it | ✖ needs `ketchup`, which I skipped |
+| statechart | Checks a TLA+ model with TLC, draws it as a Mermaid chart in plain words, and gives the shortest path to each broken rule (added upstream 2026-10-22). Only I can run it | ➕ only useful with `create-formal-verification-skill`, which no thread search found in use. Installs Java and TLC through mise and adds about 9,400 lines of TypeScript |
 | bro | Restate the last message without jargon. Only I can run it (`/bro`) | ✅ |
 | in-your-own-words | Restate the user's goal and problem before working (added upstream 2026-10-13). Only I can run it | ✅ |
 | no-comments | Reviewer agent that strips needless comments | ✅ the agent's rules bundled as a reference, run as a plain subagent |
