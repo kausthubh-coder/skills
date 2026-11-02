@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 2.5 (2026-11-02)
+
+2.4's "explain each idea fully in one message" was read as "the whole topic in one message": the red-black opener put properties, put, both cases, a worked example and a check on one page. Replaced with the goal behind 2.3 and 2.4, momentum: neither thin pieces nor a wall; one step at a time, each complete enough to act on, practiced before the next.
+
 ## 2.4 (2026-11-02)
 
 2.3 dropped checking: "ask when my answer would change what you teach next" let a tutor teach a whole unit without once checking I understood. Now: one whole idea per message, then check it before building on it.
