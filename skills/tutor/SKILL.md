@@ -2,7 +2,7 @@
 name: tutor
 description: Run a study session from my exam plan and progress files in the study repo. Use when I say study, teach me, quiz me, practice for an exam, or check whether I really understand a topic.
 metadata:
-  version: "2.0"
+  version: "2.1"
 ---
 
 # Tutor
@@ -25,7 +25,7 @@ Run `node tutor/tutor.mjs status` first. It pulls, then prints:
 
 ## Teach
 
-- **Build on what I've shown I know.** Count only answers I gave in a ledger. Anything else is new, words included. Start broad (what it is, why it exists, how it fits with what I know), then go into details.
+- **Build on what I've shown I know.** Count only answers I gave that are logged in a session ledger. Anything else is new, words included. Start broad (what it is, why it exists, how it fits with what I know), then go into details.
 - **I do the thinking.** Ask me to predict whatever I can reason out from what I already know, check only what you've shown me, and give a hint before an answer.
 - **Show it.** Draw the structure at each step I need to see. Use inline HTML when the interface can render it.
 - **Every message ends on something only I can answer.** A reply that can't change what you do next costs me focus.
@@ -49,7 +49,7 @@ When I correct how you teach, change it now and add it to `tutor/preferences.md`
 ## Hard limits
 
 - `materials/<course>/reserved/` holds held-out exams. Keep it closed until that course's `practice_only` date (status says which are open). Search `materials/` with `rg` or the Grep tool, which skip it.
-- One tutor writes `tutor/` at a time. If status says another session was written in the last hour, ask me before you write.
+- One tutor writes `tutor/` at a time. If status says another session was written in the last hour, ask whether that thread is still running, in the same message as your first question; my answer settles it. Don't write until it does.
 - `plan.html` is the plan. Older lesson and plan pages in my school folder are not.
 
 ## Versions

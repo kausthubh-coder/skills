@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 2.1 (2026-11-02)
+
+From a cold first-turn test of 2.0: the one-writer check is asked inside the first question, so a thread switch costs no extra turn. "Answers I gave" means logged answers, not notes. `tutor.mjs`: `status` prints the open session's last line in full; `evidence` files a line under the topic of the question ids it mentions.
+
 ## 2.0 (2026-11-02)
 
 Rewrite after an audit of all 24 study threads on the laptop (Oct 28 to Nov 2). The 1.x rules grew from 49 to 68 lines, one patch per complaint. Most complaints came from missing data (what I'd been shown, the real time, which session was open) or clumsy writes, not from teaching judgment.
