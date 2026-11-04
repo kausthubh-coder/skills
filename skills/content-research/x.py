@@ -1,5 +1,5 @@
 # /// script
-# dependencies = ["twscrape", "playwright"]
+# dependencies = ["twscrape", "yt-dlp"]
 # ///
 """X (Twitter) research through a logged-in session, free. Run with `uv run x.py <command> --help`."""
 import argparse, asyncio, json, re, statistics, sys, time, urllib.request
@@ -10,7 +10,6 @@ sys.stderr.reconfigure(encoding="utf-8")
 
 STATE = Path.home() / ".content-research" / "x"
 DB = STATE / "accounts.db"
-PROFILE = STATE / "browser-profile"
 
 
 def api():
@@ -81,31 +80,17 @@ async def add_cookies(cookies):
     return dict(account=name, active=acc.active, db=str(DB))
 
 
-async def login(timeout=600):
-    """Open a dedicated browser window, wait for the X login, then save its session cookies."""
-    from playwright.async_api import async_playwright
-    PROFILE.mkdir(parents=True, exist_ok=True)
-    async with async_playwright() as p:
-        args = dict(user_data_dir=str(PROFILE), headless=False, ignore_default_args=["--enable-automation"],
-                    args=["--disable-blink-features=AutomationControlled"])
-        try:
-            ctx = await p.chromium.launch_persistent_context(channel="chrome", **args)
-        except Exception:
-            ctx = await p.chromium.launch_persistent_context(**args)  # needs `uv run --with playwright playwright install chromium`
-        page = ctx.pages[0] if ctx.pages else await ctx.new_page()
-        await page.goto("https://x.com/login")
-        print("Log in to X in the window that opened. Waiting...", file=sys.stderr)
-        deadline = time.time() + timeout
-        while time.time() < deadline:
-            jar = {c["name"]: c["value"] for c in await ctx.cookies("https://x.com")}
-            if jar.get("auth_token") and jar.get("ct0"):
-                await asyncio.sleep(3)  # let ct0 settle after the redirect
-                jar = {c["name"]: c["value"] for c in await ctx.cookies("https://x.com")}
-                await ctx.close()
-                return await add_cookies("; ".join(f"{k}={v}" for k, v in jar.items()))
-            await asyncio.sleep(2)
-        await ctx.close()
-        return dict(error="timed out waiting for login")
+async def login(browser="firefox", profile=None):
+    """Copy the X session from a browser that's already logged in. No window opens."""
+    from yt_dlp.cookies import extract_cookies_from_browser
+    try:
+        jar = extract_cookies_from_browser(browser, profile)
+    except Exception as e:
+        return dict(error=f"can't read {browser} cookies ({str(e)[:80]}). Chrome and Edge on Windows encrypt them; use Firefox or `x.py cookies`.")
+    found = {c.name: c.value for c in jar if c.domain.lstrip(".") in ("x.com", "twitter.com")}
+    if not (found.get("auth_token") and found.get("ct0")):
+        return dict(error=f"no logged-in X session in {browser}. Log in to x.com there, or paste cookies with `x.py cookies`.")
+    return await add_cookies("; ".join(f"{k}={v}" for k, v in found.items()))
 
 
 def post_logged_out(pid):
@@ -134,7 +119,7 @@ async def outliers(queries, n, min_views, max_followers, min_followers):
 
 async def run(a):
     if a.cmd == "login":
-        return await login()
+        return await login(a.browser, a.profile)
     if a.cmd == "cookies":
         return await add_cookies(a.cookies)
     if a.cmd == "accounts":
@@ -181,7 +166,9 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--out", help="write JSON here instead of stdout")
     sub = p.add_subparsers(dest="cmd", required=True)
-    sub.add_parser("login", help="log in once in a browser window; saves the session")
+    lg = sub.add_parser("login", help="copy the X session from a browser you're logged in to")
+    lg.add_argument("--browser", default="firefox", help="firefox, chrome, edge, brave, safari (Chrome and Edge on Windows can't be read)")
+    lg.add_argument("--profile", help="browser profile name or path")
     sub.add_parser("cookies", help="add a session from a cookie string").add_argument("cookies", help='"auth_token=...; ct0=..."')
     sub.add_parser("accounts", help="saved sessions and their state")
     s = sub.add_parser("search", help="search posts; X operators work (min_faves:500 since:2026-10-01 lang:en from:user -filter:replies)")
@@ -215,7 +202,7 @@ def main():
         res = asyncio.run(run(a))
     except Exception as e:
         if "No account" in str(e) or "NoAccount" in type(e).__name__:
-            sys.exit("No X session saved. Run `uv run x.py login` and log in once.")
+            sys.exit("No X session saved. Log in to x.com in Firefox and run `uv run x.py login`, or `uv run x.py cookies \"auth_token=...; ct0=...\"`.")
         raise
     text = json.dumps(res, ensure_ascii=False, indent=1, default=str)
     if a.out:

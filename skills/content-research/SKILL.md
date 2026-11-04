@@ -26,7 +26,7 @@ uv run <this folder>/yt.py outliers "<query>" "<query 2>" ... [--when month] [--
 ## X: `x.py`, a logged-in session
 
 ```
-uv run <this folder>/x.py login                      # once: opens a browser window, I log in, the session is saved
+uv run <this folder>/x.py login [--browser firefox]  # once: copies the X session from a browser I'm logged in to. No window opens
 uv run <this folder>/x.py search "<query>" [--latest] [-n 50]   # X operators work: min_faves:500 since:2026-10-01 lang:en from:handle -filter:replies
 uv run <this folder>/x.py user <handle>              # followers, following, post count, bio, created
 uv run <this folder>/x.py posts <handle> [-n 40] [--replies]    # recent posts with views, likes, reposts, replies, bookmarks; median views
@@ -38,8 +38,9 @@ uv run <this folder>/x.py people "<query>"           # account search
 uv run <this folder>/x.py outliers "<query>" ... [--max-followers 50000] [--min-views 10000]
 ```
 
-- X's API has no free reads, so this uses twscrape over the logged-in web session. The session lives in `~/.content-research/x/` (`accounts.db` plus the browser profile), never in this repo. `accounts` shows its state. `cookies "auth_token=...; ct0=..."` adds one without the browser.
-- With no session, only `post` works (likes, replies and text from X's embed endpoint; no views). Every other command says to run `login`. That needs me at the keyboard: start it in the background and tell me a window is open.
+- X's API has no free reads, so this calls X's own web API (twscrape) with a logged-in session. No browser, no screenshots: hundreds of posts come back as JSON in seconds. The session lives in `~/.content-research/x/accounts.db`, never in this repo. `accounts` shows its state.
+- `login` reads cookies from Firefox (or Chrome, Safari, Brave on the Mac). Chrome and Edge on Windows encrypt theirs, so there use Firefox or paste the two cookies from DevTools (Application, Cookies, x.com): `x.py cookies "auth_token=...; ct0=..."`.
+- With no session, only `post` works (likes, replies and text from X's embed endpoint; no views). Every other command says how to add a session.
 - Use a throwaway X account; scraping can get an account locked. X rate-limits each account per endpoint in 15-minute windows, and twscrape waits out the limit instead of failing. More accounts (`cookies`) spread the load.
 
 ## Outliers
