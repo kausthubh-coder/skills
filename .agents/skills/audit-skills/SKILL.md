@@ -1,6 +1,7 @@
 ---
 name: audit-skills
-description: "Audit how well my skills worked in my recent threads and update the skills dashboard. Use for /audit-skills, the scheduled audit, or when I ask how my skills or agents are doing."
+description: "Audit how well my skills worked in my recent threads and update the skills dashboard. Use only when I type /audit-skills; never schedule it."
+disable-model-invocation: true
 ---
 
 # Audit my skills
