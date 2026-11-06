@@ -25,6 +25,9 @@
   { "id": "quiz-me", "expect": "tutor", "prompt": "quiz me on avl trees for 316" },
   { "id": "tlc-result", "expect": "statechart", "prompt": "tlc found an invariant violation in Queue.tla, show me what it means as a path through the states" },
   { "id": "draw-model", "expect": "statechart", "prompt": "draw my tla+ model of the checkout flow as a state chart" },
+  { "id": "explain-flow", "expect": "clear-output", "prompt": "how do my skills actually get from my agent-skills repo onto both my machines? i always forget" },
+  { "id": "explain-git", "expect": "clear-output", "prompt": "explain git rebase vs merge to me, i always get confused which one to use" },
+  { "id": "rank-numbers", "expect": "clear-output", "prompt": "which of my skills have the longest descriptions? show me" },
   { "id": "neg-port", "expect": "none", "prompt": "how does the dev server pick its port here?" },
   { "id": "neg-name", "expect": "none", "prompt": "what's this project called in package.json?" }
 ]
