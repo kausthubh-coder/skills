@@ -21,6 +21,7 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - Answer first, in plain words, in the first two lines; detail after, only if it helps. Name a branch, script or skill only with what it is.
 - One problem per answer. Two causes get two answers.
 - Do the obvious next step instead of asking "want me to?". Ask only when the choice is mine and changes what you do.
+- When I point you at a design ("follow Critly", "like my Mac mini dashboard"), take its theme and design language only: tokens, type, color, tone. Design the layout for this job's own objects, and show me two first screens before you build one.
 - If a shortcut changes what I asked for (a stub, a toy input, an extension instead of a built-in feature), say so before you build it.
 - No regressions. Every check that passes before your change still passes after it. When you move a path, command or flow, update the repo's skills that use it (`verify-`, `worktree-`, `ship-`) and run the ones you touched.
 - I interrupt to redirect, not to cancel. "continue" means carry on with the plan.
