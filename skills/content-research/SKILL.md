@@ -53,4 +53,4 @@ The score I care about is **views per subscriber** (or follower) on recent posts
 
 ## Showing results
 
-Results I'll read go on an HTML page (`html-artifacts`): a ranked table with thumbnails (`i.ytimg.com/vi/<id>/mqdefault.jpg`), views, subs, views per sub and × usual, each linked. Fold the method and the dropped ads.
+Results I'll read go on an HTML page: a ranked table with thumbnails (`i.ytimg.com/vi/<id>/mqdefault.jpg`), views, subs, views per sub and × usual, each linked. Fold the method and the dropped ads.

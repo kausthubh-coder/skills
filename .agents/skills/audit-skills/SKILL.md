@@ -35,7 +35,7 @@ Suggestions are changes to the library: global skills, routing, `global/skills.m
 1. Read every batch file yourself. Merge duplicate suggestions, drop weak ones, check the strongest claims against a thread, and rank them. Look at `reports/dashboard/decisions.json`: don't re-suggest what I skipped unless something new happened; carry out what I accepted since the last audit (each in its own commit, proven), and say what you did.
 2. Write `reports/audits/raw/_meta.json`: `{"title": "<the verdict, at most 6 words>", "dek": "<one line, at most 14 words>", "headline": "<the answer as a sentence>", "summary": ["3-5 lines"], "suggestions": [<final ranked list, at most 8, each with a kebab-case "id" and a "short" of at most 6 words>]}`. The dashboard shows only `title`, `dek` and `short`; I don't read paragraphs there. Each evidence item is `{threadId, quote, context}`: a quote I can't place on its own needs the one-line context.
 3. `bun dashboard/merge-audit.ts <today>` writes `reports/audits/<today>.json`. Then move `raw/` to `reports/audits/raw-<today>/`.
-4. Write the report a person reads as an HTML page with `html-artifacts` (Report type): `reports/audits/<today>.html`.
+4. Write the report a person reads as an HTML page: `reports/audits/<today>.html`.
 
 ## 4. The dashboard
 

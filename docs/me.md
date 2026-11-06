@@ -38,8 +38,9 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 | A short "load this skill when…" block (`global/skills.md`) in my global CLAUDE.md and Codex AGENTS.md | Trigger tests: process skills went from 0/3 to 3/3 with it; descriptions alone weren't enough |
 | Every project gets `worktree-<app>` and `ship-<app>` skills (`create-project-flows`) | I start each task in a fresh T3 worktree; shipping should also update `main` and the main checkout |
 | An unmerged branch I'm holding back is my call, not a skills failure | krida's optimize branch waited until I'd tested it (merged 2026-10-13) |
-| Anything I read (plans, reports, audits, comparisons) is an HTML page from `html-artifacts`; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
-| `html-artifacts` has no template (2026-10-14): each page's look comes from its content, held up by the slop list, `check.mjs` and `critly check`/`taste` | Both templates (editorial, then dark "Instrument") made every page look the same, and their signatures are on published lists of AI-design tells |
+| Anything I read (plans, reports, audits, comparisons) is an HTML page; Markdown only for files agents read | I don't read Markdown files. Also in `global/skills.md` |
+| `html-artifacts` retired to `_retired/` (2026-11-06), as an experiment | I want to see how agents build and show pages without it. Restore it by reverting that commit |
+| `html-artifacts` had no template (2026-10-14): each page's look came from its content, held up by the slop list, `check.mjs` and `critly check`/`taste` | Both templates (editorial, then dark "Instrument") made every page look the same, and their signatures are on published lists of AI-design tells |
 | HyperFrames and Clerk skills parked in `~/.skills-parked/`, reached through `global/skills.md` | They filled the `/` and `$` menus in every project. If `npx skills update` reinstalls them globally, park them again |
 | Official Convex, Vercel and Cloudflare skills parked too (2026-10-14), copied by `node scripts/park.mjs` from the repos under `parked` in `sources.json`; the Cloudflare Claude Code plugin is disabled | I want the vendors' own skills on hand without 89 descriptions in every session. Rerun the script to update them |
 | Skills only agents load (principles, benchmark, maintain-verification, writing-for-agents, codebase-design) have `user-invocable: false` | Hidden from my `/` menu; agents still load them |
@@ -79,7 +80,7 @@ Who the skills are for, what I've decided and why, and the corrections I've give
 - Thread drafts that were too generic, leaned on anti-cheating advice written for older models, or pushed too many things at once.
 - Counted an unmerged branch I kept back on purpose as a skills failure.
 - Proposed per-skill workarounds before testing why skills don't trigger. Test first.
-- Wrote a plan and reports for me as Markdown files. Anything I read is HTML (`html-artifacts`).
+- Wrote a plan and reports for me as Markdown files. Anything I read is HTML.
 - Sent a local-only build (a skills viewer just for me) to a cloud thread I never asked for, then piled up workarounds to get it back. Work runs locally unless I say cloud.
 - Warned me three times about a token I pasted in chat and sent me to a terminal procedure instead of using it (Taru, 2026-10-22). Tokens I paste are fine to use.
 - Sent the Mac dashboard's features (skills manager, usage limits, desktop control) to the personal-agent thread as "one app for everything" (2026-10-24). The dashboard is its own thing at `dashboard/`, built by the manager; the personal agent app is only the agent.

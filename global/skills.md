@@ -7,7 +7,7 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - You're about to say done: check the real result with the repo's `verify-<app>` skill. If there's none and you can't check your own work, use `create-verification-skill`.
 - You measured a number (speed, load time, size, latency) or are reporting one: `benchmark-checklist`.
 - First task in a new worktree, or install, env, port or backend look wrong: the repo's `worktree-<app>` skill. I say ship, deploy or release: the repo's `ship-<app>` skill. If the repo has neither, use `create-project-flows`.
-- Anything I'll read beyond a chat reply (a plan, report, audit, comparison, write-up or explainer): an HTML page with `html-artifacts`. Never a Markdown file for me. Markdown is only for files agents read (AGENTS.md, skills); write those for an agent opening the folder cold, not for a person.
+- Anything I'll read beyond a chat reply (a plan, report, audit, comparison, write-up or explainer): an HTML page. Never a Markdown file for me. Markdown is only for files agents read (AGENTS.md, skills); write those for an agent opening the folder cold, not for a person.
 - I correct you for the same thing twice: `correct`.
 - You're about to start a subagent, a T3 thread or a Devin test: `delegating`.
 - Work needs my other machine (move a thread to the Mac, a Windows check on the laptop, threads on both), or a message comes from a thread there: `threads`.
