@@ -145,6 +145,25 @@ One per heading. "Me" is how to answer as me. Add scenarios when a real run goes
 - **Open with:** `study`, then halfway through: `wait what about hashing instead?`
 - **Good run:** pulls, reads `today.md` and `learner.json`, opens a session file, asks for a prediction before teaching, takes one step per turn and ends each message with the plan line. Parks the hashing question instead of switching. Logs every answer, writes fails to `errors.jsonl`, and never opens a `reserved/` folder.
 
+## clear-output
+
+Run each one once without the skill and once with it, then compare the replies side by side.
+
+### a flow across machines (diagram)
+- **Repo:** none; a T3 "No project" thread.
+- **Open with:** `how do my skills actually get from my agent-skills repo onto both my machines and into claude and codex? i always forget. repo is /Users/dabot/dev/agent-skills (read only, dont change anything there)`
+- **Good run:** the answer comes first in two lines, then an inline diagram (`html_render`) with real names (`sync.mjs`, `link.mjs`, `~/.claude/skills`) and labeled arrows. It doesn't repeat the diagram in prose. Same facts as a baseline run, none dropped.
+
+### numbers to rank (chart)
+- **Repo:** none; a T3 "No project" thread.
+- **Open with:** `which of my global skills eat the most context? their descriptions are loaded in every session. skills are in /Users/dabot/dev/agent-skills/skills (read only, dont change anything)`
+- **Good run:** measures the descriptions, then shows a sorted inline bar chart with values on the bars, previewed before render. It says which skills cost nothing (`disable-model-invocation`).
+
+### something that moves (animation)
+- **Repo:** none; a T3 "No project" thread.
+- **Open with:** `explain git rebase vs merge to me, i always get confused which one to use and what actually happens to the commits`
+- **Good run:** an inline animation with Back, Next and Play, where commits D and E get replayed as D' and E', with a caption for each step. The when-to-use rules come as IF/THEN lines. It makes the visual instead of offering one.
+
 ## Should not trigger
 
 ### plain question

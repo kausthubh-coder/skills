@@ -164,5 +164,6 @@ Prior art for agents writing HTML for people. `html-artifacts` is my own skill; 
 | leonxlnx/taste-skill | Taste rules for marketing pages, tells grouped in dated waves | ✖ wants motion on everything. Took: every "use this instead" look becomes the next tell, so give a procedure, not a style. This is why the template went |
 | analyticalmonk/explain-this | Explainers with an outline check-in and a fact-check gate | ✖ long paragraphs. Took: back each claim or cut it |
 | Anthropic artifact design guidance (Claude Code, unpublished) | How Claude.ai artifacts should look and draw diagrams | ✖ not a skill to copy. Took: one detail only this subject would have, draw the difference between options, complete at rest |
+| ohernandezdev/karpathy-output (MIT, archived 2026-11-03) | Karpathy's 2026-10-02 output ladder: STE100 prose, Mermaid diagram, interactive HTML file, video shot list | ✖ writes files and shot lists, not inline T3 visuals. Took for `clear-output`: the ladder, "lowest rung that shows it", the ~80% STE limits |
 
 The research behind the rules (reading, perception, learning) is in `skills/html-artifacts/references/evidence.md`.
