@@ -20,7 +20,7 @@ Use the simplest format that shows the thing I must understand or decide. Most a
 | Numbers to compare, a trend, a ranking | An inline chart. Load `dataviz` first |
 | Something that happens in order or moves: commits being replayed, a request passing through layers, a migration | An inline animation with step controls |
 | A long story I'd rather watch, or I ask for a video | A real video: read `~/.skills-parked/hyperframes/SKILL.md` |
-| A plan or report I'll come back to | A page, as my global rules say |
+| A plan or report I'll come back to | A self-contained HTML file: show it with `html_render` and give me its absolute path. Don't publish it to claude.ai unless I ask |
 
 The words still give the answer in the first two lines. The visual carries the structure. Don't describe the visual again in prose; say only what it can't show. When a visual fits, make it; don't end with "I can turn this into a diagram if you want".
 

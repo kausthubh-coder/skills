@@ -7,7 +7,6 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - You're about to say done: check the real result with the repo's `verify-<app>` skill. If there's none and you can't check your own work, use `create-verification-skill`.
 - You measured a number (speed, load time, size, latency) or are reporting one: `benchmark-checklist`.
 - First task in a new worktree, or install, env, port or backend look wrong: the repo's `worktree-<app>` skill. I say ship, deploy or release: the repo's `ship-<app>` skill. If the repo has neither, use `create-project-flows`.
-- Anything I'll read beyond a chat reply (a plan, report, audit, comparison, write-up or explainer): an HTML page. Never a Markdown file for me. Write it like an astronaut's procedure: one action or fact per line, steps numbered in the order I do them, the verb first, decisions as IF/THEN, a warning right before the step it's about, a status word (DONE, NEEDS YOU) beside each item. Draw a diagram whenever it makes the thing easier to understand. Markdown is only for files agents read (AGENTS.md, skills); write those for an agent opening the folder cold, not for a person.
 - You're explaining how something works, comparing options, showing numbers or walking me through steps, even in a chat reply: `clear-output`.
 - I correct you for the same thing twice: `correct`.
 - You're about to start a subagent, a T3 thread or a Devin test: `delegating`.
