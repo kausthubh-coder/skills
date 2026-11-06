@@ -20,7 +20,7 @@ uv run <this folder>/yt.py outliers "<query>" "<query 2>" ... [--when month] [--
 ```
 
 - It uses yt-dlp, which scrapes YouTube's own pages, so there is no 100-search daily cap. `video`, `transcript` and `comments` need Node on PATH; YouTube's player is a JS challenge.
-- The caption endpoint returns HTTP 429 long before anything else does, and new uploads have no captions for hours. `transcript` then downloads the audio and transcribes it with Whisper turbo (mlx-whisper on the Mac mini, about 10 seconds per minute of video; openai-whisper elsewhere, much slower on CPU). Don't reach for browser cookies on the Mac: reading Chrome's cookies opens a keychain prompt nobody is there to click.
+- The caption endpoint returns HTTP 429 long before anything else does, and new uploads have no captions for hours. `transcript` then downloads the audio and transcribes it with Whisper turbo (mlx-whisper on the Mac mini, where a 67-second video took 11 seconds end to end; openai-whisper elsewhere, much slower on CPU). Don't reach for browser cookies on the Mac: reading Chrome's cookies opens a keychain prompt nobody is there to click.
 - About 300 videos an hour is safe logged out. `outliers` over 20 searches takes about 10 minutes. On HTTP 429 or "confirm you're not a bot", wait, or pass a throwaway account's cookies to yt-dlp (`cookiesfrombrowser: ("firefox",)`). Chrome's cookies can't be read on Windows (app-bound encryption).
 - `search` view counts come from the results page; `video` is the exact current count.
 
