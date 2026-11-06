@@ -2,7 +2,7 @@
 # dependencies = ["yt-dlp"]
 # ///
 """YouTube research without an API key or login. Run with `uv run yt.py <command> --help`."""
-import argparse, base64, json, re, statistics, sys, urllib.parse, urllib.request
+import argparse, base64, json, os, platform, re, statistics, subprocess, sys, tempfile, urllib.error, urllib.parse, urllib.request
 import concurrent.futures as cf
 import yt_dlp
 
@@ -98,7 +98,7 @@ def video(v):
                 caption_langs=sorted(i.get("subtitles") or {}), url=f"https://www.youtube.com/watch?v={i['id']}")
 
 
-def transcript(v, lang="en"):
+def transcript(v, lang="en", whisper=True):
     i = ydl(ignore_no_formats_error=True).extract_info(f"https://www.youtube.com/watch?v={video_id(v)}", download=False)
     # Exact codes only: wildcards like en.* pull every auto-translation and get rate-limited (HTTP 429).
     for source, kind in ((i.get("subtitles") or {}, "manual"), (i.get("automatic_captions") or {}, "auto")):
@@ -106,14 +106,45 @@ def transcript(v, lang="en"):
             tracks = source.get(code) if code else None
             fmt = next((t for t in tracks or [] if t.get("ext") == "json3"), None)
             if fmt:
-                data = json.load(urllib.request.urlopen(fmt["url"], timeout=30))
+                try:
+                    data = json.load(urllib.request.urlopen(fmt["url"], timeout=30))
+                except urllib.error.HTTPError as e:
+                    # The caption endpoint rate-limits (429) long before the audio stream does.
+                    if not whisper:
+                        raise
+                    print(f"captions failed ({e.code}), transcribing the audio instead", file=sys.stderr)
+                    return transcribe(i, lang)
                 segs = []
                 for ev in data.get("events", []):
                     text = "".join(s.get("utf8", "") for s in ev.get("segs") or []).replace("\n", " ").strip()
                     if text:
                         segs.append(dict(t=round(ev.get("tStartMs", 0) / 1000, 1), text=text))
                 return dict(id=i["id"], title=i.get("title"), lang=code, kind=kind, segments=segs)
+    if whisper:
+        # New uploads often have no captions for hours.
+        print(f"no {lang} captions, transcribing the audio instead", file=sys.stderr)
+        return transcribe(i, lang)
     return dict(id=i["id"], title=i.get("title"), error=f"no {lang} captions", available=sorted(i.get("subtitles") or {}))
+
+
+def transcribe(i, lang):
+    """Download the audio and run Whisper turbo locally: mlx-whisper on Apple Silicon, openai-whisper elsewhere."""
+    vid = i["id"]
+    with tempfile.TemporaryDirectory() as tmp:
+        ydl(skip_download=False, noprogress=True, format="bestaudio[ext=m4a]/bestaudio", outtmpl=f"{tmp}/{vid}.%(ext)s").download(
+            [f"https://www.youtube.com/watch?v={vid}"])
+        audio = next(f for f in os.listdir(tmp) if f.startswith(vid))
+        # One file per call: mlx_whisper given several inputs writes them all to the first file's name.
+        if sys.platform == "darwin" and platform.machine() == "arm64":
+            cmd = ["uvx", "--from", "mlx-whisper", "mlx_whisper", "--model", "mlx-community/whisper-large-v3-turbo",
+                   "--output-format", "json", "--output-dir", tmp, "--output-name", vid, "--verbose", "False"]
+        else:
+            cmd = ["uvx", "--from", "openai-whisper", "whisper", "--model", "turbo",
+                   "--output_format", "json", "--output_dir", tmp, "--verbose", "False"]
+        subprocess.run(cmd + ["--language", lang, f"{tmp}/{audio}"], check=True, stdout=subprocess.DEVNULL)
+        data = json.load(open(f"{tmp}/{vid}.json", encoding="utf-8"))
+    segs = [dict(t=round(s["start"], 1), text=s["text"].strip()) for s in data["segments"] if s["text"].strip()]
+    return dict(id=vid, title=i.get("title"), lang=lang, kind="whisper", segments=segs)
 
 
 def comments(v, n=50, sort="top"):
@@ -215,6 +246,7 @@ def main():
     t.add_argument("video")
     t.add_argument("--lang", default="en")
     t.add_argument("--text", action="store_true", help="plain text, no timestamps")
+    t.add_argument("--no-whisper", action="store_true", help="fail instead of transcribing the audio when captions are missing or rate-limited")
     m = sub.add_parser("comments", help="top comments")
     m.add_argument("video")
     m.add_argument("-n", type=int, default=50)
@@ -240,7 +272,7 @@ def main():
     elif a.cmd == "video":
         res = video(a.video)
     elif a.cmd == "transcript":
-        res = transcript(a.video, a.lang)
+        res = transcript(a.video, a.lang, not a.no_whisper)
         if a.text and "segments" in res:
             text = " ".join(s["text"] for s in res["segments"])
             return print(text) if not a.out else open(a.out, "w", encoding="utf-8").write(text)

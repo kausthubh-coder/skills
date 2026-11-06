@@ -13,13 +13,14 @@ Two scripts next to this file print JSON. Run them with `uv run` (it installs th
 uv run <this folder>/yt.py search "<query>" [--sort views|date] [--when hour|today|week|month|year] [--type video|shorts] [--length short|medium|long] [-n 30]
 uv run <this folder>/yt.py channel <@handle|URL|UC id> [-n 30] [--shorts]   # subs, median views, recent uploads with views
 uv run <this folder>/yt.py video <id|URL>           # views, likes, comments, like rate, subs, date, tags, chapters, description
-uv run <this folder>/yt.py transcript <id|URL> [--lang en] [--text]
+uv run <this folder>/yt.py transcript <id|URL> [--lang en] [--text] [--no-whisper]   # no captions or HTTP 429: downloads the audio and runs Whisper locally
 uv run <this folder>/yt.py comments <id|URL> [-n 50] [--sort top|new]
 uv run <this folder>/yt.py thumb <id|URL> [--file out.jpg]                  # largest available thumbnail
 uv run <this folder>/yt.py outliers "<query>" "<query 2>" ... [--when month] [--type shorts] [--max-subs 100000] [--min-views 20000]
 ```
 
 - It uses yt-dlp, which scrapes YouTube's own pages, so there is no 100-search daily cap. `video`, `transcript` and `comments` need Node on PATH; YouTube's player is a JS challenge.
+- The caption endpoint returns HTTP 429 long before anything else does, and new uploads have no captions for hours. `transcript` then downloads the audio and transcribes it with Whisper turbo (mlx-whisper on the Mac mini, about 10 seconds per minute of video; openai-whisper elsewhere, much slower on CPU). Don't reach for browser cookies on the Mac: reading Chrome's cookies opens a keychain prompt nobody is there to click.
 - About 300 videos an hour is safe logged out. `outliers` over 20 searches takes about 10 minutes. On HTTP 429 or "confirm you're not a bot", wait, or pass a throwaway account's cookies to yt-dlp (`cookiesfrombrowser: ("firefox",)`). Chrome's cookies can't be read on Windows (app-bound encryption).
 - `search` view counts come from the results page; `video` is the exact current count.
 
