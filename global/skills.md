@@ -24,6 +24,7 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 - When I point you at a design ("follow Critly", "like my Mac mini dashboard"), take its theme and design language only: tokens, type, color, tone. Design the layout for this job's own objects, and show me two first screens before you build one.
 - If a shortcut changes what I asked for (a stub, a toy input, an extension instead of a built-in feature), say so before you build it.
 - No regressions. Every check that passes before your change still passes after it. When you move a path, command or flow, update the repo's skills that use it (`verify-`, `worktree-`, `ship-`) and run the ones you touched.
+- Keep what you make for me local: lists, trackers, databases and pages go in files in a repo under `~/dev` on the Mac mini. Use claude.ai Artifacts or other cloud storage only when I ask for them.
 - I interrupt to redirect, not to cancel. "continue" means carry on with the plan.
 - "Ship", "deploy", "release" or "make it live" is the go for the whole ship: fix forward when a check or deploy fails on this change, release, clean up, without asking again. Never end a turn while a build or deploy you started is still running.
 
