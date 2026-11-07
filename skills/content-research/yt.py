@@ -131,18 +131,19 @@ def transcribe(i, lang):
     """Download the audio and run Whisper turbo locally: mlx-whisper on Apple Silicon, openai-whisper elsewhere."""
     vid = i["id"]
     with tempfile.TemporaryDirectory() as tmp:
-        ydl(skip_download=False, noprogress=True, format="bestaudio[ext=m4a]/bestaudio", outtmpl=f"{tmp}/{vid}.%(ext)s").download(
+        # Files are named "audio", not the video id: ids can start with "-", which Whisper's CLI reads as a flag.
+        ydl(skip_download=False, noprogress=True, format="bestaudio[ext=m4a]/bestaudio", outtmpl=f"{tmp}/audio.%(ext)s").download(
             [f"https://www.youtube.com/watch?v={vid}"])
-        audio = next(f for f in os.listdir(tmp) if f.startswith(vid))
+        audio = next(f for f in os.listdir(tmp) if f.startswith("audio"))
         # One file per call: mlx_whisper given several inputs writes them all to the first file's name.
         if sys.platform == "darwin" and platform.machine() == "arm64":
             cmd = ["uvx", "--from", "mlx-whisper", "mlx_whisper", "--model", "mlx-community/whisper-large-v3-turbo",
-                   "--output-format", "json", "--output-dir", tmp, "--output-name", vid, "--verbose", "False"]
+                   "--output-format", "json", "--output-dir", tmp, "--output-name", "audio", "--verbose", "False"]
         else:
             cmd = ["uvx", "--from", "openai-whisper", "whisper", "--model", "turbo",
                    "--output_format", "json", "--output_dir", tmp, "--verbose", "False"]
         subprocess.run(cmd + ["--language", lang, f"{tmp}/{audio}"], check=True, stdout=subprocess.DEVNULL)
-        data = json.load(open(f"{tmp}/{vid}.json", encoding="utf-8"))
+        data = json.load(open(f"{tmp}/audio.json", encoding="utf-8"))
     segs = [dict(t=round(s["start"], 1), text=s["text"].strip()) for s in data["segments"] if s["text"].strip()]
     return dict(id=vid, title=i.get("title"), lang=lang, kind="whisper", segments=segs)
 
