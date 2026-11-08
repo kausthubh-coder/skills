@@ -16,7 +16,7 @@ The same Ty sent a templated pitch to 128 billionaires and got zero replies. The
 ## What a message looks like
 
 - **Short.** 40 to 70 words. A DM can be 2 to 4 sentences. If it scrolls, cut it.
-- **Who I am in one line.** "I'm Kausthubh, 19, and I build AI agents (kausthubh.dev)." Add my situation only when it's why I'm writing to them: I'm on an H-4 that ends when I turn 21 and I'm going for an O-1A.
+- **Who I am in one line**, naming real things I've made: "I'm Kausthubh, 19, and I've shipped four apps of my own (kausthubh.dev)", or for open-source people "I build open-source dev tools like Critly and Kriyan". Never "I build AI agents": I don't like it. Check kausthubh.dev for what's live now. Add my situation only when it's why I'm writing to them: I'm on an H-4 that ends when I turn 21 and I'm going for an O-1A.
 - **One specific thing they did**, from their own post, video or site, said the way I'd say it to a friend ("That's honestly insane", "which is wild"). Never a generic compliment.
 - **One ask.** A single question they can answer in a reply, or a 15-minute call. Not both, unless the question is the warm-up for the call.
 - **Sounds like a 19-year-old.** Contractions, "Hey" on DMs, exclamation marks are fine. No "I hope this email finds you well" rewrites, no corporate words, no list of my projects, no paragraph about my plan. Run `unslop` on it.
