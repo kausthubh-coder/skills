@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 3.0 (2026-11-08)
+
+Rebuilt around `philosophy.md` in the study repo (the goal, the four moves, four principles), after 370.events took 14 answers and he "didn't understand very much". Fable and Astra advised; he chose Fable's design. The skill's Teach section is gone: `philosophy.md` holds how to teach, and status prints it. New context: a card per topic (`tutor.mjs topic <id>`): big picture, ideas with their why, what the exam asks, traps, links; a map, not a ladder. New record: `log` takes `hint` (nudge, gave-away) and marks "?" answers unsure; only clean passes count. Drift in long sessions: `log` prints an anchor after every answer, flags two not-clean answers in a row ("something has to change; you decide what"), and reprints the philosophy every 6 answers. `today.md` removed.
+
 ## 2.5 (2026-11-02)
 
 2.4's "explain each idea fully in one message" was read as "the whole topic in one message": the red-black opener put properties, put, both cases, a worked example and a check on one page. Replaced with the goal behind 2.3 and 2.4, momentum: neither thin pieces nor a wall; one step at a time, each complete enough to act on, practiced before the next.
