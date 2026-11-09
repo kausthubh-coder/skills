@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Hill climb
 
-Hill climbing uses an agent to keep improving one metric: measure it, look for what could make it better, change that, measure again to see if it did, and loop. The score keeps the agent honest, so the climb is only as good as the metric. Pick one that moves when the thing really gets better, and watch that nothing else gets worse along the way.
+Hill climbing uses agents to keep improving one or more metrics: measure, look for what could make it better, change that, measure again to see if it did, and loop. The score keeps the agents honest, so the climb is only as good as the metrics. Pick ones that move when the thing really gets better, and watch that nothing else gets worse along the way.
 
 If my prompt leaves the metric or when to stop unclear, suggest them and wait for my go.
 
