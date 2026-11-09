@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 3.1 (2026-11-08)
+
+Messages as pages, at his request ("the whole message is just an inline html page, so it gets ordered and structured better"). `tutor/kit/messages.md` in the study repo distills clear-output and Critly into a short guide (order: grade, what he got right, the one idea, where he is, his turn last; words; look), and `tutor/kit/message.html` is the page to copy. Status prints the guide; the anchor names it and reprints it every 6 answers.
+
 ## 3.0 (2026-11-08)
 
 Rebuilt around `philosophy.md` in the study repo (the goal, the four moves, four principles), after 370.events took 14 answers and he "didn't understand very much". Fable and Astra advised; he chose Fable's design. The skill's Teach section is gone: `philosophy.md` holds how to teach, and status prints it. New context: a card per topic (`tutor.mjs topic <id>`): big picture, ideas with their why, what the exam asks, traps, links; a map, not a ladder. New record: `log` takes `hint` (nudge, gave-away) and marks "?" answers unsure; only clean passes count. Drift in long sessions: `log` prints an anchor after every answer, flags two not-clean answers in a row ("something has to change; you decide what"), and reprints the philosophy every 6 answers. `today.md` removed.

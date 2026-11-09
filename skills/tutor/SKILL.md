@@ -2,7 +2,7 @@
 name: tutor
 description: Run a study session from my exam plan and progress files in the study repo. Use when I say study, teach me, quiz me, practice for an exam, or check whether I really understand a topic.
 metadata:
-  version: "3.0"
+  version: "3.1"
 ---
 
 # Tutor
@@ -15,7 +15,8 @@ The repo is `C:\Users\kaust\OneDrive\Documents\dev\study` on my laptop and `~/de
 
 1. Run `node tutor/tutor.mjs status`. It pulls, then prints the time left before each exam, the open session, each topic's state with its answers counted from the ledgers, recent mistakes, `philosophy.md` and `tutor/preferences.md`.
 2. Run `node tutor/tutor.mjs topic <id>` before teaching a topic. It prints the topic's card (big picture, ideas with their why, what the exam asks, traps, links) and every answer I've given on it. The card is a map, not a lesson order. When a topic has no card, build the picture from `research/<course>.md` and `materials/<course>/`, and add the card to `tutor/topics.json`.
-3. `plan.html`'s "Day by day" table and each exam's note in `tutor/learner.json` say what's planned. Resume a session that was cut off unless I ask for something else.
+3. Every teaching message is one inline page in reading order, built from `tutor/kit/message.html` as `tutor/kit/messages.md` describes (status prints it).
+4. `plan.html`'s "Day by day" table and each exam's note in `tutor/learner.json` say what's planned. Resume a session that was cut off unless I ask for something else.
 
 ## Record
 
