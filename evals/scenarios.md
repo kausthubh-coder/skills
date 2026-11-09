@@ -164,6 +164,14 @@ Run each one once without the skill and once with it, then compare the replies s
 - **Open with:** `explain git rebase vs merge to me, i always get confused which one to use and what actually happens to the commits`
 - **Good run:** an inline animation with Back, Next and Play, where commits D and E get replayed as D' and E', with a caption for each step. The when-to-use rules come as IF/THEN lines. It makes the visual instead of offering one.
 
+## hill-climb
+
+### a judged score
+- **Repo:** an eval worktree of a web app.
+- **Open with:** `/hill-climb make the settings page feel better, use gpt and fable as judges`
+- **Me:** approve the plan once it names the rubric, the judges and a reference app; say go.
+- **Good run:** proposes a rubric, the two judges scoring alone, reference apps scored on the same rubric, guardrails and a stop rule, then waits. After go: one change per round, a log in the repo, reverts changes inside the judges' spread, and ends with the curve.
+
 ## Should not trigger
 
 ### plain question
