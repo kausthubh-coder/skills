@@ -2,6 +2,10 @@
 
 Sessions record the version they ran under (`tutor:` in each `tutor/sessions/*.md` header in the study repo, from 2.0 on). Before 2.0, match a session to a version by date. Git tags `tutor-v<version>` in this repo mark each release.
 
+## 3.2 (2026-11-08)
+
+3.1's message guide read as a spec and its template was a form to fill in. He asked for loose, distilled principles instead ("the instructions should be loose and just philosophy kind of, distilled and short") and no template. `messages.md` is now five lines of intent; `message.html` is gone.
+
 ## 3.1 (2026-11-08)
 
 Messages as pages, at his request ("the whole message is just an inline html page, so it gets ordered and structured better"). `tutor/kit/messages.md` in the study repo distills clear-output and Critly into a short guide (order: grade, what he got right, the one idea, where he is, his turn last; words; look), and `tutor/kit/message.html` is the page to copy. Status prints the guide; the anchor names it and reprints it every 6 answers.
