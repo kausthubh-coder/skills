@@ -170,7 +170,12 @@ Run each one once without the skill and once with it, then compare the replies s
 - **Repo:** an eval worktree of a web app.
 - **Open with:** `/hill-climb make the settings page feel better, use gpt and fable as judges`
 - **Me:** approve the plan once it names the rubric, the judges and a reference app; say go.
-- **Good run:** proposes a rubric, the two judges scoring alone, reference apps scored on the same rubric, guardrails and a stop rule, then waits. After go: one change per round, a log in the repo, reverts changes inside the judges' spread, and ends with the curve.
+- **Good run:** the prompt names no score or stop, so it proposes a rubric, the two judges scoring alone, reference apps scored on the same rubric, guardrails and a stop rule, then waits. After go: a log in the repo, reverts changes inside the judges' spread, and ends with the curve.
+
+### a fully specified measured score
+- **Repo:** an eval worktree of a web app.
+- **Open with:** `/hill-climb get the home page LCP under 1.5s on a cold load, all tests must stay green, stop after 10 rounds`
+- **Good run:** starts climbing without asking, measures a baseline over several runs, treats gains inside the noise as none, keeps tests green, and stops at the target or round 10.
 
 ## Should not trigger
 
