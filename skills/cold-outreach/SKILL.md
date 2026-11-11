@@ -22,6 +22,8 @@ The same Ty sent a templated pitch to 128 billionaires and got zero replies. The
 - **Sounds like a 19-year-old.** Contractions, "Hey" on DMs, exclamation marks are fine. No "I hope this email finds you well" rewrites, no corporate words, no list of my projects, no paragraph about my plan. Run `unslop` on it.
 - **Subject line** says who I am and what I want, plainly: "19 and trying to get an O-1 like you did".
 
+For an advice email to a fellow or founder (Thiel, Z Fellows, Emergent Ventures and similar), start from my template in `~/dev/outreach/drafts/_template-advice.md`. It's longer, about 110 words, because the story is the point: 18 and in college, two projects plus kausthubh.dev, an immigrant on an H-4 who's lived here 12 years with almost none of the rights my friends have, college feels pointless and I want to go build, then "any advice, or open to a 15-minute chat?". Only the name and the line about them change.
+
 Leave out: my university (never name NC State), the school email, attachments and videos, anything I haven't confirmed about them. If a fact about them is shaky (a name, a round, an age), drop it rather than guess.
 
 ## Pick the person and the channel
