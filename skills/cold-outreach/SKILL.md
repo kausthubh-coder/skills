@@ -34,7 +34,7 @@ Leave out: my university (never name NC State), the school email, attachments an
 
 I send everything myself; never send for me. Show each finished draft inline in the chat as plain text with the link to the person's profile, so I can copy it.
 
-- Emails go from kausthubh2007@gmail.com. The claude.ai Gmail connector is signed in to my school account (kvnandim@ncsu.edu), so don't make drafts there. Check which account it is before using it. Instead, give me a prefilled compose link: `https://mail.google.com/mail/?authuser=kausthubh2007@gmail.com&view=cm&fs=1&to=...&su=...&body=...`, URL-encoded.
+- Emails go from kausthubh2007@gmail.com. Two claude.ai Gmail connectors are attached: the one whose instructions say "Account label: personal" is that inbox; the other is my school account, never use it. Put the email in my personal inbox as a draft with that connector's `create_draft` and give me the draft link; I press Send. If only the school connector is there, give me a prefilled compose link instead: `https://mail.google.com/mail/?authuser=kausthubh2007@gmail.com&view=cm&fs=1&to=...&su=...&body=...`, URL-encoded.
 - 3 to 5 messages a day, each one written for that person.
 - One follow-up after about 5 days with no reply, one or two lines. Then stop.
 
