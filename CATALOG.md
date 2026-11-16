@@ -66,7 +66,7 @@ Built for Cursor. Many skills read model settings from `~/.cursor/rules/pstack-m
 | in-your-own-words | Restate the user's goal and problem before working (added upstream 2026-10-13). Only I can run it | ✅ |
 | no-comments | Reviewer agent that strips needless comments | ✅ the agent's rules bundled as a reference, run as a plain subagent |
 | make-bot-ui | Web UIs that wake a Grok Bot by webhook | ✖ Cursor/Grok-specific |
-| poteto-mode | Lauren's full personal style and playbooks (hillclimb, perf issue, PRs) | ✖ read it for ideas, don't install |
+| poteto-mode | Lauren's full personal style and playbooks, with bundled dependencies and a Claude Code / Codex / T3 adapter | ✅ user-invoked; added 2026-11-15 |
 | poteto-help | Help for pstack itself | ✖ |
 | setup-pstack | Configures pstack's models | ✖ |
 

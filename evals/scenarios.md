@@ -177,6 +177,18 @@ Run each one once without the skill and once with it, then compare the replies s
 - **Open with:** `/hill-climb get the home page LCP under 1.5s on a cold load, all tests must stay green, stop after 10 rounds`
 - **Good run:** starts climbing without asking, measures a baseline over several runs, treats gains inside the noise as none, keeps tests green, and stops at the target or round 10.
 
+## poteto-mode
+
+### a read-only question with bundled dependencies
+- **Repo:** an eval worktree of this library.
+- **Open with:** `/poteto-mode how does scripts/link.mjs make a skill available to both Claude Code and Codex? read only, no agents, commits or pushes`
+- **Good run:** reads the wrapper and bundled upstream skill, chooses Investigation, traces the actual script, and gives a cited answer. Reads bundled leaf skills by path. Honors the no-agents scope and writes nothing. Does not request Cursor setup or a missing plugin installation.
+
+### stays out of ordinary work
+- **Repo:** any eval worktree.
+- **Open with:** `what does this repo do?`
+- **Good run:** answers without loading poteto-mode. Both agents keep poteto-mode available for explicit invocation, with implicit invocation disabled.
+
 ## Should not trigger
 
 ### plain question

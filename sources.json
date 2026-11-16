@@ -7,6 +7,20 @@
     }
   },
   "skills": {
+    "poteto-mode": {
+      "repo": "cursor/plugins",
+      "path": "pstack",
+      "license": "MIT (Lauren Tan)",
+      "changes": [
+        "bundled skills, agents, docs, README and LICENSE under references/pstack; kept supporting skills out of the global menu",
+        "renamed bundled SKILL.md files to REFERENCE.md because Codex recursively discovered them; updated local Markdown links and wrapper path resolution",
+        "added a user-invoked entry point and Codex policy with a Claude Code, Codex and T3 tool adapter",
+        "inherit session models by default, preserve explicit model choices and use session completion tools instead of Cursor-specific defaults",
+        "retain repo setup, verification, shipping and authorization conventions"
+      ],
+      "commit": "bf0c7cd80abdbf7fe47b634978a7d1b4071f71a7",
+      "upstreamHash": "7c5514722a1d9724"
+    },
     "create-verification-skill": {
       "repo": "cursor/plugins",
       "path": "pstack/skills/create-verification-skill",

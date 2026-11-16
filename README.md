@@ -55,6 +55,8 @@ Where each agent reads skills:
 
 ## Use it
 
+`/poteto-mode <task>` runs Lauren Tan's pstack style and playbooks in Claude Code. In Codex, use `$poteto-mode <task>`. Its supporting skills are bundled references, so only the entry point joins the global menu. New sessions discover it after linking. The same pushed copy reaches both machines through `sync.mjs` and hosted sessions through `cloud/session.sh`.
+
 ```
 node scripts/link.mjs --dry-run   # see what would be linked
 node scripts/link.mjs             # link new skills, prune deleted ones, sync global/skills.md
