@@ -31,6 +31,8 @@ The skill list is easy to skip. This short list is not. When the case applies, l
 
 # Where my code lives
 
+- Persistent Tailscale links for sites or games on the Mac mini: read `~/box/setup/share-site.md` on the Mac before publishing the link and naming it in Sites.
+
 - Two machines. My Windows laptop (`kaust-pc`): projects in `C:\Users\kaust\OneDrive\Documents\dev\<name>`, experiments in `dev\sandbox\<name>`, one folder each (rules in `dev\sandbox\AGENTS.md`). My always-on Mac mini (`mac-mini`, user `dabot`): projects in `~/dev/<name>`, its own rules in `~/box/AGENTS.md`. Coding threads run on the Mac; the laptop does Windows checks for large app changes. GitHub keeps the two in sync, and a thread on either machine starts, messages and reads threads on the other with the `threads` skill.
 - Search a repo with the Grep tool, `rg` or `git grep`, never `grep -r`, `find` or `du` over it. My repos hold up to 200k untracked files (node_modules, prototypes): `grep -r` took 2 minutes in critly, `git grep` 0.14s. A hook blocks `grep -r`.
 - Run anything that takes over a minute (builds, test suites, dev servers) with `run_in_background` and wait for it to finish. If a server or job hasn't answered within a minute, check that its process is alive and read its log; never poll it for minutes. Agents lost 11 hours in two weeks to commands that sat until the 10-minute limit.
